@@ -121,7 +121,7 @@ public class ScanningAppProviderRuntimeUpdatesTest {
 		// This test will not work on Windows as second sar file would
 		// not be written over the first one because of a file lock
 		Assume.assumeTrue(!OS.IS_WINDOWS);
-		Assume.assumeTrue(OS.IS_OSX); // build server has issues with finding itself apparently
+		Assume.assumeTrue(!OS.IS_OSX); // build server has issues with finding itself apparently
 
 		vapor.copyApp("foo-app-1.sar", "foo.sar");
 		vapor.copyContext("foo.ecs", "foo.ecs");

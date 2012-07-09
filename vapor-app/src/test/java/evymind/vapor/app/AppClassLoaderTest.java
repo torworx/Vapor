@@ -83,8 +83,8 @@ public class AppClassLoaderTest {
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
-		assertTrue(canLoadClass("evymind.vapor.core.app.Configuration"));
-		assertTrue(cantLoadClass("evymind.vapor.core.app.JarScanner"));
+		assertTrue(canLoadClass("evymind.vapor.app.Configuration"));
+		assertTrue(cantLoadClass("evymind.vapor.app.JarScanner"));
 	}
 
 	@Test
