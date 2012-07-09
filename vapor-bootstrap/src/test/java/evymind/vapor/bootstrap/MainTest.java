@@ -40,8 +40,8 @@ public class MainTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		File testJettyHome = TestingUtils.getTestResourceDir("vapor.home");
-		System.setProperty("vapor.home", testJettyHome.getAbsolutePath());
+		File testVaporHome = TestingUtils.getTestResourceDir("vapor.home");
+		System.setProperty("vapor.home", testVaporHome.getAbsolutePath());
 	}
 
 	@Test

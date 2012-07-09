@@ -41,7 +41,7 @@ To run with JSP & JMX support
 
     java -jar bootstrap.jar OPTIONS=Server,jsp,jmx etc/vapor-jmx.ecs etc/vapor.ecs
 
-Note that JSP requires the jasper jars to be within $JETTY/lib/jsp  These 
+Note that JSP requires the jasper jars to be within $VAPOR/lib/jsp  These 
 are currently not distributed with the eclipse release and must be
 obtained from a vapor-hightide release from codehaus.
 

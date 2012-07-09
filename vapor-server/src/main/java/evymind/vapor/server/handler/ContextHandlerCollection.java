@@ -15,9 +15,9 @@ import evymind.vapor.server.ServiceException;
 /**
  * ContextHandlerCollection.
  * 
- * This {@link org.eclipse.jetty.server.handler.HandlerCollection} is creates a {@link org.eclipse.jetty.http.PathMap}
+ * This {@link evymind.vapor.server.handler.HandlerCollection} is creates a {@link evymind.vapor.http.PathMap}
  * to it's contained handlers based on the context path and virtual hosts of any contained
- * {@link org.eclipse.jetty.server.handler.ContextHandler}s. The contexts do not need to be directly contained, only
+ * {@link evymind.vapor.server.handler.ContextHandler}s. The contexts do not need to be directly contained, only
  * children of the contained handlers. Multiple contexts may have the same context path and they are called in order
  * until one handles the request.
  * 
@@ -108,7 +108,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see evymind.vapor.server.handler.HandlerCollection#setHandlers(org.eclipse.jetty.server.server.Handler[])
+	 * @see evymind.vapor.server.handler.HandlerCollection#setHandlers(evymind.vapor.server.Handler[])
 	 */
 	@Override
 	public void setHandlers(Handler[] handlers) {

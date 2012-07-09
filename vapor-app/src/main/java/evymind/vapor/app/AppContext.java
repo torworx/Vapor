@@ -242,7 +242,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jetty.server.server.handler.ContextHandler#setClassLoader(java.lang.ClassLoader)
+	 * @see evymind.vapor.server.handler.ContextHandler#setClassLoader(java.lang.ClassLoader)
 	 */
 	@Override
 	public void setClassLoader(ClassLoader classLoader) {

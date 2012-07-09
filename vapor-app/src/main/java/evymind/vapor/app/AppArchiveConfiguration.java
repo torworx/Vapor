@@ -200,7 +200,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 	 * 
 	 * <p>
 	 * B. Create a directory based on global settings. The new directory will be called
-	 * "Jetty_"+host+"_"+port+"__"+context+"_"+virtualhost Work out where to create this directory:
+	 * "Vapor_"+host+"_"+port+"__"+context+"_"+virtualhost Work out where to create this directory:
 	 * <ol>
 	 * <li>
 	 * Iff $(vapor.home)/work exists create the directory there. Do NOT set delete on exit. Do NOT delete contents if
@@ -241,7 +241,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 			} else {
 				File baseTemp = asFile(context.getAttribute(AppContext.BASETEMPDIR));
 				if (baseTemp != null && baseTemp.isDirectory() && baseTemp.canWrite()) {
-					// Use baseTemp directory (allow the funky Jetty_0_0_0_0.. subdirectory logic to kick in
+					// Use baseTemp directory (allow the funky Vapor_0_0_0_0.. subdirectory logic to kick in
 					makeTempDirectory(baseTemp, context, false);
 				} else {
 					makeTempDirectory(new File(System.getProperty("java.io.tmpdir")), context, true); // make a tmpdir,
@@ -260,7 +260,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 		if (context.getTempDirectory() == null) {
 			try {
 				// Last resort
-				tmpDir = File.createTempFile("JettyContext", "");
+				tmpDir = File.createTempFile("VaporContext", "");
 				if (tmpDir.exists())
 					FileUtils.delete(tmpDir);
 				tmpDir.mkdir();
@@ -504,7 +504,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 
 	/**
 	 * Create a canonical name for a app temp directory. The form of the name is:
-	 * <code>"Jetty_"+host+"_"+port+"__"+resourceBase+"_"+context+"_"+virtualhost+base36_hashcode_of_whole_string</code>
+	 * <code>"Vapor_"+host+"_"+port+"__"+resourceBase+"_"+context+"_"+virtualhost+base36_hashcode_of_whole_string</code>
 	 * 
 	 * host and port uniquely identify the server context and virtual host uniquely identify the app
 	 * 

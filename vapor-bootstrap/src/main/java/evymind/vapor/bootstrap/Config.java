@@ -131,7 +131,7 @@ public class Config {
 
 		if (ver == null) {
 			Package pkg = Config.class.getPackage();
-			if (pkg != null && "Eclipse.org - Jetty".equals(pkg.getImplementationVendor())
+			if (pkg != null && "Eclipse.org - Vapor".equals(pkg.getImplementationVendor())
 					&& (pkg.getImplementationVersion() != null)) {
 				ver = pkg.getImplementationVersion();
 			}

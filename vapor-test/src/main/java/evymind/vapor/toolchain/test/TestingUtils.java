@@ -232,8 +232,8 @@ public final class TestingUtils {
 	 * 
 	 * <pre>
 	 * Examples:
-	 * "org.eclipse.jetty.test.FooTest"           = "oejt.FooTest"
-	 * "org.eclipse.jetty.server.logging.LogTest" = "orjsl.LogTest"
+	 * "evymind.vapor.test.FooTest"           = "oejt.FooTest"
+	 * "evymind.vapor.server.logging.LogTest" = "orjsl.LogTest"
 	 * </pre>
 	 * 
 	 * @param classname

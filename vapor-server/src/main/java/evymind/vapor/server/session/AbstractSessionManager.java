@@ -219,7 +219,7 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 
 	/**
 	 * Interface that any session wrapper should implement so that
-	 * SessionManager may access the Jetty session implementation.
+	 * SessionManager may access the Vapor session implementation.
 	 * 
 	 */
 	public interface SessionIf extends Session {

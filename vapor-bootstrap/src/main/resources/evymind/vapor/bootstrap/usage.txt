@@ -8,7 +8,7 @@ Usage: java -jar bootstrap.jar [options...] [properties...] [configs...]
 Command Line Options:
   --help           This help / usage information.
   
-  --version        Print the version information for Jetty and
+  --version        Print the version information for Vapor and
                    dependent jars, then exit.
                    
   --list-options   List the details of each classpath OPTION
@@ -24,7 +24,7 @@ Command Line Options:
                    contains -X or -D arguments, but creates an extra
                    JVM instance.
                      
-  --stop           Stop the running Jetty instance.
+  --stop           Stop the running Vapor instance.
   
   --daemon         Start in daemon mode with stderr and stdout 
                    redirected to ${vapor.log}/bootstrap.log
@@ -51,7 +51,7 @@ System Properties:
   Some key system properties are:
   
     org.eclipse.vapor.util.log.class=[class]   
-      A Low Level Jetty Logger Implementation to use
+      A Low Level Vapor Logger Implementation to use
       (default: org.eclipse.vapor.util.log.Slf4jLog)
       
     org.eclipse.vapor.util.log.DEBUG=[boolean]
@@ -86,7 +86,7 @@ Properties:
       be a (deep) directory of jars
       
     STOP.PORT=[number]
-      The port to use to stop the running Jetty server.
+      The port to use to stop the running Vapor server.
       Required along with STOP.KEY if you want to use the --stop option above.
       
     STOP.KEY=[alphanumeric]
@@ -109,7 +109,7 @@ Properties:
 
 
 Available Configurations:
-  By convention, configuration files are kept in $JETTY_HOME/etc.
+  By convention, configuration files are kept in $VAPOR_HOME/etc.
   The known configuration files are:
   
     @CONFIGS@

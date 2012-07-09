@@ -81,7 +81,7 @@ public class App {
 	}
 
 	/**
-	 * The context path {@link App} relating to how it is installed on the jetty server side.
+	 * The context path {@link App} relating to how it is installed on the vapor server side.
 	 * 
 	 * @return the contextPath for the App
 	 */

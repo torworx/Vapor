@@ -96,7 +96,7 @@ public class ConnectorServer extends AbstractLifecycle {
 
 	/* ------------------------------------------------------------ */
 	/**
-	 * @see org.eclipse.jetty.util.component.AbstractLifecycle#doStart()
+	 * @see evymind.vapor.util.component.AbstractLifecycle#doStart()
 	 */
 	@Override
 	public void doStart() throws Exception {
@@ -108,7 +108,7 @@ public class ConnectorServer extends AbstractLifecycle {
 
 	/* ------------------------------------------------------------ */
 	/**
-	 * @see org.eclipse.jetty.util.component.AbstractLifecycle#doStop()
+	 * @see evymind.vapor.util.component.AbstractLifecycle#doStop()
 	 */
 	@Override
 	public void doStop() throws Exception {

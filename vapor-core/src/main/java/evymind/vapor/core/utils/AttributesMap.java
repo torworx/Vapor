@@ -29,7 +29,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#removeAttribute(java.lang.String)
+	 * @see evymind.vapor.util.Attributes#removeAttribute(java.lang.String)
 	 */
 	public void removeAttribute(String name) {
 		this.map.remove(name);
@@ -37,7 +37,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#setAttribute(java.lang.String, java.lang.Object)
+	 * @see evymind.vapor.util.Attributes#setAttribute(java.lang.String, java.lang.Object)
 	 */
 	public void setAttribute(String name, Object attribute) {
 		if (attribute == null)
@@ -53,7 +53,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#getAttributeNames()
+	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
 	public Enumeration<String> getAttributeNames() {
 		return Collections.enumeration(this.map.keySet());
@@ -61,7 +61,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#getAttributeNames()
+	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
 	public Set<String> getAttributeNameSet() {
 		return this.map.keySet();
@@ -74,7 +74,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#getAttributeNames()
+	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
 	public static Enumeration<String> getAttributeNamesCopy(Attributes attrs) {
 		if (attrs instanceof AttributesMap)
@@ -87,7 +87,7 @@ public class AttributesMap implements Attributes {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.util.Attributes#clear()
+	 * @see evymind.vapor.util.Attributes#clear()
 	 */
 	public void clearAttributes() {
 		this.map.clear();

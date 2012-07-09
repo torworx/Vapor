@@ -56,7 +56,7 @@ public class ConfiguredVapor {
 			vaporHome = new File(vaporHomeBase + "#" + idx);
 		}
 		deleteContents(vaporHome);
-		// Prepare Jetty.Home (Test) dir
+		// Prepare Vapor.Home (Test) dir
 		vaporHome.mkdirs();
 
 		File logsDir = new File(vaporHome, "logs");

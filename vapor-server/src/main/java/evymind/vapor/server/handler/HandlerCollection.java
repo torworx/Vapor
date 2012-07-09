@@ -138,7 +138,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.server.server.handler.AbstractHandler#doStart()
+	 * @see evymind.vapor.server.handler.AbstractHandler#doStart()
 	 */
 	@Override
 	protected void doStart() throws Exception {
@@ -181,7 +181,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see org.eclipse.jetty.server.server.handler.AbstractHandler#doStop()
+	 * @see evymind.vapor.server.handler.AbstractHandler#doStop()
 	 */
 	@Override
 	protected void doStop() throws Exception {
@@ -225,7 +225,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 	/*
 	 * Add a handler. This implementation adds the passed handler to the end of the existing collection of handlers.
 	 * 
-	 * @see org.eclipse.jetty.server.server.HandlerContainer#addHandler(org.eclipse.jetty.server.server.Handler)
+	 * @see evymind.vapor.server.HandlerContainer#addHandler(evymind.vapor.server.Handler)
 	 */
 	public void addHandler(Handler handler) {
 		setHandlers((Handler[]) LazyList.addToArray(getHandlers(), handler, Handler.class));

@@ -109,7 +109,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Implementation of Container.Listener interface
 	 * 
-	 * @see org.eclipse.jetty.util.component.Container.Listener#add(org.eclipse.jetty.util.component.Container.Relationship)
+	 * @see evymind.vapor.util.component.Container.Listener#add(evymind.vapor.util.component.Container.Relationship)
 	 */
 	public synchronized void add(Relationship relationship) {
 		LOG.debug("add {}", relationship);
@@ -138,7 +138,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Implementation of Container.Listener interface
 	 * 
-	 * @see org.eclipse.jetty.util.component.Container.Listener#remove(org.eclipse.jetty.util.component.Container.Relationship)
+	 * @see evymind.vapor.util.component.Container.Listener#remove(evymind.vapor.util.component.Container.Relationship)
 	 */
 	public synchronized void remove(Relationship relationship) {
 		LOG.debug("remove {}", relationship);
@@ -160,7 +160,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Implementation of Container.Listener interface
 	 * 
-	 * @see org.eclipse.jetty.util.component.Container.Listener#removeBean(java.lang.Object)
+	 * @see evymind.vapor.util.component.Container.Listener#removeBean(java.lang.Object)
 	 */
 	public synchronized void removeBean(Object obj) {
 		LOG.debug("removeBean {}", obj);
@@ -192,7 +192,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Implementation of Container.Listener interface
 	 * 
-	 * @see org.eclipse.jetty.util.component.Container.Listener#addBean(java.lang.Object)
+	 * @see evymind.vapor.util.component.Container.Listener#addBean(java.lang.Object)
 	 */
 	public synchronized void addBean(Object obj) {
 		LOG.debug("addBean {}", obj);
@@ -275,7 +275,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Perform actions needed to start lifecycle
 	 * 
-	 * @see org.eclipse.jetty.util.component.AbstractLifecycle#doStart()
+	 * @see evymind.vapor.util.component.AbstractLifecycle#doStart()
 	 */
 	public void doStart() {
 		ShutdownThread.register(this);
@@ -284,7 +284,7 @@ public class MBeanContainer extends AbstractLifecycle implements Container.Liste
 	/**
 	 * Perform actions needed to stop lifecycle
 	 * 
-	 * @see org.eclipse.jetty.util.component.AbstractLifecycle#doStop()
+	 * @see evymind.vapor.util.component.AbstractLifecycle#doStop()
 	 */
 	public void doStop() {
 		Set<Object> removeSet = new HashSet<Object>(_beans.keySet());

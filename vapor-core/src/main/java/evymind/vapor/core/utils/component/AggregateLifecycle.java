@@ -35,7 +35,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 	/**
 	 * Start the managed lifecycle beans in the order they were added.
 	 * 
-	 * @see evymind.vapor.core.utils.component.eclipse.jetty.util.component.AbstractLifecycle#doStart()
+	 * @see evymind.vapor.core.utils.component.AbstractLifecycle#doStart()
 	 */
 	@Override
 	protected void doStart() throws Exception {
@@ -56,7 +56,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 	/**
 	 * Stop the joined lifecycle beans in the reverse order they were added.
 	 * 
-	 * @see evymind.vapor.core.utils.component.eclipse.jetty.util.component.AbstractLifecycle#doStart()
+	 * @see evymind.vapor.core.utils.component.AbstractLifecycle#doStart()
 	 */
 	@Override
 	protected void doStop() throws Exception {
@@ -78,7 +78,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 	 * Destroy the joined Destroyable beans in the reverse order they were
 	 * added.
 	 * 
-	 * @see evymind.vapor.core.utils.component.eclipse.jetty.util.component.Destroyable#destroy()
+	 * @see evymind.vapor.core.utils.component.Destroyable#destroy()
 	 */
 	public void destroy() {
 		List<Bean> reverse = new ArrayList<Bean>(this.beans);
