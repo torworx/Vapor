@@ -20,43 +20,40 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class VersionTest
-{
-    @Test
-    public void testDefaultVersion()
-    {
-        Version version = new Version();
-        assertEquals("Default version difference to 0.0.0",0,version.compare(new Version("0.0.0")));
-    }
+public class VersionTest {
+	@Test
+	public void testDefaultVersion() {
+		Version version = new Version();
+		assertEquals("Default version difference to 0.0.0", 0,
+				version.compare(new Version("0.0.0")));
+	}
 
-    @Test
-    public void testNewerVersion() {
-        assertIsNewer("0.0.0", "0.0.1");
-        assertIsNewer("0.1.0", "0.1.1");
-        assertIsNewer("1.5.0", "1.6.0");
-        // assertIsNewer("1.6.0_12", "1.6.0_16"); // JDK version spec?
-    }
+	@Test
+	public void testNewerVersion() {
+		assertIsNewer("0.0.0", "0.0.1");
+		assertIsNewer("0.1.0", "0.1.1");
+		assertIsNewer("1.5.0", "1.6.0");
+		// assertIsNewer("1.6.0_12", "1.6.0_16"); // JDK version spec?
+	}
 
-    @Test
-    public void testOlderVersion() {
-        assertIsOlder("0.0.1", "0.0.0");
-        assertIsOlder("0.1.1", "0.1.0");
-        assertIsOlder("1.6.0", "1.5.0");
-    }
+	@Test
+	public void testOlderVersion() {
+		assertIsOlder("0.0.1", "0.0.0");
+		assertIsOlder("0.1.1", "0.1.0");
+		assertIsOlder("1.6.0", "1.5.0");
+	}
 
-    private void assertIsOlder(String basever, String testver)
-    {
-        Version vbase = new Version(basever);
-        Version vtest = new Version(testver);
-        assertTrue("Version [" + testver + "] should be older than [" + basever + "]",
-                vtest.compare(vbase) == -1);
-    }
+	private void assertIsOlder(String basever, String testver) {
+		Version vbase = new Version(basever);
+		Version vtest = new Version(testver);
+		assertTrue("Version [" + testver + "] should be older than [" + basever
+				+ "]", vtest.compare(vbase) == -1);
+	}
 
-    private void assertIsNewer(String basever, String testver)
-    {
-        Version vbase = new Version(basever);
-        Version vtest = new Version(testver);
-        assertTrue("Version [" + testver + "] should be newer than [" + basever + "]",
-                vtest.compare(vbase) == 1);
-    }
+	private void assertIsNewer(String basever, String testver) {
+		Version vbase = new Version(basever);
+		Version vtest = new Version(testver);
+		assertTrue("Version [" + testver + "] should be newer than [" + basever
+				+ "]", vtest.compare(vbase) == 1);
+	}
 }

@@ -28,7 +28,7 @@ import java.util.TreeSet;
 
 /**
  * <p>
- * It allows an application to be started with the command <code>"java -jar start.jar"</code>.
+ * It allows an application to be started with the command <code>"java -jar bootstrap.jar"</code>.
  * </p>
  * 
  * <p>
@@ -65,7 +65,7 @@ import java.util.TreeSet;
  * <ul>
  * <li><code>${name}</code> is expanded to a start property</li>
  * <li><code>$(name)</code> is expanded to either a start property or a system property.</li>
- * <li>The start property <code>${version}</code> is defined as the version of the start.jar</li>
+ * <li>The start property <code>${version}</code> is defined as the version of the bootstrap.jar</li>
  * </ul>
  * 
  * <p>
@@ -113,7 +113,7 @@ import java.util.TreeSet;
  * </p>
  * 
  * <pre>
- *    java -jar start.jar OPTIONS=vapor,jsp,ssl
+ *    java -jar bootstrap.jar OPTIONS=vapor,jsp,ssl
  * </pre>
  * 
  * <p>

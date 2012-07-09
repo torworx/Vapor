@@ -45,13 +45,13 @@ public class MainTest {
 	}
 
 	@Test
-	public void testLoadStartIni() throws IOException {
+	public void testLoadBootstrapIni() throws IOException {
 		Main main = new Main();
 		List<String> args = main.parseBootstrapIniFiles();
 		assertEquals("Expected 5 uncommented lines in bootstrap.ini", 9, args.size());
 		assertEquals("First uncommented line in bootstrap.ini doesn't match expected result",
-				"OPTIONS=Server,jsp,resources,websocket,ext", args.get(0));
-		assertEquals("Last uncommented line in bootstrap.ini doesn't match expected result", "etc/vapor-testrealm.xml",
+				"OPTIONS=Server,resources,ext", args.get(0));
+		assertEquals("Last uncommented line in bootstrap.ini doesn't match expected result", "etc/vapor-testrealm.ecs",
 				args.get(8));
 	}
 
@@ -59,9 +59,9 @@ public class MainTest {
 	public void testExpandCommandLine() throws Exception {
 		Main main = new Main();
 		List<String> args = main.expandCommandLine(new String[] {});
-		assertEquals("bootstrap.ini OPTIONS", "OPTIONS=Server,jsp,resources,websocket,ext", args.get(0));
+		assertEquals("bootstrap.ini OPTIONS", "OPTIONS=Server,resources,ext", args.get(0));
 		assertEquals("bootstrap.d/jmx OPTIONS", "OPTIONS=jmx", args.get(5));
-		assertEquals("bootstrap.d/jmx XML", "--pre=etc/vapor-jmx.xml", args.get(6));
+		assertEquals("bootstrap.d/jmx Config", "--pre=etc/vapor-jmx.ecs", args.get(6));
 		assertEquals("bootstrap.d/websocket OPTIONS", "OPTIONS=websocket", args.get(7));
 	}
 
@@ -71,9 +71,9 @@ public class MainTest {
 		List<String> args = main.expandCommandLine(new String[] {});
 		List<String> xmls = main.processCommandLine(args);
 
-		assertEquals("jmx --pre", "etc/vapor-jmx.xml", xmls.get(0));
-		assertEquals("bootstrap.ini", "etc/vapor.xml", xmls.get(1));
-		assertEquals("bootstrap.d", "etc/vapor-testrealm.xml", xmls.get(5));
+		assertEquals("jmx --pre", "etc/vapor-jmx.ecs", xmls.get(0));
+		assertEquals("bootstrap.ini", "etc/vapor.ecs", xmls.get(1));
+		assertEquals("bootstrap.d", "etc/vapor-testrealm.ecs", xmls.get(5));
 	}
 
 	@Test
@@ -83,16 +83,16 @@ public class MainTest {
 		jvmArgs.add("-Xms1024m");
 		jvmArgs.add("-Xmx1024m");
 
-		List<String> xmls = new ArrayList<String>();
-		xmls.add("vapor.xml");
-		xmls.add("vapor-jmx.xml");
-		xmls.add("vapor-logging.xml");
+		List<String> configs = new ArrayList<String>();
+		configs.add("vapor.ecs");
+		configs.add("vapor-jmx.ecs");
+		configs.add("vapor-logging.ecs");
 
 		Main main = new Main();
 		main.addJvmArgs(jvmArgs);
 
 		Classpath classpath = nastyWayToCreateAClasspathObject("/vapor/home with spaces/");
-		CommandLineBuilder cmd = main.buildCommandLine(classpath, xmls);
+		CommandLineBuilder cmd = main.buildCommandLine(classpath, configs);
 		Assert.assertThat("CommandLineBuilder shouldn't be null", cmd, notNullValue());
 		String commandLine = cmd.toString();
 		Assert.assertThat("CommandLine shouldn't be null", commandLine, notNullValue());
@@ -101,7 +101,7 @@ public class MainTest {
 		Assert.assertThat("CommandLine should contain jvmArgs", commandLine,
 				containsString("--exec -Xms1024m -Xmx1024m"));
 		Assert.assertThat("CommandLine should contain xmls", commandLine,
-				containsString("vapor.xml vapor-jmx.xml vapor-logging.xml"));
+				containsString("vapor.ecs vapor-jmx.ecs vapor-logging.ecs"));
 
 	}
 

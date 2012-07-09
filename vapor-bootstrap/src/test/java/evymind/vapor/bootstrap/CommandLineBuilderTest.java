@@ -26,7 +26,7 @@ public class CommandLineBuilderTest {
 
 	@Test
 	public void testQuotingSpaceAndQuotesInPath() {
-		assertQuoting("/opt/vapor 7 \"special\"/home", "/opt/\\ 7\\ \\\"special\\\"/home");
+		assertQuoting("/opt/vapor 7 \"special\"/home", "/opt/vapor\\ 7\\ \\\"special\\\"/home");
 	}
 
 	private void assertQuoting(String raw, String expected) {
