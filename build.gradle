@@ -212,6 +212,8 @@ project('vapor-deploy') {
 }
 
 project("vapor-jmx") {
+	description = 'Vapor JMX'
+
 	dependencies {
 		compile project(":vapor-core")
 		testCompile "junit:junit:4.10"
@@ -220,6 +222,8 @@ project("vapor-jmx") {
 
 
 project("vapor-test") {
+	description = 'Vapor Test'
+
 	dependencies {
 		compile "junit:junit:4.10"
 	}
