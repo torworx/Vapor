@@ -1,0 +1,10 @@
+server = evymind.vapor.server.Server();
+	config {
+		// connector config
+		$server.addConnector(
+			evymind.vapor.server.supertcp.netty.NettySuperTCPConnector()
+				.setAckWaitTimeout(${ackWaitTimeout}));
+			
+		// handler config
+		$server.setHandler(evymind.vapor.server.handler.HandlerCollection());
+	}

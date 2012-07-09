@@ -1,0 +1,1 @@
+mvn install:install-file -DgroupId=asm -DartifactId=asm -Dversion=4.0 -Dfile=asm-4.0.jar -Dpackaging=jar -DgeneratePom=true

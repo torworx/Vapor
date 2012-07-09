@@ -1,0 +1,24 @@
+*.java.hsp
+*.sonarj
+*.sw*
+.DS_Store
+.settings
+.springBeans
+bin
+target
+build.sh
+integration-repo
+ivy-cache
+jxl.log
+jmx.log
+.gradle
+build
+.classpath
+.project
+argfile*
+
+# IDEA metadata and output dirs
+*.iml
+*.ipr
+*.iws
+out

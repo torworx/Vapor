@@ -1,0 +1,4 @@
+services:
+- interface: evymind.vapor.tests.app.InfoService
+  class: evymind.vapor.tests.app.SimpleInfoService
+

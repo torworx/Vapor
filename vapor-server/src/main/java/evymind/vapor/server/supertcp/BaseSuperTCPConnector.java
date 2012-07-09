@@ -1,0 +1,152 @@
+package evymind.vapor.server.supertcp;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import evymind.vapor.core.event.handling.annontation.AnnotationEventListenerAdapter;
+import evymind.vapor.core.supertcp.PackageAck;
+import evymind.vapor.server.AbstractConnector;
+import evymind.vapor.server.Request;
+import evymind.vapor.server.RequestPool;
+import evymind.vapor.server.Response;
+import evymind.vapor.server.ResponsePool;
+
+public abstract class BaseSuperTCPConnector extends AbstractConnector {
+	
+	private static final Logger log = LoggerFactory.getLogger(BaseSuperTCPConnector.class);
+	
+	private RequestPool requestPool = new RequestPool();
+	private ResponsePool responsePool = new ResponsePool();
+	
+	private ClientManager clientManager;
+	
+	private RequestEventHandler requestHandler = new RequestEventHandler(this);
+	private EventDataSendEventHandler eventDataSendHandler = new EventDataSendEventHandler(this);
+	
+	private int ackWaitTimeout = 10000;
+	private int maxPackageSize = 10 * 1024 * 1024;
+	private boolean skipAck = false;
+	private boolean blockingEvents = false;
+	private boolean keepAlive = true;
+	private boolean tcpNoDelay = true;
+	
+	public BaseSuperTCPConnector() {
+		super();
+		clientManager = createClientManager(); 
+		setPort(8095);
+	}
+
+	public RequestPool getRequestPool() {
+		return requestPool;
+	}
+
+	public ResponsePool getResponsePool() {
+		return responsePool;
+	}
+
+	protected abstract ClientManager createClientManager();
+	
+	public ClientManager getClientManager() {
+		if (this.clientManager == null) {
+			this.clientManager = createClientManager();
+		}
+		return this.clientManager;
+	}
+	
+	@Override
+	protected void doStart() throws Exception {
+		getClientManager().start();
+		super.doStart();
+		AnnotationEventListenerAdapter.subscribe(requestHandler, getEventBus());
+		AnnotationEventListenerAdapter.subscribe(eventDataSendHandler, getEventBus());
+	}
+	
+	@Override
+	protected void doStop() throws Exception {
+		super.doStop();
+		getClientManager().stop();
+	}
+
+	protected void handleRequest(Request request, Response response) {
+		log.debug("Publishing request[id={}] to event bus", request.getRequestId());
+		SCServerWorker worker = request.getTransport();
+		try {
+			getEventBus().publish(new RequestEvent(request, response));
+		} catch (RuntimeException e) {
+			log.debug("Request[id={}] publish error, send QUEUE_FULL ack to client", request.getRequestId());
+			worker.sendError(request.getRequestId(), PackageAck.NOACK_QUEUE_FULL);
+			throw e;
+		}
+	}
+	
+	protected void handleEventDataSend(EventDataSendEvent event) {
+		if (isBlockingEvents()) {
+			eventDataSendHandler.handleEventDataSendEvent(event);
+		} else {
+			getEventBus().publish(event);
+		}
+	}
+	
+	protected void connected(SCServerWorker worker) {
+		getServer().getHandler().connected(worker, worker.getClientId());
+		clientManager.add(worker);
+		// TODO dispatch events stored in event repository
+	}
+	
+	protected void disconnected(SCServerWorker worker) {
+		clientManager.remove(worker);
+		getServer().getHandler().disconnected(worker, worker.getClientId());
+	}
+	
+	public String getDefaultResponse() {
+		return "ERSC: Invalid connection string";
+	}
+	
+	public int getAckWaitTimeout() {
+		return ackWaitTimeout;
+	}
+
+	public void setAckWaitTimeout(int ackWaitTimeout) {
+		this.ackWaitTimeout = ackWaitTimeout;
+	}
+
+	public int getMaxPackageSize() {
+		return maxPackageSize;
+	}
+
+	public void setMaxPackageSize(int maxPackageSize) {
+		this.maxPackageSize = maxPackageSize;
+	}
+
+	public boolean isSkipAck() {
+		return skipAck;
+	}
+
+	public void setSkipAck(boolean skipAck) {
+		this.skipAck = skipAck;
+	}
+
+	public boolean isBlockingEvents() {
+		return blockingEvents;
+	}
+
+	public void setBlockingEvents(boolean blockingEvents) {
+		this.blockingEvents = blockingEvents;
+	}
+
+	public boolean isKeepAlive() {
+		return keepAlive;
+	}
+
+	public void setKeepAlive(boolean keepAlive) {
+		this.keepAlive = keepAlive;
+	}
+
+	public boolean isTcpNoDelay() {
+		return tcpNoDelay;
+	}
+
+	public void setTcpNoDelay(boolean tcpNoDelay) {
+		this.tcpNoDelay = tcpNoDelay;
+	}
+}

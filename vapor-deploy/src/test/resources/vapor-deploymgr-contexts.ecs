@@ -1,0 +1,17 @@
+&server config {
+	$server.addBean(evymind.vapor.deploy.DeploymentManager()
+		.setContexts(contexts)
+		.setAppProviders([
+			evymind.vapor.deploy.providers.ContextProvider()
+				.setMonitoredDirName("${vapor.home}/contexts")
+				.setScanInterval(1)
+				.setConfigurationManager(evymind.vapor.deploy.FileConfigurationManager()
+					.setFile("${vapor.home}/xml-configured-vapor.properties")
+				),
+			evymind.vapor.deploy.providers.StandardAppProvider()
+				.setMonitoredDirName("${vapor.home}/apps")
+				.setScanInterval(1)
+				.setContextDir("${vapor.home}/contexts")
+		])
+	);
+}

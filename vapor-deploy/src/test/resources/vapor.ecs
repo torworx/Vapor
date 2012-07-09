@@ -1,0 +1,20 @@
+contexts = evymind.vapor.server.handler.ContextHandlerCollection();
+
+handlers = evymind.vapor.server.handler.HandlerCollection();
+	config {
+		$handlers.setHandlers([contexts]);
+	}
+
+server = evymind.vapor.server.Server();
+	
+	config {
+		// connector config
+		$server.addConnector(
+			evymind.vapor.server.supertcp.netty.NettySuperTCPConnector()
+				.addDispatcher(evymind.vapor.message.bin.BinMessageFactory())
+				.setAckWaitTimeout(5000)
+		);
+			
+		// handler config
+		$server.setHandler(handlers);
+	}

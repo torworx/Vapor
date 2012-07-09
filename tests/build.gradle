@@ -1,0 +1,21 @@
+configure(allprojects) {
+    apply plugin: 'java'
+}
+
+configure(subprojects) { subproject ->
+	apply plugin: 'java'
+	
+	task distSar(type: Zip) {
+		group = 'Distribution'
+		extension = 'sar'
+		description = "Builds SAR."
+
+		def baseDir = "${project.name}";
+
+		from('app.yml')
+		
+		into("lib") {
+			from jar.outputs.files
+		}
+	}
+}

@@ -1,0 +1,5 @@
+services:
+- interface: evymind.vapor.app.echo.EchoService
+  class: evymind.vapor.app.echo.EchoServiceImpl
+listeners:
+- "evymind.vapor.app.echo.EchoListener"

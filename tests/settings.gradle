@@ -1,0 +1,5 @@
+rootProject.name = 'vapor-tests'
+
+include 'foo-app-1'
+include 'foo-app-2'
+include 'foo-app-3'

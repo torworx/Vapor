@@ -1,0 +1,13 @@
+rootProject.name = 'vapor'
+
+include 'vapor-core'
+include 'vapor-client'
+include 'vapor-server'
+include 'vapor-envelope'
+include 'vapor-config'
+include 'vapor-bootstrap'
+include 'vapor-app'
+include 'vapor-deploy'
+include 'vapor-jmx'
+
+include 'vapor-test'

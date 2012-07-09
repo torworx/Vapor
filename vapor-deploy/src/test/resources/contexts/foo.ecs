@@ -1,0 +1,5 @@
+appContext = evymind.vapor.app.AppContext();
+	config {
+		$appContext.setContextPath("/foo");
+		$appContext.setSar("${test.apps}/foo.sar");
+	}
