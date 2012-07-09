@@ -28,14 +28,14 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 
 	private ResourcePatternResolver resolver = ResourcePatternUtils.getFileAsDefaultResourcePatternResolver();
 
-	public static final String TEMPDIR_CONFIGURED = "evymind.vapor.core.tmpdirConfigured";
-	public static final String CONTAINER_JAR_PATTERN = "evymind.vapor.core.server.svcapp.ContainerIncludeJarPattern";
-	public static final String SVCAPP_JAR_PATTERN = "evymind.vapor.core.server.svcapp.AppIncludeJarPattern";
+	public static final String TEMPDIR_CONFIGURED = "evymind.vapor.tmpdirConfigured";
+	public static final String CONTAINER_JAR_PATTERN = "evymind.vapor.server.app.ContainerIncludeJarPattern";
+	public static final String APP_JAR_PATTERN = "evymind.vapor.server.app.AppIncludeJarPattern";
 
 	/**
 	 * If set, to a list of URLs, these resources are added to the context resource base as a resource collection.
 	 */
-	// public static final String RESOURCE_URLS = "evymind.vapor.core.resources";
+	// public static final String RESOURCE_URLS = "evymind.vapor.resources";
 
 	protected Resource preUnpackBaseResource;
 
@@ -46,16 +46,16 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 		if (work != null)
 			makeTempDirectory(work, context, false);
 
-		// Make a temp directory for the svcapp if one is not already set
+		// Make a temp directory for the app if one is not already set
 		resolveTempDirectory(context);
 
-		// Extract svcapp if necessary
+		// Extract app if necessary
 		unpack(context);
 
 		// Apply an initial ordering to the jars which governs which will be scanned for META-INF
 		// info and annotations. The ordering is based on inclusion patterns.
-		String tmp = (String) context.getAttribute(SVCAPP_JAR_PATTERN);
-		Pattern svcAppPattern = (tmp == null ? null : Pattern.compile(tmp));
+		String tmp = (String) context.getAttribute(APP_JAR_PATTERN);
+		Pattern appPattern = (tmp == null ? null : Pattern.compile(tmp));
 		tmp = (String) context.getAttribute(CONTAINER_JAR_PATTERN);
 		Pattern containerPattern = (tmp == null ? null : Pattern.compile(tmp));
 
@@ -87,7 +87,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 		}
 
 		// Apply ordering to lib jars
-		PatternMatcher svcAppJarNameMatcher = new PatternMatcher() {
+		PatternMatcher appJarNameMatcher = new PatternMatcher() {
 			@Override
 			public void matched(URI uri) throws Exception {
 				context.getMetadata().addAppJar(new UrlResource(uri));
@@ -104,7 +104,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 				uris[i++] = r.getURI();
 			}
 		}
-		svcAppJarNameMatcher.match(svcAppPattern, uris, true); // null is inclusive, no pattern == all jars match
+		appJarNameMatcher.match(appPattern, uris, true); // null is inclusive, no pattern == all jars match
 	}
 
 	@Override
@@ -352,11 +352,11 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 				log.debug("Try app=" + appres + ", exists=" + appres.exists() + ", directory="
 						+ appfile.isDirectory() + " file=" + (appfile));
 			// Is the SAR usable directly?
-			// if (app.exists() && !svcappAsFile.isDirectory() && !svcapp.toString().startsWith("jar:")) {
+			// if (app.exists() && !appAsFile.isDirectory() && !app.toString().startsWith("jar:")) {
 			// // No - then lets see if it can be turned into a jar URL.
-			// Resource jarApp = JarResource.newJarResource(svcapp);
+			// Resource jarApp = JarResource.newJarResource(app);
 			// if (jarApp.exists() && jarApp.isDirectory())
-			// svcapp = jarApp;
+			// app = jarApp;
 			// }
 
 			// If we should extract or the URL is still not usable
@@ -395,7 +395,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 						extractionLock.createNewFile();
 						extractedAppDir.mkdir();
 						log.info("Extract " + appres + " to " + extractedAppDir);
-						// Resource jar_web_app = JarResource.newJarResource(svcapp);
+						// Resource jar_web_app = JarResource.newJarResource(app);
 						// jar_web_app.copyTo(extractedAppDir);
 						JarUtils.unjar(appres.getFile(), extractedAppDir);
 						extractionLock.delete();
@@ -407,7 +407,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 							FileUtils.delete(extractedAppDir);
 							extractedAppDir.mkdir();
 							log.info("Extract " + appres + " to " + extractedAppDir);
-							// Resource jar_web_app = JarResource.newJarResource(svcapp);
+							// Resource jar_web_app = JarResource.newJarResource(app);
 							// jar_web_app.copyTo(extractedAppDir);
 							JarUtils.unjar(appres.getFile(), extractedAppDir);
 							extractionLock.delete();
@@ -431,40 +431,40 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 
 		// Do we need to extract WEB-INF/lib?
 		// if (context.isCopyApp() && !context.isCopyWebDir()) {
-		// Resource web_inf = svcapp.addPath("WEB-INF/");
+		// Resource web_inf = app.addPath("WEB-INF/");
 		//
 		// File extractedAppDir = new File(context.getTempDirectory(), "webinf");
 		// if (extractedAppDir.exists())
 		// IO.delete(extractedAppDir);
 		// extractedAppDir.mkdir();
 		// Resource web_inf_lib = web_inf.addPath("lib/");
-		// File svcAppDir = new File(extractedAppDir, "WEB-INF");
-		// svcAppDir.mkdir();
+		// File appDir = new File(extractedAppDir, "WEB-INF");
+		// appDir.mkdir();
 		//
 		// if (web_inf_lib.exists()) {
-		// File svcAppLibDir = new File(svcAppDir, "lib");
-		// if (svcAppLibDir.exists())
-		// IO.delete(svcAppLibDir);
-		// svcAppLibDir.mkdir();
+		// File appLibDir = new File(appDir, "lib");
+		// if (appLibDir.exists())
+		// IO.delete(appLibDir);
+		// appLibDir.mkdir();
 		//
-		// log.info("Copying WEB-INF/lib " + web_inf_lib + " to " + svcAppLibDir);
-		// web_inf_lib.copyTo(svcAppLibDir);
+		// log.info("Copying WEB-INF/lib " + web_inf_lib + " to " + appLibDir);
+		// web_inf_lib.copyTo(appLibDir);
 		// }
 		//
 		// Resource web_inf_classes = web_inf.addPath("classes/");
 		// if (web_inf_classes.exists()) {
-		// File svcAppClassesDir = new File(svcAppDir, "classes");
-		// if (svcAppClassesDir.exists())
-		// IO.delete(svcAppClassesDir);
-		// svcAppClassesDir.mkdir();
+		// File appClassesDir = new File(appDir, "classes");
+		// if (appClassesDir.exists())
+		// IO.delete(appClassesDir);
+		// appClassesDir.mkdir();
 		// log.info("Copying WEB-INF/classes from " + web_inf_classes + " to "
-		// + svcAppClassesDir.getAbsolutePath());
-		// web_inf_classes.copyTo(svcAppClassesDir);
+		// + appClassesDir.getAbsolutePath());
+		// web_inf_classes.copyTo(appClassesDir);
 		// }
 		//
 		// web_inf = Resource.newResource(extractedAppDir.getCanonicalPath());
 		//
-		// ResourceCollection rc = new ResourceCollection(web_inf, svcapp);
+		// ResourceCollection rc = new ResourceCollection(web_inf, app);
 		//
 		// if (log.isDebugEnabled())
 		// log.debug("context.resourcebase = " + rc);
@@ -503,12 +503,12 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 	}
 
 	/**
-	 * Create a canonical name for a svcapp temp directory. The form of the name is:
+	 * Create a canonical name for a app temp directory. The form of the name is:
 	 * <code>"Jetty_"+host+"_"+port+"__"+resourceBase+"_"+context+"_"+virtualhost+base36_hashcode_of_whole_string</code>
 	 * 
-	 * host and port uniquely identify the server context and virtual host uniquely identify the svcapp
+	 * host and port uniquely identify the server context and virtual host uniquely identify the app
 	 * 
-	 * @return the canonical name for the svcapp temp directory
+	 * @return the canonical name for the app temp directory
 	 */
 	public static String getCanonicalNameForAppTmpDir(AppContext context) {
 		StringBuffer canonicalName = new StringBuffer();
@@ -551,7 +551,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 					// Set dir or SAR
 					resource = context.newResource(context.getSar());
 				} else {
-					log.warn("Can't generate baseResource dir as part of svcapp tmp dir name");
+					log.warn("Can't generate baseResource dir as part of app tmp dir name");
 				}
 			}
 
@@ -566,7 +566,7 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 			canonicalName.append(tmp.substring(i + 1, tmp.length()));
 			canonicalName.append("-");
 		} catch (Exception e) {
-			log.warn("Can't generate resourceBase as part of svcapp tmp dir name", e);
+			log.warn("Can't generate resourceBase as part of app tmp dir name", e);
 		}
 
 		// Context name

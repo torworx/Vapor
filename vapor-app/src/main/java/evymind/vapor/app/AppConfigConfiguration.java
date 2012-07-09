@@ -44,7 +44,7 @@ public class AppConfigConfiguration extends AbstractConfiguration {
 	public void configure(AppContext context) throws Exception {
 		// cannot configure if the context is already started
 		if (context.isStarted()) {
-			log.debug("Cannot configure svcapp after it is started");
+			log.debug("Cannot configure app after it is started");
 			return;
 		}
 		context.getMetadata().addDescriptorProcessor(new AppConfigDescriptorProcessor());

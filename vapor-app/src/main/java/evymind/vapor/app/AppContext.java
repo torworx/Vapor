@@ -30,8 +30,8 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 
 	public static final String TEMPDIR = "javax.service.context.tempdir";
 	public static final String BASETEMPDIR = "evymind.vapor.app.basetempdir";
-	public final static String WEB_DEFAULTS_XML = "evymind/vapor/svcapp/appdefault.xml";
-	public final static String ERROR_PAGE = "evymind.vapor.core.server.error_page";
+	public final static String WEB_DEFAULTS_XML = "evymind/vapor/app/appdefault.xml";
+	public final static String ERROR_PAGE = "evymind.vapor.server.error_page";
 	public final static String SERVER_CONFIG = "evymind.vapor.app.configuration";
 	public final static String SERVER_SYS_CLASSES = "evymind.vapor.app.systemClasses";
 	public final static String SERVER_SRV_CLASSES = "evymind.vapor.app.serverClasses";
@@ -57,8 +57,8 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	// so if service application needs to load any of such classes,
 	// it has to include them in its distribution.
 	public final static String[] DEFAULT_SERVER_CLASSES = { 
-			"-evymind.vapor.core.service.listener.", // don't hide useful
-			"evymind.vapor.core." // hide other vapor classes
+			"-evymind.vapor.service.listener.", // don't hide useful
+			"evymind.vapor." // hide other vapor classes
 	};
 
 	private String[] configurationClasses = DEFAULT_CONFIGURATION_CLASSES;
@@ -73,7 +73,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	private boolean extractSAR = true;
 	private boolean copyDir = false;
 	private boolean logUrlOnStart = false;
-	private boolean parentLoaderPriority = Boolean.getBoolean("evymind.vapor.core.server.svcapp.parentLoaderPriority");
+	private boolean parentLoaderPriority = Boolean.getBoolean("evymind.vapor.server.app.parentLoaderPriority");
 	private PermissionCollection permissions;
 
 	// private String[] _contextWhiteList = null;
@@ -113,14 +113,14 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	/**
 	 * @param contextPath
 	 *            The context path
-	 * @param svcapp
-	 *            The URL or filename of the svcapp directory or sar file.
+	 * @param app
+	 *            The URL or filename of the app directory or sar file.
 	 */
-	public AppContext(String svcapp, String contextPath) {
+	public AppContext(String app, String contextPath) {
 		super(null, contextPath, true);
 		context = new Context();
 		setContextPath(contextPath);
-		setSar(svcapp);
+		setSar(app);
 	}
 
 	/* ------------------------------------------------------------ */
@@ -129,13 +129,13 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	 *            The parent HandlerContainer.
 	 * @param contextPath
 	 *            The context path
-	 * @param svcapp
-	 *            The URL or filename of the svcapp directory or sar file.
+	 * @param app
+	 *            The URL or filename of the app directory or sar file.
 	 */
-	public AppContext(HandlerContainer parent, String svcapp, String contextPath) {
+	public AppContext(HandlerContainer parent, String app, String contextPath) {
 		super(parent, contextPath, true);
 		context = new Context();
-		setSar(svcapp);
+		setSar(app);
 	}
 
 	/* ------------------------------------------------------------ */
@@ -144,9 +144,9 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	 * This constructor is used in the geronimo integration.
 	 * 
 	 * @param sessionHandler
-	 *            SessionHandler for this web svcapp
+	 *            SessionHandler for this web app
 	 * @param serviceHandler
-	 *            ServletHandler for this web svcapp
+	 *            ServletHandler for this web app
 	 */
 	public AppContext(SessionHandler sessionHandler, ServiceHandler serviceHandler) {
 		super(null, sessionHandler, serviceHandler);
@@ -179,9 +179,9 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 
 	/* ------------------------------------------------------------ */
 	/**
-	 * Get an exception that caused the svcapp to be unavailable
+	 * Get an exception that caused the app to be unavailable
 	 * 
-	 * @return A throwable if the svcapp is unavailable or null
+	 * @return A throwable if the app is unavailable or null
 	 */
 	public Throwable getUnavailableException() {
 		return this.unavailableException;
@@ -365,7 +365,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 
 	/* ------------------------------------------------------------ */
 	public void configure() throws Exception {
-		// Configure svcapp
+		// Configure app
 		for (int i = 0; i < this.configurations.length; i++) {
 			log.debug("configure {} with {}", this, this.configurations[i]);
 			this.configurations[i].configure(this);
@@ -396,7 +396,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 			if (isLogUrlOnStart())
 				dumpUrl();
 		} catch (Exception e) {
-			// start up of the svcapp context failed, make sure it is not started
+			// start up of the app context failed, make sure it is not started
 			log.warn("Failed startup of context " + this, e);
 			this.unavailableException = e;
 			setAvailable(false);
@@ -451,7 +451,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * Dumps the current web svcapp name and URL to the log
+	 * Dumps the current web app name and URL to the log
 	 */
 	private void dumpUrl() {
 		Connector[] connectors = getServer().getConnectors();
@@ -804,11 +804,11 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	// /**
 	// * Set the context white list
 	// *
-	// * In certain circumstances you want may want to deny access of one svcapp from another when you may not fully
+	// * In certain circumstances you want may want to deny access of one app from another when you may not fully
 	// trust
-	// * the svcapp. Setting this white list will enable a check when a servlet called getContext(String), validating
+	// * the app. Setting this white list will enable a check when a servlet called getContext(String), validating
 	// that
-	// * the uriInPath for the given svcapp has been declaratively allows access to the context.
+	// * the uriInPath for the given app has been declaratively allows access to the context.
 	// *
 	// * @param contextWhiteList
 	// */
@@ -934,7 +934,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 
 	/* ------------------------------------------------------------ */
 	/**
-	 * Sets whether or not the web svcapp name and URL is logged on startup
+	 * Sets whether or not the web app name and URL is logged on startup
 	 * 
 	 * @param logOnStart
 	 *            whether or not the log message is created

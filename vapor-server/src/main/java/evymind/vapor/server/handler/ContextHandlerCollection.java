@@ -108,7 +108,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 
 	/* ------------------------------------------------------------ */
 	/*
-	 * @see evymind.vapor.core.server.handler.HandlerCollection#setHandlers(org.eclipse.jetty.server.server.Handler[])
+	 * @see evymind.vapor.server.handler.HandlerCollection#setHandlers(org.eclipse.jetty.server.server.Handler[])
 	 */
 	@Override
 	public void setHandlers(Handler[] handlers) {

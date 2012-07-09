@@ -26,7 +26,7 @@ public class ConnectorServerTest {
 	@Test
 	public void randomPortTest() throws Exception {
 		ConnectorServer srv = new ConnectorServer(new JMXServiceURL(
-				"service:jmx:rmi:///jndi/rmi://localhost:0/vaportest"), "evymind.vapor.core:name=rmiconnectorserver");
+				"service:jmx:rmi:///jndi/rmi://localhost:0/vaportest"), "evymind.vapor:name=rmiconnectorserver");
 		srv.start();
 		Thread.sleep(5000);
 	}

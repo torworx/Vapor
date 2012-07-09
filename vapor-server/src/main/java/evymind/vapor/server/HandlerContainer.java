@@ -6,7 +6,7 @@ import evymind.vapor.core.utils.component.Lifecycle;
  * A Handler that contains other Handlers.
  * <p>
  * The contained handlers may be one (see @{link
- * {@link evymind.vapor.core.server.handler.HandlerWrapper}) or many (see
+ * {@link evymind.vapor.server.handler.HandlerWrapper}) or many (see
  * {@link evyframework.remoting.server.handler.HandlerList} or
  * {@link evyframework.remoting.server.handler.HandlerCollection}.
  * 

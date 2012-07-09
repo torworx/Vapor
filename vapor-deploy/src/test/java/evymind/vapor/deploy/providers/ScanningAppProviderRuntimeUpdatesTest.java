@@ -136,7 +136,7 @@ public class ScanningAppProviderRuntimeUpdatesTest {
 			
 			@Override
 			public Object invoke() {
-				return vapor.getServiceProxyInvoker().invoke("evymind.vapor.core.tests.app.InfoService", "getInfo", String.class);
+				return vapor.getServiceProxyInvoker().invoke("evymind.vapor.tests.app.InfoService", "getInfo", String.class);
 			}
 		}, "FooService-1");
 
@@ -155,7 +155,7 @@ public class ScanningAppProviderRuntimeUpdatesTest {
 			
 			@Override
 			public Object invoke() {
-				return vapor.getServiceProxyInvoker().invoke("evymind.vapor.core.tests.app.InfoService", "getInfo", String.class);
+				return vapor.getServiceProxyInvoker().invoke("evymind.vapor.tests.app.InfoService", "getInfo", String.class);
 			}
 		}, "FooService-2");
 	}

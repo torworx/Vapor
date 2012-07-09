@@ -15,8 +15,8 @@ import evymind.vapor.server.handler.ContextHandler;
 /**
  * Context directory Standard App Provider.
  * <p>
- * Svcapps with names root or starting with root- are deployed at /. If the name is in the format root-hostname, then
- * the svcapp is deployed at / in the virtual host hostname.
+ * Apps with names root or starting with root- are deployed at /. If the name is in the format root-hostname, then
+ * the app is deployed at / in the virtual host hostname.
  */
 public class StandardAppProvider extends ScanningAppProvider {
 	

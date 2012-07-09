@@ -62,7 +62,7 @@ public class AppClassLoader extends URLClassLoader {
 
 		/* ------------------------------------------------------------ */
 		/**
-		 * Is the class a System Class. A System class is a class that is visible to a svcapplication, but that cannot
+		 * Is the class a System Class. A System class is a class that is visible to a application, but that cannot
 		 * be overridden by the contents of WEB-INF/lib or WEB-INF/classes
 		 * 
 		 * @param clazz
@@ -74,7 +74,7 @@ public class AppClassLoader extends URLClassLoader {
 		/* ------------------------------------------------------------ */
 		/**
 		 * Is the class a Server Class. A Server class is a class that is part of the implementation of the server and
-		 * is NIT visible to a svcapplication. The web application may provide it's own implementation of the class, to
+		 * is NIT visible to a application. The web application may provide it's own implementation of the class, to
 		 * be loaded from WEB-INF/lib or WEB-INF/classes
 		 * 
 		 * @param clazz
@@ -218,14 +218,14 @@ public class AppClassLoader extends URLClassLoader {
 		boolean server_class = context.isServerClass(name);
 
 		List<URL> from_parent = toList(server_class ? null : parent.getResources(name));
-		List<URL> from_svcapp = toList((system_class && !from_parent.isEmpty()) ? null : this.findResources(name));
+		List<URL> from_app = toList((system_class && !from_parent.isEmpty()) ? null : this.findResources(name));
 
 		if (context.isParentLoaderPriority()) {
-			from_parent.addAll(from_svcapp);
+			from_parent.addAll(from_app);
 			return Collections.enumeration(from_parent);
 		}
-		from_svcapp.addAll(from_parent);
-		return Collections.enumeration(from_svcapp);
+		from_app.addAll(from_parent);
+		return Collections.enumeration(from_app);
 	}
 
 	/* ------------------------------------------------------------ */

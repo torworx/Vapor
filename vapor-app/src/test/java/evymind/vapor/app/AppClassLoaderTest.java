@@ -18,51 +18,49 @@ import evymind.vapor.app.AppClassLoader;
 import evymind.vapor.app.AppContext;
 
 public class AppClassLoaderTest {
-	
+
 	private ResourcePatternResolver resolver = ResourcePatternUtils.getFileAsDefaultResourcePatternResolver();
-	
-	private AppContext context;
-	private AppClassLoader loader;
+
+	private AppContext _context;
+	private AppClassLoader _loader;
 
 	@Before
 	public void init() throws Exception {
-		Resource appres = resolver.getResource("./src/test/svcapp/");
-		
-		assertTrue(appres.exists());
+		Resource appres = resolver.getResource("./src/test/app/");
 
-		context = new AppContext();
-		context.setBaseResource(appres);
-		context.setContextPath("/test");
+		_context = new AppContext();
+		_context.setBaseResource(appres);
+		_context.setContextPath("/test");
 
-		loader = new AppClassLoader(context);
-		loader.addJars(appres.createRelative("lib"));
-		loader.addClassPath(appres.createRelative("classes"));
-		loader.setName("test");
+		_loader = new AppClassLoader(_context);
+		_loader.addJars(appres.createRelative("/lib"));
+		_loader.addClassPath(appres.createRelative("/classes"));
+		_loader.setName("test");
 	}
 
 	@Test
 	public void testParentLoad() throws Exception {
-		context.setParentLoaderPriority(true);
+		_context.setParentLoaderPriority(true);
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarA"));
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
 		assertTrue(cantLoadClass("evymind.vapor.app.Configuration"));
 
-		Class<?> clazzA = loader.loadClass("org.acme.webapp.ClassInJarA");
+		Class<?> clazzA = _loader.loadClass("org.acme.webapp.ClassInJarA");
 		assertTrue(clazzA.getField("FROM_PARENT") != null);
 	}
 
 	@Test
-	public void testSvcAppLoad() throws Exception {
-		context.setParentLoaderPriority(false);
+	public void testWebAppLoad() throws Exception {
+		_context.setParentLoaderPriority(false);
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarA"));
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
 		assertTrue(cantLoadClass("evymind.vapor.app.Configuration"));
 
-		Class<?> clazzA = loader.loadClass("org.acme.webapp.ClassInJarA");
+		Class<?> clazzA = _loader.loadClass("org.acme.webapp.ClassInJarA");
 		try {
 			clazzA.getField("FROM_PARENT");
 			assertTrue(false);
@@ -73,11 +71,11 @@ public class AppClassLoaderTest {
 
 	@Test
 	public void testExposedClass() throws Exception {
-		String[] oldSC = context.getServerClasses();
+		String[] oldSC = _context.getServerClasses();
 		String[] newSC = new String[oldSC.length + 1];
 		newSC[0] = "-evymind.vapor.app.Configuration";
 		System.arraycopy(oldSC, 0, newSC, 1, oldSC.length);
-		context.setServerClasses(newSC);
+		_context.setServerClasses(newSC);
 
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarA"));
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
@@ -89,17 +87,17 @@ public class AppClassLoaderTest {
 
 	@Test
 	public void testSystemServerClass() throws Exception {
-		String[] oldServC = context.getServerClasses();
+		String[] oldServC = _context.getServerClasses();
 		String[] newServC = new String[oldServC.length + 1];
 		newServC[0] = "evymind.vapor.app.Configuration";
 		System.arraycopy(oldServC, 0, newServC, 1, oldServC.length);
-		context.setServerClasses(newServC);
+		_context.setServerClasses(newServC);
 
-		String[] oldSysC = context.getSystemClasses();
+		String[] oldSysC = _context.getSystemClasses();
 		String[] newSysC = new String[oldSysC.length + 1];
 		newSysC[0] = "evymind.vapor.app.";
 		System.arraycopy(oldSysC, 0, newSysC, 1, oldSysC.length);
-		context.setSystemClasses(newSysC);
+		_context.setSystemClasses(newSysC);
 
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarA"));
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
@@ -113,41 +111,41 @@ public class AppClassLoaderTest {
 	public void testResources() throws Exception {
 		List<URL> resources;
 
-		context.setParentLoaderPriority(false);
-		resources = toList(loader.getResources("org/acme/resource.txt"));
+		_context.setParentLoaderPriority(false);
+		resources = toList(_loader.getResources("org/acme/resource.txt"));
 		assertEquals(3, resources.size());
 		assertEquals(0, resources.get(0).toString().indexOf("jar:file:"));
 		assertEquals(-1, resources.get(1).toString().indexOf("test-classes"));
 		assertEquals(0, resources.get(2).toString().indexOf("file:"));
 
-		context.setParentLoaderPriority(true);
-		resources = toList(loader.getResources("org/acme/resource.txt"));
+		_context.setParentLoaderPriority(true);
+		resources = toList(_loader.getResources("org/acme/resource.txt"));
 		assertEquals(3, resources.size());
 		assertEquals(0, resources.get(0).toString().indexOf("file:"));
 		assertEquals(0, resources.get(1).toString().indexOf("jar:file:"));
 		assertEquals(-1, resources.get(2).toString().indexOf("test-classes"));
 
-		String[] oldServC = context.getServerClasses();
+		String[] oldServC = _context.getServerClasses();
 		String[] newServC = new String[oldServC.length + 1];
 		newServC[0] = "org.acme.";
 		System.arraycopy(oldServC, 0, newServC, 1, oldServC.length);
-		context.setServerClasses(newServC);
+		_context.setServerClasses(newServC);
 
-		context.setParentLoaderPriority(true);
-		resources = toList(loader.getResources("org/acme/resource.txt"));
+		_context.setParentLoaderPriority(true);
+		resources = toList(_loader.getResources("org/acme/resource.txt"));
 		assertEquals(2, resources.size());
 		assertEquals(0, resources.get(0).toString().indexOf("jar:file:"));
 		assertEquals(0, resources.get(1).toString().indexOf("file:"));
 
-		context.setServerClasses(oldServC);
-		String[] oldSysC = context.getSystemClasses();
+		_context.setServerClasses(oldServC);
+		String[] oldSysC = _context.getSystemClasses();
 		String[] newSysC = new String[oldSysC.length + 1];
 		newSysC[0] = "org.acme.";
 		System.arraycopy(oldSysC, 0, newSysC, 1, oldSysC.length);
-		context.setSystemClasses(newSysC);
+		_context.setSystemClasses(newSysC);
 
-		context.setParentLoaderPriority(true);
-		resources = toList(loader.getResources("org/acme/resource.txt"));
+		_context.setParentLoaderPriority(true);
+		resources = toList(_loader.getResources("org/acme/resource.txt"));
 		assertEquals(1, resources.size());
 		assertEquals(0, resources.get(0).toString().indexOf("file:"));
 	}
@@ -160,12 +158,12 @@ public class AppClassLoaderTest {
 	}
 
 	private boolean canLoadClass(String clazz) throws ClassNotFoundException {
-		return loader.loadClass(clazz) != null;
+		return _loader.loadClass(clazz) != null;
 	}
 
 	private boolean cantLoadClass(String clazz) {
 		try {
-			return loader.loadClass(clazz) == null;
+			return _loader.loadClass(clazz) == null;
 		} catch (ClassNotFoundException e) {
 			return true;
 		}
