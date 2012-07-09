@@ -168,8 +168,8 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
 
 	/* ------------------------------------------------------------ */
 	/**
-	 * @see evymind.vapor.core.app.AbstractConfiguration#cloneConfigure(evymind.vapor.core.app.AppContext,
-	 *      evymind.vapor.core.app.AppContext)
+	 * @see evymind.vapor.app.AbstractConfiguration#cloneConfigure(evymind.vapor.app.AppContext,
+	 *      evymind.vapor.app.AppContext)
 	 */
 	@Override
 	public void cloneConfigure(AppContext template, AppContext context) throws Exception {

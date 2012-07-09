@@ -47,7 +47,7 @@ public class AppClassLoaderTest {
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
-		assertTrue(cantLoadClass("evymind.vapor.core.app.Configuration"));
+		assertTrue(cantLoadClass("evymind.vapor.app.Configuration"));
 
 		Class<?> clazzA = loader.loadClass("org.acme.webapp.ClassInJarA");
 		assertTrue(clazzA.getField("FROM_PARENT") != null);
@@ -60,7 +60,7 @@ public class AppClassLoaderTest {
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
-		assertTrue(cantLoadClass("evymind.vapor.core.app.Configuration"));
+		assertTrue(cantLoadClass("evymind.vapor.app.Configuration"));
 
 		Class<?> clazzA = loader.loadClass("org.acme.webapp.ClassInJarA");
 		try {
@@ -75,7 +75,7 @@ public class AppClassLoaderTest {
 	public void testExposedClass() throws Exception {
 		String[] oldSC = context.getServerClasses();
 		String[] newSC = new String[oldSC.length + 1];
-		newSC[0] = "-evymind.vapor.core.app.Configuration";
+		newSC[0] = "-evymind.vapor.app.Configuration";
 		System.arraycopy(oldSC, 0, newSC, 1, oldSC.length);
 		context.setServerClasses(newSC);
 
@@ -91,13 +91,13 @@ public class AppClassLoaderTest {
 	public void testSystemServerClass() throws Exception {
 		String[] oldServC = context.getServerClasses();
 		String[] newServC = new String[oldServC.length + 1];
-		newServC[0] = "evymind.vapor.core.app.Configuration";
+		newServC[0] = "evymind.vapor.app.Configuration";
 		System.arraycopy(oldServC, 0, newServC, 1, oldServC.length);
 		context.setServerClasses(newServC);
 
 		String[] oldSysC = context.getSystemClasses();
 		String[] newSysC = new String[oldSysC.length + 1];
-		newSysC[0] = "evymind.vapor.core.app.";
+		newSysC[0] = "evymind.vapor.app.";
 		System.arraycopy(oldSysC, 0, newSysC, 1, oldSysC.length);
 		context.setSystemClasses(newSysC);
 
@@ -105,8 +105,8 @@ public class AppClassLoaderTest {
 		assertTrue(canLoadClass("org.acme.webapp.ClassInJarB"));
 		assertTrue(canLoadClass("org.acme.other.ClassInClassesC"));
 
-		assertTrue(cantLoadClass("evymind.vapor.core.app.Configuration"));
-		assertTrue(cantLoadClass("evymind.vapor.core.app.JarScanner"));
+		assertTrue(cantLoadClass("evymind.vapor.app.Configuration"));
+		assertTrue(cantLoadClass("evymind.vapor.app.JarScanner"));
 	}
 
 	@Test

@@ -26,7 +26,7 @@ import evyframework.common.io.support.ResourcePatternUtils;
  * 
  * This loader defaults to the 2.3 servlet spec behavior where non system classes are loaded from the classpath in
  * preference to the parent loader. Java2 compliant loading, where the parent loader always has priority, can be
- * selected with the {@link evymind.vapor.core.app.AppContext#setParentLoaderPriority(boolean)} method and
+ * selected with the {@link evymind.vapor.app.AppContext#setParentLoaderPriority(boolean)} method and
  * influenced with {@link AppContext#isServerClass(String)} and {@link AppContext#isSystemClass(String)}.
  * 
  * If no parent class loader is provided, then the current thread context classloader will be used. If that is null then

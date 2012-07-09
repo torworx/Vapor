@@ -29,16 +29,16 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	private static final Logger log = LoggerFactory.getLogger(AppContext.class);
 
 	public static final String TEMPDIR = "javax.service.context.tempdir";
-	public static final String BASETEMPDIR = "evymind.vapor.core.app.basetempdir";
+	public static final String BASETEMPDIR = "evymind.vapor.app.basetempdir";
 	public final static String WEB_DEFAULTS_XML = "evymind/vapor/svcapp/appdefault.xml";
 	public final static String ERROR_PAGE = "evymind.vapor.core.server.error_page";
-	public final static String SERVER_CONFIG = "evymind.vapor.core.app.configuration";
-	public final static String SERVER_SYS_CLASSES = "evymind.vapor.core.app.systemClasses";
-	public final static String SERVER_SRV_CLASSES = "evymind.vapor.core.app.serverClasses";
+	public final static String SERVER_CONFIG = "evymind.vapor.app.configuration";
+	public final static String SERVER_SYS_CLASSES = "evymind.vapor.app.systemClasses";
+	public final static String SERVER_SRV_CLASSES = "evymind.vapor.app.serverClasses";
 
 	private static String[] DEFAULT_CONFIGURATION_CLASSES = { 
-			"evymind.vapor.core.app.AppArchiveConfiguration",
-			"evymind.vapor.core.app.AppConfigConfiguration" // configure app config file
+			"evymind.vapor.app.AppArchiveConfiguration",
+			"evymind.vapor.app.AppConfigConfiguration" // configure app config file
 	};
 
 	// System classes are classes that cannot be replaced by

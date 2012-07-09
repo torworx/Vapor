@@ -115,7 +115,7 @@ public class DeploymentManagerLifecyclePathTest {
 		jmxConnection.connect();
 
 		MBeanServerConnection mbsConnection = jmxConnection.getConnection();
-		ObjectName dmObjName = new ObjectName("evymind.vapor.core.deploy:type=deploymentmanager,id=0");
+		ObjectName dmObjName = new ObjectName("evymind.vapor.deploy:type=deploymentmanager,id=0");
 		String[] params = new String[] { "mock-foo-app-1.sar", "undeployed" };
 		String[] signature = new String[] { "java.lang.String", "java.lang.String" };
 		mbsConnection.invoke(dmObjName, "requestAppGoal", params, signature);

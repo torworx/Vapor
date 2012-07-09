@@ -11,7 +11,7 @@ server = evymind.vapor.server.Server();
 		// connector config
 		$server.addConnector(
 			evymind.vapor.server.supertcp.netty.NettySuperTCPConnector()
-				.addDispatcher(evymind.vapor.message.bin.BinMessageFactory())
+				.addDispatcher(evymind.vapor.core.message.bin.BinMessageFactory())
 				.setAckWaitTimeout(5000)
 		);
 			

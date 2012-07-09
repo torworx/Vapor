@@ -15,7 +15,7 @@ import evymind.vapor.server.handler.ContextHandler;
  * Context directory App Provider.
  * <p>
  * This specialization of {@link ScanningAppProvider} is the replacement for the old (and deprecated)
- * <code>evymind.vapor.core.deploy.ContextDeployer</code> and it will scan a directory only for context.xml files.
+ * <code>evymind.vapor.deploy.ContextDeployer</code> and it will scan a directory only for context.xml files.
  */
 public class ContextProvider extends ScanningAppProvider {
 	

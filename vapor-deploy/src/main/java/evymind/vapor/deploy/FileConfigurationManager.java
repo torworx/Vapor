@@ -28,7 +28,7 @@ public class FileConfigurationManager implements ConfigurationManager {
 	}
 
 	/**
-	 * @see evymind.vapor.core.deploy.ConfigurationManager#getProperties()
+	 * @see evymind.vapor.deploy.ConfigurationManager#getProperties()
 	 */
 	public Map<String, String> getProperties() {
 		try {
