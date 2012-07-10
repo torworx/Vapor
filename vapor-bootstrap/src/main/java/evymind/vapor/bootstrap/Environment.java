@@ -124,14 +124,14 @@ import java.util.TreeSet;
  * The property map maintained by this class is static and shared between all instances in the same classloader
  * </p>
  */
-public class Config {
+public class Environment {
 	public static final String DEFAULT_SECTION = "";
 	static {
 		String ver = System.getProperty("vapor.version", null);
 
 		if (ver == null) {
-			Package pkg = Config.class.getPackage();
-			if (pkg != null && "Eclipse.org - Vapor".equals(pkg.getImplementationVendor())
+			Package pkg = Environment.class.getPackage();
+			if (pkg != null && "Evymind - Vapor".equals(pkg.getImplementationVendor())
 					&& (pkg.getImplementationVersion() != null)) {
 				ver = pkg.getImplementationVersion();
 			}
@@ -367,7 +367,7 @@ public class Config {
 			String name = (String) ensysprop.nextElement();
 			properties.put(name, System.getProperty(name));
 		}
-		// Add Config Properties Next (overwriting any System Properties that exist)
+		// Add Environment Properties Next (overwriting any System Properties that exist)
 		for (String key : __properties.keySet()) {
 			properties.put(key, __properties.get(key));
 		}
@@ -378,7 +378,7 @@ public class Config {
 		if ("version".equalsIgnoreCase(name)) {
 			return _version;
 		}
-		// Search Config Properties First
+		// Search Environment Properties First
 		if (__properties.containsKey(name)) {
 			return __properties.get(name);
 		}
@@ -387,7 +387,7 @@ public class Config {
 	}
 
 	public static String getProperty(String name, String defaultValue) {
-		// Search Config Properties First
+		// Search Environment Properties First
 		if (__properties.containsKey(name))
 			return __properties.get(name);
 		// Return what exists in System.Properties otherwise.
@@ -678,7 +678,7 @@ public class Config {
 
 					// Add XML configuration
 					if (subject.toLowerCase().endsWith(".ecs")) {
-						// Config file
+						// Environment file
 						File f = new File(fixPath(file));
 						if (f.exists())
 							configs.add(f.getCanonicalPath());

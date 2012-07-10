@@ -29,7 +29,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConfigTest {
+public class EnvironmentTest {
 	private void assertEquals(String msg, Classpath expected, Classpath actual) {
 		Assert.assertNotNull(msg + " : expected classpath should not be null", expected);
 		Assert.assertNotNull(msg + " : actual classpath should not be null", actual);
@@ -86,7 +86,7 @@ public class ConfigTest {
 
 	@Before
 	public void reset() {
-		Config.clearProperties();
+		Environment.clearProperties();
 	}
 
 	/*
@@ -97,10 +97,10 @@ public class ConfigTest {
 		StringBuffer buf = new StringBuffer();
 		buf.append("test.resources.dir/=src/test/resources\n");
 
-		Config cfg = new Config();
+		Environment cfg = new Environment();
 		cfg.parse(buf);
 
-		Assert.assertEquals(getTestResourcesDir().getCanonicalPath(), Config.getProperty("test.resources.dir"));
+		Assert.assertEquals(getTestResourcesDir().getCanonicalPath(), Environment.getProperty("test.resources.dir"));
 	}
 
 	/*
@@ -109,14 +109,14 @@ public class ConfigTest {
 	@Test
 	public void testSubjectAssignStartProperty() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		buf.append("test.vapor.start.text~=foo\n");
-		buf.append("test.vapor.start.quote~=Eatagramovabits\n");
+		buf.append("test.vapor.bootstrap.text~=foo\n");
+		buf.append("test.vapor.bootstrap.quote~=Eatagramovabits\n");
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.parse(buf);
 
-		Assert.assertEquals("foo", Config.getProperty("test.vapor.start.text"));
-		Assert.assertEquals("Eatagramovabits", Config.getProperty("test.vapor.start.quote"));
+		Assert.assertEquals("foo", Environment.getProperty("test.vapor.bootstrap.text"));
+		Assert.assertEquals("Eatagramovabits", Environment.getProperty("test.vapor.bootstrap.quote"));
 	}
 
 	/*
@@ -125,14 +125,14 @@ public class ConfigTest {
 	@Test
 	public void testSubjectAssignSystemProperty() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		buf.append("test.vapor.start.text=foo\n");
-		buf.append("test.vapor.start.quote=Eatagramovabits\n");
+		buf.append("test.vapor.bootstrap.text=foo\n");
+		buf.append("test.vapor.bootstrap.quote=Eatagramovabits\n");
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.parse(buf);
 
-		Assert.assertEquals("foo", System.getProperty("test.vapor.start.text"));
-		Assert.assertEquals("Eatagramovabits", System.getProperty("test.vapor.start.quote"));
+		Assert.assertEquals("foo", System.getProperty("test.vapor.bootstrap.text"));
+		Assert.assertEquals("Eatagramovabits", System.getProperty("test.vapor.bootstrap.quote"));
 	}
 
 	/*
@@ -145,7 +145,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -185,7 +185,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -214,12 +214,12 @@ public class ConfigTest {
 	@Test
 	public void testSubjectMainClass() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		buf.append("org.eclipse.vapor.ecs.XmlConfiguration.class");
+		buf.append("evymind.vapor.ecs.XmlConfiguration.class");
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.parse(buf);
 
-		Assert.assertEquals("org.eclipse.vapor.ecs.XmlConfiguration", options.getMainClassname());
+		Assert.assertEquals("evymind.vapor.ecs.XmlConfiguration", options.getMainClassname());
 	}
 
 	/*
@@ -228,11 +228,11 @@ public class ConfigTest {
 	@Test
 	public void testSubjectMainClassConditionalPropertySet() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		buf.append("org.eclipse.vapor.ecs.XmlConfiguration.class\n");
-		buf.append("${start.class}.class    property start.class");
+		buf.append("evymind.vapor.ecs.XmlConfiguration.class\n");
+		buf.append("${bootstrap.class}.class    property bootstrap.class");
 
-		Config options = new Config();
-		options.setProperty("start.class", "net.company.server.Start");
+		Environment options = new Environment();
+		options.setProperty("bootstrap.class", "net.company.server.Start");
 		options.parse(buf);
 
 		Assert.assertEquals("net.company.server.Start", options.getMainClassname());
@@ -244,14 +244,14 @@ public class ConfigTest {
 	@Test
 	public void testSubjectMainClassConditionalPropertyUnset() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		buf.append("org.eclipse.vapor.ecs.XmlConfiguration.class\n");
-		buf.append("${start.class}.class    property start.class");
+		buf.append("evymind.vapor.ecs.XmlConfiguration.class\n");
+		buf.append("${bootstrap.class}.class    property bootstrap.class");
 
-		Config options = new Config();
-		// The "start.class" property is unset.
+		Environment options = new Environment();
+		// The "bootstrap.class" property is unset.
 		options.parse(buf);
 
-		Assert.assertEquals("org.eclipse.vapor.ecs.XmlConfiguration", options.getMainClassname());
+		Assert.assertEquals("evymind.vapor.ecs.XmlConfiguration", options.getMainClassname());
 	}
 
 	/*
@@ -264,7 +264,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -287,7 +287,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -311,7 +311,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -336,7 +336,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -357,13 +357,13 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
 		List<String> actual = options.getConfigs();
 		String expected = getVaporEtcFile("test-vapor.ecs");
-		Assert.assertEquals("Config.size", 1, actual.size());
+		Assert.assertEquals("Environment.size", 1, actual.size());
 		Assert.assertEquals(expected, actual.get(0));
 	}
 
@@ -379,7 +379,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -404,7 +404,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -432,12 +432,12 @@ public class ConfigTest {
 	public void testSectionClasspathAvailable() throws IOException {
 		StringBuffer buf = new StringBuffer();
 		buf.append("[All]\n");
-		buf.append("$(vapor.home)/lib/core.jar  ! available org.eclipse.vapor.dummy.Handler\n");
-		buf.append("$(vapor.home)/lib/util.jar  ! available org.eclipse.vapor.dummy.StringUtils\n");
+		buf.append("$(vapor.home)/lib/core.jar  ! available evymind.vapor.dummy.Handler\n");
+		buf.append("$(vapor.home)/lib/util.jar  ! available evymind.vapor.dummy.StringUtils\n");
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -484,7 +484,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config cfg = new Config();
+		Environment cfg = new Environment();
 		cfg.setProperty("vapor.home", vaporHome);
 		cfg.parse(buf);
 
@@ -498,7 +498,7 @@ public class ConfigTest {
 		Set<String> sections = cfg.getSectionIds();
 
 		Set<String> expected = new HashSet<String>();
-		expected.add(Config.DEFAULT_SECTION);
+		expected.add(Environment.DEFAULT_SECTION);
 		expected.add("*");
 		expected.add("All");
 		expected.add("server");
@@ -553,7 +553,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 
@@ -584,7 +584,7 @@ public class ConfigTest {
 
 		String vaporHome = getTestableVaporHome();
 
-		Config options = new Config();
+		Environment options = new Environment();
 		options.setProperty("vapor.home", vaporHome);
 		options.parse(buf);
 

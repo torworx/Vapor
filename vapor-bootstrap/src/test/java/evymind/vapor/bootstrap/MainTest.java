@@ -61,7 +61,7 @@ public class MainTest {
 		List<String> args = main.expandCommandLine(new String[] {});
 		assertEquals("bootstrap.ini OPTIONS", "OPTIONS=Server,resources,ext", args.get(0));
 		assertEquals("bootstrap.d/jmx OPTIONS", "OPTIONS=jmx", args.get(5));
-		assertEquals("bootstrap.d/jmx Config", "--pre=etc/vapor-jmx.ecs", args.get(6));
+		assertEquals("bootstrap.d/jmx Environment", "--pre=etc/vapor-jmx.ecs", args.get(6));
 		assertEquals("bootstrap.d/websocket OPTIONS", "OPTIONS=websocket", args.get(7));
 	}
 

@@ -42,7 +42,7 @@ public class Monitor extends Thread {
 				System.out.println("STOP.KEY=" + key);
 			}
 		} catch (Exception e) {
-			Config.debug(e);
+			Environment.debug(e);
 			System.err.println(e.toString());
 		} finally {
 			_port = port;
@@ -76,7 +76,7 @@ public class Monitor extends Thread {
 					continue;
 
 				String cmd = lin.readLine();
-				Config.debug("command=" + cmd);
+				Environment.debug("command=" + cmd);
 				if ("stop".equals(cmd)) {
 					try {
 						socket.close();
@@ -96,7 +96,7 @@ public class Monitor extends Thread {
 					socket.getOutputStream().flush();
 				}
 			} catch (Exception e) {
-				Config.debug(e);
+				Environment.debug(e);
 				System.err.println(e.toString());
 			} finally {
 				if (socket != null) {

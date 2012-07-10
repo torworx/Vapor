@@ -36,7 +36,7 @@ import java.util.Set;
  * </p>
  * 
  * <p>
- * The behaviour of Main is controlled by the parsing of the {@link Config} "evymind/vapor/bootstrap/bootstrap.config" file
+ * The behaviour of Main is controlled by the parsing of the {@link Environment} "evymind/vapor/bootstrap/bootstrap.config" file
  * obtained as a resource or file.
  * </p>
  */
@@ -52,7 +52,7 @@ public class Main {
 	private boolean listOptions = false;
 	private boolean dryRun = false;
 	private boolean exec = false;
-	private final Config config = new Config();
+	private final Environment environment = new Environment();
 	private final Set<String> sysProps = new HashSet<String>();
 	private final List<String> jvmArgs = new ArrayList<String>();
 	private String bootstrapConfig = null;
@@ -88,7 +88,7 @@ public class Main {
 					arguments.addAll(loadBootstrapIni(new File(arg.substring(6))));
 					continue;
 				}
-			} else if (arg.startsWith("--config=")) {
+			} else if (arg.startsWith("--environment=")) {
 				this.bootstrapConfig = arg.substring(9);
 			} else {
 				arguments.add(arg);
@@ -136,8 +136,8 @@ public class Main {
 			}
 
 			if ("--stop".equals(arg)) {
-				int port = Integer.parseInt(Config.getProperty("STOP.PORT", "-1"));
-				String key = Config.getProperty("STOP.KEY", null);
+				int port = Integer.parseInt(Environment.getProperty("STOP.PORT", "-1"));
+				String key = Environment.getProperty("STOP.KEY", null);
 				stop(port, key);
 				return null;
 			}
@@ -152,7 +152,7 @@ public class Main {
 				continue;
 			}
 
-			if ("--list-config".equals(arg)) {
+			if ("--list-environment".equals(arg)) {
 				listConfig = true;
 				continue;
 			}
@@ -228,13 +228,13 @@ public class Main {
 					if ("OPTIONS".equals(assign[0])) {
 						String opts[] = assign[1].split(",");
 						for (String opt : opts)
-							this.config.addActiveOption(opt);
+							this.environment.addActiveOption(opt);
 					} else {
-						this.config.setProperty(assign[0], assign[1]);
+						this.environment.setProperty(assign[0], assign[1]);
 					}
 					break;
 				case 1:
-					this.config.setProperty(assign[0], null);
+					this.environment.setProperty(assign[0], null);
 					break;
 				default:
 					break;
@@ -275,7 +275,7 @@ public class Main {
 
 					if (info.equals("@OPTIONS")) {
 						List<String> sortedOptions = new ArrayList<String>();
-						sortedOptions.addAll(this.config.getSectionIds());
+						sortedOptions.addAll(this.environment.getSectionIds());
 						Collections.sort(sortedOptions);
 
 						for (String option : sortedOptions) {
@@ -346,7 +346,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		if (Config.isDebug() || invoked_class == null) {
+		if (Environment.isDebug() || invoked_class == null) {
 			if (invoked_class == null) {
 				System.err.println("ClassNotFound: " + classname);
 			} else {
@@ -383,27 +383,27 @@ public class Main {
 	/* ------------------------------------------------------------ */
 	public void bootstrap(List<String> configs) throws FileNotFoundException, IOException, InterruptedException {
 		// Setup Start / Stop Monitoring
-		int port = Integer.parseInt(Config.getProperty("STOP.PORT", "-1"));
-		String key = Config.getProperty("STOP.KEY", null);
+		int port = Integer.parseInt(Environment.getProperty("STOP.PORT", "-1"));
+		String key = Environment.getProperty("STOP.KEY", null);
 		Monitor monitor = new Monitor(port, key);
 
-		// Load potential Config (bootstrap.config)
+		// Load potential Environment (bootstrap.config)
 		List<String> configuredConfigs = loadConfig(configs);
 
-		// No XML defined in bootstrap.config or command line. Can't execute.
+		// No environment defined in bootstrap.config or command line. Can't execute.
 		if (configuredConfigs.isEmpty()) {
-			throw new FileNotFoundException("No XML configuration files specified in bootstrap.config or command line.");
+			throw new FileNotFoundException("No configuration files specified in bootstrap.config or command line.");
 		}
 
-		// Normalize the XML config options passed on the command line.
+		// Normalize the environment options passed on the command line.
 		configuredConfigs = resolveConfigs(configuredConfigs);
 
 		// Get Desired Classpath based on user provided Active Options.
-		Classpath classpath = this.config.getActiveClasspath();
+		Classpath classpath = this.environment.getActiveClasspath();
 
 		System.setProperty("java.class.path", classpath.toString());
 		ClassLoader cl = classpath.getClassLoader();
-		if (Config.isDebug()) {
+		if (Environment.isDebug()) {
 			System.err.println("java.class.path=" + System.getProperty("java.class.path"));
 			System.err.println("vapor.home=" + System.getProperty("vapor.home"));
 			System.err.println("java.home=" + System.getProperty("java.home"));
@@ -411,7 +411,7 @@ public class Main {
 			System.err.println("java.class.path=" + classpath);
 			System.err.println("classloader=" + cl);
 			System.err.println("classloader.parent=" + cl.getParent());
-			System.err.println("properties=" + Config.getProperties());
+			System.err.println("properties=" + Environment.getProperties());
 		}
 
 		// Show the usage information and return
@@ -453,7 +453,7 @@ public class Main {
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
-					Config.debug("Destroying " + process);
+					Environment.debug("Destroying " + process);
 					process.destroy();
 				}
 			});
@@ -477,7 +477,7 @@ public class Main {
 		// Invoke the Main Class
 		try {
 			// Get main class as defined in bootstrap.config
-			String classname = this.config.getMainClassname();
+			String classname = this.environment.getMainClassname();
 
 			// Check for override of start class (via "vapor.server" property)
 			String mainClass = System.getProperty("vapor.server");
@@ -491,7 +491,7 @@ public class Main {
 				classname = mainClass;
 			}
 
-			Config.debug("main.class=" + classname);
+			Environment.debug("main.class=" + classname);
 
 			invokeMain(cl, classname, configuredConfigs);
 		} catch (Exception e) {
@@ -538,7 +538,7 @@ public class Main {
 			return configFile.getAbsolutePath();
 		}
 
-		throw new FileNotFoundException("Unable to find Config: " + configFilename);
+		throw new FileNotFoundException("Unable to find Environment: " + configFilename);
 	}
 
 	CommandLineBuilder buildCommandLine(Classpath classpath, List<String> configs) throws IOException {
@@ -554,10 +554,10 @@ public class Main {
 		}
 		cmd.addArg("-cp");
 		cmd.addRawArg(classpath.toString());
-		cmd.addRawArg(this.config.getMainClassname());
+		cmd.addRawArg(this.environment.getMainClassname());
 
 		// Check if we need to pass properties as a file
-		Properties properties = Config.getProperties();
+		Properties properties = Environment.getProperties();
 		if (properties.size() > 0) {
 			File prop_file = File.createTempFile("bootstrap", ".properties");
 			if (!dryRun)
@@ -601,7 +601,7 @@ public class Main {
 	}
 
 	private void showAllOptionsWithVersions(Classpath classpath) {
-		Set<String> sectionIds = this.config.getSectionIds();
+		Set<String> sectionIds = this.environment.getSectionIds();
 
 		StringBuffer msg = new StringBuffer();
 		msg.append("There ");
@@ -626,7 +626,7 @@ public class Main {
 		System.out.println();
 
 		for (String sectionId : sectionIds) {
-			if (Config.DEFAULT_SECTION.equals(sectionId)) {
+			if (Environment.DEFAULT_SECTION.equals(sectionId)) {
 				System.out.println("GLOBAL option (Prepended Entries)");
 			} else if ("*".equals(sectionId)) {
 				System.out.println("GLOBAL option (Appended Entries) (*)");
@@ -639,7 +639,7 @@ public class Main {
 			}
 			System.out.println("-------------------------------------------------------------");
 
-			Classpath sectionCP = this.config.getSectionClasspath(sectionId);
+			Classpath sectionCP = this.environment.getSectionClasspath(sectionId);
 
 			if (sectionCP.isEmpty()) {
 				System.out.println("Empty option, no classpath entries active.");
@@ -664,7 +664,7 @@ public class Main {
 		// Iterate through active classpath, and fetch Implementation Version from each entry (if present)
 		// to dump to end user.
 
-		System.out.println("Active Options: " + this.config.getActiveOptions());
+		System.out.println("Active Options: " + this.environment.getActiveOptions());
 
 		if (classpath.count() == 0) {
 			System.out.println("No version information available show.");
@@ -747,8 +747,8 @@ public class Main {
 	/**
 	 * Load Configuration.
 	 * 
-	 * No specific configuration is real until a {@link Config#getCombinedClasspath(java.util.Collection)} is used to
-	 * execute the {@link Class} specified by {@link Config#getMainClassname()} is executed.
+	 * No specific configuration is real until a {@link Environment#getCombinedClasspath(java.util.Collection)} is used to
+	 * execute the {@link Class} specified by {@link Environment#getMainClassname()} is executed.
 	 * 
 	 * @param configs
 	 *            the command line specified configuration options.
@@ -757,15 +757,15 @@ public class Main {
 	private List<String> loadConfig(List<String> configs) {
 		InputStream cfgstream = null;
 		try {
-			// Pass in xmls.size into Config so that conditions based on "nargs" work.
-			this.config.setArgCount(configs.size());
+			// Pass in xmls.size into Environment so that conditions based on "nargs" work.
+			this.environment.setArgCount(configs.size());
 
 			cfgstream = getConfigStream();
 
-			// parse the config
-			this.config.parse(cfgstream);
+			// parse the environment
+			this.environment.parse(cfgstream);
 
-			this.vaporHome = Config.getProperty("vapor.home", this.vaporHome);
+			this.vaporHome = Environment.getProperty("vapor.home", this.vaporHome);
 			if (this.vaporHome != null) {
 				this.vaporHome = new File(this.vaporHome).getCanonicalPath();
 				System.setProperty("vapor.home", this.vaporHome);
@@ -774,7 +774,7 @@ public class Main {
 			// Collect the configured xml configurations.
 			List<String> ret = new ArrayList<String>();
 			ret.addAll(configs); // add command line provided xmls first.
-			for (String config : this.config.getConfigs()) {
+			for (String config : this.environment.getConfigs()) {
 				// add xmlconfigs arriving via bootstrap.config
 				if (!ret.contains(config)) {
 					ret.add(config);
@@ -793,12 +793,12 @@ public class Main {
 	private InputStream getConfigStream() throws FileNotFoundException {
 		String config = this.bootstrapConfig;
 		if (config == null || config.length() == 0) {
-			config = System.getProperty("START", "evymind/vapor/bootstrap/bootstrap.config");
+			config = System.getProperty("BOOTSTRAP", "evymind/vapor/bootstrap/bootstrap.config");
 		}
 
-		Config.debug("config=" + config);
+		Environment.debug("environment=" + config);
 
-		// Look up config as resource first.
+		// Look up environment as resource first.
 		InputStream cfgstream = getClass().getClassLoader().getResourceAsStream(config);
 
 		// resource not found, try filesystem next
