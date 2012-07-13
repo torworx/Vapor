@@ -19,12 +19,16 @@ public class Signal {
 		latch.countDown();
 	}
 	
+	/**
+	 * See {@link CountDownLatch#await()}.
+	 * @throws InterruptedException
+	 */
 	public void await() throws InterruptedException {
 		latch.await();
 	}
 	
 	/**
-	 * 
+	 * See {@link CountDownLatch#await(long, TimeUnit)}.
 	 * @param timeout the maximum time to wait in milliseconds
 	 * @throws InterruptedException
 	 */

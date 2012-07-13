@@ -32,7 +32,7 @@ import java.util.TreeSet;
  * </p>
  * 
  * <p>
- * The behaviour of Main is controlled by the <code>"org/eclipse/start/start.config"</code> file obtained as a resource
+ * The behaviour of Main is controlled by the <code>"evymind/vapor/bootstrap/bootstrap.env"</code> file obtained as a resource
  * or file. This can be overridden with the START system property. The format of each line in this file is:
  * </p>
  * 

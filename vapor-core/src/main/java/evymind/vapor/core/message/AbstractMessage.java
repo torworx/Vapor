@@ -11,7 +11,7 @@ import evyframework.common.Assert;
 
 import evyframework.common.ClassUtils;
 import evymind.vapor.core.Message;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.Transport;
 import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.exception.UnregisteredServerException;
@@ -191,7 +191,7 @@ public abstract class AbstractMessage<S extends Serializer> implements Message {
 			} catch (RuntimeException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new RemotingException(e);
+				throw new VaporRuntimeException(e);
 			}
 		} else {
 			return new UnregisteredServerException(exceptionName, message);

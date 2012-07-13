@@ -14,7 +14,7 @@ import evymind.vapor.client.event.EndProbeServersEvent;
 import evymind.vapor.core.DispatchOption;
 import evymind.vapor.core.Message;
 import evymind.vapor.core.ProbingOption;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.ServerLocator;
 import evymind.vapor.core.ServerLocators;
 import evymind.vapor.core.Transport;
@@ -147,7 +147,7 @@ public abstract class AbstractTransportChannel extends EventMulticasterWrapper i
 						if (e instanceof RuntimeException) {
 							throw (RuntimeException) e;
 						} else {
-							throw new RemotingException(e);
+							throw new VaporRuntimeException(e);
 						}
 					}
 					faultToleranceLocatorIndex = i;

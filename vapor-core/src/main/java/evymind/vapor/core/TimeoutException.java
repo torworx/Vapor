@@ -1,6 +1,6 @@
 package evymind.vapor.core;
 
-public class TimeoutException extends RemotingException {
+public class TimeoutException extends VaporRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

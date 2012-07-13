@@ -4,26 +4,27 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import evymind.vapor.core.Message;
 import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.buffer.Buffers;
 import evymind.vapor.server.ActiveEventDispatcher;
+import evymind.vapor.server.supertcp.TransportInvalidException;
 
 public class InMemoryEventRepository extends AbstractEventRepository {
 
 	private static final Logger log = LoggerFactory.getLogger(InMemoryEventRepository.class);
 
 	private final Map<UUID, ClientReference> clients = Maps.newLinkedHashMap();
+	private final ReentrantLock lock = new ReentrantLock();
 
 	public InMemoryEventRepository() {
 		super();
@@ -40,31 +41,44 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 
 	@Override
 	protected void doSubscribe(UUID clientId, ActiveEventDispatcher eventDispatcher) {
-		synchronized (clients) {
+		lock.lock();
+		try {
 			if (eventDispatcher != null) {
 				log.debug("Subscribe event for {}", clientId);
-				if (!getClientReference(clientId).addDispatcher(eventDispatcher)) {
-					log.debug("Already subscribed for {}", clientId);
+				ClientReference clientReference = getClientReference(clientId);
+				if (clientReference.getDispatcher() != null) {
+					log.warn("Replace dispatcher [{}] wiht [{}] for [{}]", new Object[]{clientReference.getDispatcher(), eventDispatcher, clientId});
 				}
+				clientReference.setDispatcher(eventDispatcher);
 			}
+		} finally {
+			lock.unlock();
 		}
 	}
 
 	@Override
 	protected void doUnsubscribe(UUID clientId) {
-		synchronized (clients) {
+		lock.lock();
+		try {
 			if (clients. containsKey(clientId)) {
 				log.debug("Unsubscribe event for " + clientId);
 				ClientReference clientReference = clients.remove(clientId);
 				if (clientReference != null) {
-					clientReference.clearAll();
+					clientReference.setDispatcher(null);
+					clientReference.clearEvents();
 				}
 			}
+		} finally {
+			lock.unlock();
 		}
 	}
 
 	@Override
 	protected void doPublish(UUID source, Object event, Collection<?> destinations) {
+		if ((destinations == null || destinations.isEmpty()) && clients.isEmpty()) {
+			return;
+		}
+		
 		VaporBuffer eventData;
 		if (!(event instanceof VaporBuffer)) {
 			eventData = Buffers.dynamicBuffer();
@@ -81,14 +95,20 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 		doPublish(source, eventData, destinations);
 	}
 
-	protected void doPublish(UUID source, VaporBuffer eventData, Collection<?> destinations) {
-		if (destinations == null) {
-			destinations = clients.keySet();
-		}
-		log.debug("Publish event [{}] from {} to {}", new Object[] { eventData, source, destinations });
+	private void doPublish(UUID source, VaporBuffer eventData, Collection<?> destinations) {
 
-		synchronized (clients) {
-			for (Object destination : destinations) {
+		lock.lock();
+		try {
+			Object[] destinationsToProcess = null;
+			if (destinations != null && !destinations.isEmpty()) {
+				destinationsToProcess = destinations.toArray();
+			}
+			if (destinationsToProcess == null) {
+				destinationsToProcess = clients.keySet().toArray();
+			}
+			
+			log.debug("Publish event [{}] from {} to {}", new Object[] { eventData, source, destinationsToProcess });
+			for (Object destination : destinationsToProcess) {
 				UUID clientId;
 				if (destination instanceof UUID) {
 					clientId = (UUID) destination;
@@ -103,16 +123,20 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 				}
 				
 				ClientReference clientReference = clients.get(clientId);
-				if ((clientReference.hasDispatchers())) {
-					log.debug("Dispatching event to {}", clientId);
-					for (ActiveEventDispatcher dispatcher : clientReference.getDispatchers()) {
-						dispatcher.dispatchEvent(clientId, eventData);
+				try {
+					if ((clientReference.getDispatcher() != null)) {
+						log.debug("Dispatching event to {}", clientId);
+						clientReference.getDispatcher().dispatchEvent(clientId, eventData);
+					} else {
+						log.debug("Store event in memory for {}", clientId);
+						clientReference.addEvent(eventData);
 					}
-				} else {
-					log.debug("Store event in memory for {}", clientId);
-					clientReference.addEvent(eventData);
+				} catch (TransportInvalidException e) {
+					doUnsubscribe(clientId);
 				}
 			}
+		} finally {
+			lock.unlock();
 		}
 	}
 
@@ -127,13 +151,12 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 	class ClientReference {
 		
 		private final UUID clientId;
-
-		private final Set<ActiveEventDispatcher> dispatchers;
 		private final List<VaporBuffer> events;
+		
+		private ActiveEventDispatcher dispatcher;
 
 		public ClientReference(UUID clientId) {
 			this.clientId = clientId;
-			dispatchers = Sets.newLinkedHashSet();
 			events = Lists.newArrayList();
 		}
 
@@ -141,22 +164,14 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 			return clientId;
 		}
 		
-		public boolean hasDispatchers() {
-			return !dispatchers.isEmpty();
+		public ActiveEventDispatcher getDispatcher() {
+			return dispatcher;
 		}
 
-		public Set<ActiveEventDispatcher> getDispatchers() {
-			return Collections.unmodifiableSet(dispatchers);
+		public void setDispatcher(ActiveEventDispatcher dispatcher) {
+			this.dispatcher = dispatcher;
 		}
 
-		public boolean addDispatcher(ActiveEventDispatcher dispatcher) {
-			return dispatchers.add(dispatcher);
-		}
-
-		public void clearDispatchers() {
-			dispatchers.clear();
-		}
-		
 		public boolean hasEvents() {
 			return !events.isEmpty();
 		}
@@ -173,9 +188,5 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 			events.clear();
 		}
 
-		public void clearAll() {
-			clearDispatchers();
-			clearEvents();
-		}
 	}
 }

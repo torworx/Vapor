@@ -1,6 +1,9 @@
 buildscript {
 	repositories {
 		mavenLocal()
+		maven {
+			url "http://oss.sonatype.org/content/repositories/releases/"
+		}
 		mavenCentral()
 	}
 	dependencies {
@@ -17,7 +20,7 @@ configure(allprojects) {
     sourceCompatibility=1.6
     targetCompatibility=1.6
 	
-	ext.evyVersion='1.0.0-SNAPSHOT'
+	ext.evyVersion='1.0.1-SNAPSHOT'
 	ext.slf4jVersion='1.6.6'
 	ext.springVersion='3.1.1.RELEASE'
 	ext.jacksonVersion='2.0.2'
@@ -52,6 +55,9 @@ configure(allprojects) {
 
     repositories {
 		mavenLocal()
+		maven {
+			url "http://oss.sonatype.org/content/repositories/releases/"
+		}
         mavenCentral()
     }
 
@@ -120,6 +126,18 @@ configure(subprojects) { subproject ->
 	uploadArchives.dependsOn install
 }
 
+project('vapor-bootstrap') {
+	description = 'Vapor Bootstrap'
+	
+	jar {
+		manifest.attributes['Main-Class'] =
+			'evymind.vapor.bootstrap.Main'
+	}
+	
+	dependencies {
+		testCompile project(":vapor-test")
+	}
+}
 
 project("vapor-core") {
     description = 'Vapor Core'
@@ -131,7 +149,7 @@ project("vapor-core") {
 		compile "evyframework:evy-pool:${evyVersion}"
 		compile "evyframework:evy-reflectasm:${evyVersion}"
 		compile "com.google.guava:guava:12.0"
-		compile "com.googlecode.disruptor:disruptor:2.10"
+		compile "com.googlecode.disruptor:disruptor:2.10.1"
 		compile "org.javassist:javassist:3.16.1-GA"
 		compile "com.dyuproject.protostuff:protostuff-core:${protostuffVersion}"
 		compile "com.dyuproject.protostuff:protostuff-runtime:${protostuffVersion}"
@@ -179,14 +197,6 @@ project('vapor-config') {
 	}
 }
 
-project('vapor-bootstrap') {
-	description = 'Vapor Bootstrap'
-	
-	dependencies {
-		compile project(":vapor-server")
-		testCompile project(":vapor-test")
-	}
-}
 
 project('vapor-app') {
 	description = 'Vapor App'
@@ -206,7 +216,7 @@ project('vapor-deploy') {
 		compile project(":vapor-server")
 		compile project(":vapor-config")
 		compile project(":vapor-app")
-		testCompile project(":vapor-jmx")
+		compile project(":vapor-jmx")
 		testCompile project(":vapor-test")
 	}
 }
@@ -237,12 +247,13 @@ configure(rootProject) {
 	
 	dependencies { // for dist
 		runtime project(":vapor-core")
+		runtime project(":vapor-client")
 		runtime project(":vapor-server")
-		runtime project(":vapor-bootstrap")
 		runtime project(":vapor-envelope")
 		runtime project(":vapor-config")
 		runtime project(":vapor-app")
 		runtime project(":vapor-deploy")
+		runtime project(":vapor-jmx")
 	}
 	
 	task distZip(type: Zip) {
@@ -256,8 +267,33 @@ configure(rootProject) {
 			from('src/dist')
 		}
 		
-		into("${baseDir}/libs") {
-			from configurations.runtime
+		subprojects.each { subproject ->
+			into ("${baseDir}") {
+				if (subproject.name.equals("vapor-bootstrap")) {
+					from subproject.jar
+					rename { String fileName -> "bootstrap.jar" }
+				}
+			}
+			into ("${baseDir}/lib") {
+				if (!subproject.name.equals("vapor-bootstrap")) {
+					from subproject.jar
+				}
+			}
+		}
+		
+		def projectNames = rootProject.subprojects*.name
+		def artifacts = new HashSet()
+		subprojects.each { subproject ->
+			subproject.configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+				def dependency = artifact.moduleVersion.id
+				if (!projectNames.contains(dependency.name)) {
+					artifacts << artifact.file
+				}
+			}
+		}
+
+		from(artifacts) {
+			into "${baseDir}/lib/shared"
 		}
 	}
 	

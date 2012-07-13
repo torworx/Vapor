@@ -1,22 +1,22 @@
 package evymind.vapor.core;
 
-public class RemotingException extends RuntimeException {
+public class VaporRuntimeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public RemotingException() {
+	public VaporRuntimeException() {
 		super();
 	}
 
-	public RemotingException(String message, Throwable cause) {
+	public VaporRuntimeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public RemotingException(String message) {
+	public VaporRuntimeException(String message) {
 		super(message);
 	}
 
-	public RemotingException(Throwable cause) {
+	public VaporRuntimeException(Throwable cause) {
 		super(cause);
 	}
 

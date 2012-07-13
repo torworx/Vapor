@@ -1,8 +1,8 @@
 package evymind.vapor.client;
 
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 
-public class ChannelBusyException extends RemotingException {
+public class ChannelBusyException extends VaporRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

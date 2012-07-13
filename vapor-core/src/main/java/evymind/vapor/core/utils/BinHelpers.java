@@ -2,26 +2,26 @@ package evymind.vapor.core.utils;
 
 import java.util.UUID;
 
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.VaporBuffer;
 
 
 public class BinHelpers {
 	
 	public static void unexpectedEndOfStream() {
-		throw new RemotingException("BinHelpers : Unexpected end of buffer");
+		throw new VaporRuntimeException("BinHelpers : Unexpected end of buffer");
 	}
 
 	public static void unexpectedStringLength() {
-		throw new RemotingException("BinHelpers : Invalid string length read from buffer");
+		throw new VaporRuntimeException("BinHelpers : Invalid string length read from buffer");
 	}
 
 	public static void unexpectedBinaryLength() {
-		throw new RemotingException("BinHelpers : Invalid binary length read from buffer");
+		throw new VaporRuntimeException("BinHelpers : Invalid binary length read from buffer");
 	}
 
 	public static void invalidBufferSize() {
-		throw new RemotingException("BinHelpers : Invalid buffer size passed");
+		throw new VaporRuntimeException("BinHelpers : Invalid buffer size passed");
 	}
 	
 	public static void writeUUIDToBuffer(UUID uuid, VaporBuffer buffer) {

@@ -15,7 +15,7 @@ import evyframework.common.Assert;
 
 import evymind.vapor.core.MessageTooLargeException;
 import evymind.vapor.core.QueueFullException;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.TimeoutException;
 import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.buffer.Buffers;
@@ -83,7 +83,7 @@ public abstract class SuperChannelWorker {
 				throw new TimeoutException("Timeout");
 			}
 		} catch (InterruptedException e) {
-			throw new TimeoutException("Timeout", e);
+			throw new VaporRuntimeException(e);
 		}
 		
 		if (ack.getAckState() != AckState.ACK) {
@@ -93,9 +93,9 @@ public abstract class SuperChannelWorker {
 			case PackageAck.NOACK_QUEUE_FULL:
 				throw new QueueFullException("Queue full");
 			case PackageAck.NOACK_TIMEOUT:
-				throw new RemotingException("Timeout");
+				throw new VaporRuntimeException("Timeout");
 			case PackageAck.NOACK_UNKNOWN_COMMAND:
-				throw new RemotingException("Unknown command");
+				throw new VaporRuntimeException("Unknown command");
 			default:
 				break;
 			}
@@ -323,7 +323,7 @@ public abstract class SuperChannelWorker {
 		log.debug("Sending package to {}, id={}", getClientId(), id);
 		PackageAck ack = null;
 		if (getMaxPackageSize() < data.writerIndex()) {
-			throw new RemotingException("Package too large");
+			throw new VaporRuntimeException("Package too large");
 		} else {
 			if (id == 0) id = generateId();
 			ack = sendData(id, data);

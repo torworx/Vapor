@@ -6,7 +6,7 @@ import evyframework.pool.BasePoolableObjectFactory;
 import evyframework.pool.ObjectPool;
 import evyframework.pool.impl.GenericObjectPool;
 import evyframework.pool.impl.GenericObjectPoolConfig;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,11 @@ public class ResponsePool {
 			log.debug("Borrowed {}", response);
 			return response;
 		} catch (NoSuchElementException e) {
-			throw new RemotingException(e);
+			throw new VaporRuntimeException(e);
 		} catch (IllegalStateException e) {
-			throw new RemotingException(e);
+			throw new VaporRuntimeException(e);
 		} catch (Exception e) {
-			throw new RemotingException(e);
+			throw new VaporRuntimeException(e);
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class ResponsePool {
 			pool.returnObject(response);
 			log.debug("Returned {}", response);
 		} catch (Exception e) {
-			throw new RemotingException(e);
+			throw new VaporRuntimeException(e);
 		}
 	}
 

@@ -36,7 +36,7 @@ import java.util.Set;
  * </p>
  * 
  * <p>
- * The behaviour of Main is controlled by the parsing of the {@link Environment} "evymind/vapor/bootstrap/bootstrap.config" file
+ * The behaviour of Main is controlled by the parsing of the {@link Environment} "evymind/vapor/bootstrap/bootstrap.env" file
  * obtained as a resource or file.
  * </p>
  */
@@ -387,12 +387,12 @@ public class Main {
 		String key = Environment.getProperty("STOP.KEY", null);
 		Monitor monitor = new Monitor(port, key);
 
-		// Load potential Environment (bootstrap.config)
+		// Load potential Environment (bootstrap.env)
 		List<String> configuredConfigs = loadConfig(configs);
 
-		// No environment defined in bootstrap.config or command line. Can't execute.
+		// No environment defined in bootstrap.env or command line. Can't execute.
 		if (configuredConfigs.isEmpty()) {
-			throw new FileNotFoundException("No configuration files specified in bootstrap.config or command line.");
+			throw new FileNotFoundException("No configuration files specified in bootstrap.env or command line.");
 		}
 
 		// Normalize the environment options passed on the command line.
@@ -476,7 +476,7 @@ public class Main {
 
 		// Invoke the Main Class
 		try {
-			// Get main class as defined in bootstrap.config
+			// Get main class as defined in bootstrap.env
 			String classname = this.environment.getMainClassname();
 
 			// Check for override of start class (via "vapor.server" property)
@@ -752,7 +752,7 @@ public class Main {
 	 * 
 	 * @param configs
 	 *            the command line specified configuration options.
-	 * @return the list of configurations arriving via command line and bootstrap.config choices.
+	 * @return the list of configurations arriving via command line and bootstrap.env choices.
 	 */
 	private List<String> loadConfig(List<String> configs) {
 		InputStream cfgstream = null;
@@ -775,7 +775,7 @@ public class Main {
 			List<String> ret = new ArrayList<String>();
 			ret.addAll(configs); // add command line provided xmls first.
 			for (String config : this.environment.getConfigs()) {
-				// add xmlconfigs arriving via bootstrap.config
+				// add xmlconfigs arriving via bootstrap.env
 				if (!ret.contains(config)) {
 					ret.add(config);
 				}
@@ -793,7 +793,7 @@ public class Main {
 	private InputStream getConfigStream() throws FileNotFoundException {
 		String config = this.bootstrapConfig;
 		if (config == null || config.length() == 0) {
-			config = System.getProperty("BOOTSTRAP", "evymind/vapor/bootstrap/bootstrap.config");
+			config = System.getProperty("BOOTSTRAP", "evymind/vapor/bootstrap/bootstrap.env");
 		}
 
 		Environment.debug("environment=" + config);

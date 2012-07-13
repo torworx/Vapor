@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import evyframework.common.Assert;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 
 public class CachedReflections {
 	
@@ -26,7 +26,7 @@ public class CachedReflections {
 	public Method getMethod(Class<?> clazz, String name) {
 		Method method = findMethod(clazz, name);
 		if (method == null) {
-			throw new RemotingException(String.format("Unknown method %s for class %s", name, clazz.getName()));
+			throw new VaporRuntimeException(String.format("Unknown method %s for class %s", name, clazz.getName()));
 		}
 		if (!method.isAccessible()) {
 			method.setAccessible(true);

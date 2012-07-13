@@ -67,7 +67,9 @@ public class ServiceHandler extends ScopedHandler {
 		
 		if (serviceInvoker != null) {
 			try {
+				log.debug("Invoking service {} -> {}", request.getRequestInterface(), request.getRequestMethod());
 				serviceInvoker.invoke(request.getRequestMethod(), request, response, transport);
+				log.debug("Invoked service {} -> {}", request.getRequestInterface(), request.getRequestMethod());
 				response.getMessage().writeToBuffer(response.getData());
 				request.markHandled();
 			} catch (InvocationTargetException e) {

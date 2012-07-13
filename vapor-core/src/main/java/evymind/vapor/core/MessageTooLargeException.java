@@ -1,6 +1,6 @@
 package evymind.vapor.core;
 
-public class MessageTooLargeException extends RemotingException {
+public class MessageTooLargeException extends VaporRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

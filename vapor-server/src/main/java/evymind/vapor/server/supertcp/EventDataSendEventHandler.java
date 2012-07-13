@@ -7,7 +7,6 @@ import evymind.vapor.core.QueueFullException;
 import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.event.handling.annontation.EventHandler;
 import evymind.vapor.core.supertcp.PackageAck;
-import evymind.vapor.core.utils.UuidUtils;
 
 public class EventDataSendEventHandler {
 	
@@ -28,24 +27,25 @@ public class EventDataSendEventHandler {
 		doHandleEventDataSendEvent(event, true);
 	}
 	
-	private static long no = 0;
+	private static long sequence = 0;
 	public void doHandleEventDataSendEvent(EventDataSendEvent event, boolean sync) {
-		long eventNo = no++;
+		SCServerWorker worker = event.getWorker();
+		if (!connector.getClientManager().isValid(worker)) {
+			return;
+		}
+		
+		long eventSequence = sequence++;
 		VaporBuffer data = event.getData().copy();
-		log.debug("<ENO:{}> Sending EventDataSendEvent with data :{}", eventNo, data);
+		log.debug("<ESEQ:{}> Sending EventDataSendEvent with data :{}", eventSequence, data);
 		data.markReaderIndex();
 		while (true) {
-			SCServerWorker worker = event.getWorker();
 			try {
-				if (!connector.getClientManager().isValid(worker)) {
-					return;
-				}
 				PackageAck wak = worker.sendPackage(0, data);
-				log.debug("<ENO:{}, WAK:{}>Event data has been sent", eventNo, wak.getAckNo());
+				log.debug("<ESEQ:{}, WAK:{}>Event data has been sent", eventSequence, wak.getAckNo());
 				SCServerWorker.waitForAck(wak, connector.getAckWaitTimeout());
 	//	        if Supports(fOwner.fEventRepository, IROValidatedSessionsChangesListener, asv) and not IsEqualGUID(fid, EmptyGUID) then
 	//	          asv.EventSucceeded(fClientGuid, fid);
-				log.debug("<ENO:{}, WAK:{}> Success sent EventDataSendEvent with data :{}", new Object[]{eventNo, wak.getAckNo(), data});
+				log.debug("<ESEQ:{}, WAK:{}> Success sent EventDataSendEvent with data :{}", new Object[]{eventSequence, wak.getAckNo(), data});
 				return;
 			} catch (QueueFullException e) {
 				if (!sync) {
@@ -53,13 +53,13 @@ public class EventDataSendEventHandler {
 					return;
 				}
 			} catch (Exception e) {
-				log.error("<ENO:{}> Error send EventDataSendEvent data {} to {}", new Object[]{eventNo, event.getData(), worker.getClientId()});
+				log.error("<ESEQ:{}> Error send EventDataSendEvent data {} to {}", new Object[]{eventSequence, event.getData(), worker.getClientId()});
 				log.error(e.getMessage(), e);
-				if (connector.getEventRepository() != null) {
-					data.resetReaderIndex();
-					log.warn("Fail send EventDataSendEvent and retry with data :{}", data);
-					connector.getEventRepository().publish(data, UuidUtils.EMPTY_UUID, event.getDestination());
-				}
+//				if (connector.getEventRepository() != null) {
+//					data.resetReaderIndex();
+//					log.warn("Fail send EventDataSendEvent and retry with data :{}", data);
+//					connector.getEventRepository().publish(data, UuidUtils.EMPTY_UUID, event.getDestination());
+//				}
 				return;
 	//	        on E: Exception do begin
 	//	          if fOwner.fEventRepository <> nil then begin

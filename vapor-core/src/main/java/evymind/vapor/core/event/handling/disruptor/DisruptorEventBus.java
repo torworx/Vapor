@@ -11,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lmax.disruptor.ExceptionHandler;
+import com.lmax.disruptor.InsufficientCapacityException;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
 import evyframework.common.Assert;
 
+import evymind.vapor.core.QueueFullException;
 import evymind.vapor.core.event.handling.EventBus;
 import evymind.vapor.core.event.handling.EventListener;
 import evymind.vapor.core.event.handling.EventListenerProxy;
@@ -71,13 +73,17 @@ public class DisruptorEventBus implements EventBus {
 	}
 
 	@Override
-	public void publish(Object... events) {
+	public void publish(Object... events) throws QueueFullException {
         Assert.isTrue(!disruptorShutDown, "Disruptor has been shut down. Cannot dispatch or redispatch events");
         RingBuffer<EventHandlingEntry> ringBuffer = disruptor.getRingBuffer();
-        long sequence = ringBuffer.next();
-        EventHandlingEntry event = ringBuffer.get(sequence);
-        event.reset(events);
-        ringBuffer.publish(sequence);
+        try {
+            long sequence = ringBuffer.tryNext(16);
+            EventHandlingEntry event = ringBuffer.get(sequence);
+            event.reset(events);
+            ringBuffer.publish(sequence);
+		} catch (InsufficientCapacityException e) {
+			throw new QueueFullException(e);
+		}
 	}
 
 	@Override

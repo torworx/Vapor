@@ -1,8 +1,8 @@
 package evymind.vapor.core.exception;
 
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 
-public class UnregisteredServerException extends RemotingException {
+public class UnregisteredServerException extends VaporRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -11,7 +11,7 @@ import evymind.vapor.client.AbstractActiveEventChannel;
 import evymind.vapor.client.event.ChannelConnectedEvent;
 import evymind.vapor.client.event.ChannelDisconnectedEvent;
 import evymind.vapor.core.Message;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.ServerLocator;
 import evymind.vapor.core.TCPTransport;
 import evymind.vapor.core.TCPTransportProperties;
@@ -76,22 +76,25 @@ public abstract class BaseSuperTCPChannel extends AbstractActiveEventChannel imp
 			log.debug("==== Before worker.sendPackage");
 			SCClientWorker.waitForAck(worker.sendPackage(id, request), getAckWaitTimeout());
 			log.debug("==== After worker.sendPackage");
-			req.getSignal().await(getRequestTimeout());
-			VaporBuffer data = req.getResultData();
-			if (data == null) {
-				switch (req.getResultErrorCode()) {
-				case PackageAck.NOACK_MESSAGE_TOO_LARGE:
-					throw new RemotingException("Message from server too large");
-				case PackageAck.NOACK_QUEUE_FULL:
-					throw new RemotingException("Server queue full");
-				default:
-					throw new RemotingException("Unknown ack for request id=" + id);
+			if (req.getSignal().await(getRequestTimeout())) {
+				VaporBuffer data = req.getResultData();
+				if (data == null) {
+					switch (req.getResultErrorCode()) {
+					case PackageAck.NOACK_MESSAGE_TOO_LARGE:
+						throw new VaporRuntimeException("Message from server too large");
+					case PackageAck.NOACK_QUEUE_FULL:
+						throw new VaporRuntimeException("Server queue full");
+					default:
+						throw new VaporRuntimeException(String.format("Unknown ack for request id=%s with error code=%s", id, req.getResultErrorCode()));
+					}
 				}
+				response.writeBytes(data, data.readableBytes());
+				log.debug("==== Got response");
+			} else {
+				throw new TimeoutException("Timeout waiting for response");
 			}
-			response.writeBytes(data, data.readableBytes());
-			log.debug("==== Got response");
 		} catch (InterruptedException e) {
-			throw new TimeoutException("Timeout waiting for response", e);
+			throw new VaporRuntimeException(e);
 		} finally {
 			waitingRequests.remove(req.getId());
 		}
@@ -101,7 +104,7 @@ public abstract class BaseSuperTCPChannel extends AbstractActiveEventChannel imp
 	protected void hasData(int id, VaporBuffer data) {
 		if (id < 0) {
 			if (eventBus == null) {
-				throw new RemotingException("No event bus assigned");
+				throw new VaporRuntimeException("No event bus assigned");
 			}
 			eventBus.publish(new EventDataReceivedEvent(data));
 		} else {
@@ -135,7 +138,7 @@ public abstract class BaseSuperTCPChannel extends AbstractActiveEventChannel imp
 			}
 			throw new InterruptedException();
 		} catch (InterruptedException e) {
-			throw new RemotingException("No connection available");
+			throw new VaporRuntimeException("No connection available");
 		}
 	}
 	

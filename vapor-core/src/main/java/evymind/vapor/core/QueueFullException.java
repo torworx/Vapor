@@ -1,6 +1,6 @@
 package evymind.vapor.core;
 
-public class QueueFullException extends RemotingException {
+public class QueueFullException extends VaporRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -80,10 +80,17 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 	}
 	
 	protected void handleEventDataSend(EventDataSendEvent event) {
+		if (!clientManager.isValid(event.getWorker())) {
+			throw new TransportInvalidException("Transport invalid : " + event.getWorker());
+		}
 		if (isBlockingEvents()) {
+			log.debug("Block sending event to client [{}]", event.getDestination());
 			eventDataSendHandler.handleEventDataSendEvent(event);
+			log.debug("Block sended event to client [{}]", event.getDestination());
 		} else {
+			log.debug("Submiting event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
 			getEventBus().publish(event);
+			log.debug("Submited event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
 		}
 	}
 	

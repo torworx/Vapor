@@ -10,7 +10,7 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
 import evymind.vapor.client.supertcp.SCClientWorker;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.buffer.netty.ChannelBufferWrapper;
 
@@ -52,7 +52,7 @@ public class NettySuperClientHandler extends SimpleChannelUpstreamHandler{
 		if (ClosedChannelException.class.isAssignableFrom(e.getCause().getClass())) {
 			// no-op
 		} else {
-			throw new RemotingException(e.getCause());
+			throw new VaporRuntimeException(e.getCause());
 		}
 	}
 	

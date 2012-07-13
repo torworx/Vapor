@@ -9,10 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Objects;
 
 import evymind.vapor.core.MessageFactory;
-import evymind.vapor.core.RemotingException;
+import evymind.vapor.core.VaporRuntimeException;
 import evymind.vapor.core.Transport;
 import evymind.vapor.core.event.handling.EventBus;
 import evymind.vapor.core.utils.component.AggregateLifecycle;
+import evymind.vapor.core.utils.log.Logs;
 import evymind.vapor.server.eventrepository.EventRepository;
 
 public abstract class AbstractConnector extends AggregateLifecycle implements Connector, ServerHolder {
@@ -74,10 +75,11 @@ public abstract class AbstractConnector extends AggregateLifecycle implements Co
 		try {
 			MessageDispatcher dispatcher = dispatchers.findDispatcher(transport, request);
 			if (dispatcher == null) {
-				throw new RemotingException("Cannot find message dispatcher.");
+				throw new VaporRuntimeException("Cannot find message dispatcher.");
 			}
 			doDispatchMessage(dispatcher, transport, request, response);
 		} catch (Exception e) {
+			log.warn(Logs.IGNORED, e);
 			// TODO check writeUTF or writeString
 			response.getData().writeUTF(e.getMessage());
 		}
