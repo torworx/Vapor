@@ -25,7 +25,6 @@ public class DefaultServiceProxyInvoker implements ServiceProxyInvoker {
 
 	@Override
 	public <T> T invoke(String interfaceName, String messageName, Class<T> returnType) {
-		// TODO Auto-generated method stub
 		return invoke(interfaceName, messageName, returnType, null);
 	}
 

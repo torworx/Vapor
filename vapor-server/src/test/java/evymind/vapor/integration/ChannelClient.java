@@ -7,7 +7,7 @@ import evymind.vapor.core.MessageFactory;
 import evymind.vapor.core.message.bin.BinMessageFactory;
 import evymind.vapor.service.api.MegaDemoService;
 
-public class AbstractClient {
+public class ChannelClient {
 	
 	protected static int idx;
 	protected int index;
@@ -20,14 +20,17 @@ public class AbstractClient {
 	protected SuperTCPChannel channel;
 	protected MegaDemoService megaDemoServiceProxy;
 	protected MessageFactory<?> messageFactory = new BinMessageFactory();
-
-	public AbstractClient(String host, int port) {
+	
+	public ChannelClient(String host, int port, boolean connect) {
 		this.host = host;
 		this.port = port;
 		index = ++idx;
 		channel = new SuperTCPChannel();
 		channel.setAckWaitTimeout(600000);
 		megaDemoServiceProxy = serviceProxyFactory.getService(MegaDemoService.class, messageFactory, channel);
+		if (connect) {
+			connect();
+		}
 	}
 	
 	public void connect() {
@@ -44,6 +47,14 @@ public class AbstractClient {
 		if (isConnected()) {
 			channel.disconnect();
 		}
+	}
+
+	public SuperTCPChannel getChannel() {
+		return channel;
+	}
+	
+	public <T> T createServiceProxy(Class<T> serviceType) {
+		return serviceProxyFactory.getService(serviceType, messageFactory, channel);
 	}
 
 }

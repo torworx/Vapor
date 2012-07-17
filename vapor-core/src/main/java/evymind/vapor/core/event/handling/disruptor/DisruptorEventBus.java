@@ -29,7 +29,7 @@ public class DisruptorEventBus implements EventBus {
 
 	private final Set<EventListener> listeners = new CopyOnWriteArraySet<EventListener>();
 	private final Disruptor<EventHandlingEntry> disruptor;
-	// private final EventHandlerInvoker eventHandlerInvoker;
+	private final EventHandlerInvoker eventHandlerInvoker;
 	private final ExecutorService executorService;
 	private volatile boolean started = true;
 	private volatile boolean disruptorShutDown = false;
@@ -39,7 +39,6 @@ public class DisruptorEventBus implements EventBus {
 		this(new DisruptorConfiguration());
 	}
 
-	@SuppressWarnings("unchecked")
 	public DisruptorEventBus(DisruptorConfiguration configuration) {
 		Executor executor = configuration.getExecutor();
 		if (executor == null) {
@@ -67,20 +66,25 @@ public class DisruptorEventBus implements EventBus {
 				log.error("Error while shutting down the DisruptorEventBus", ex);
 			}
 		});
-		disruptor.handleEventsWith(new EventHandlerInvoker(listeners));
+		eventHandlerInvoker = new EventHandlerInvoker(listeners);
+		EventHandlerInvoker[] handlers = new EventHandlerInvoker[configuration.getPoolThreads()];
+		for (int i = 0; i < handlers.length; i++) {
+			handlers[i] = eventHandlerInvoker;
+		}
+		disruptor.handleEventsWith(handlers);
 		coolingDownPeriod = configuration.getCoolingDownPeriod();
 		disruptor.start();
 	}
 
 	@Override
 	public void publish(Object... events) throws QueueFullException {
-        Assert.isTrue(!disruptorShutDown, "Disruptor has been shut down. Cannot dispatch or redispatch events");
-        RingBuffer<EventHandlingEntry> ringBuffer = disruptor.getRingBuffer();
-        try {
-            long sequence = ringBuffer.tryNext(16);
-            EventHandlingEntry event = ringBuffer.get(sequence);
-            event.reset(events);
-            ringBuffer.publish(sequence);
+		Assert.isTrue(!disruptorShutDown, "Disruptor has been shut down. Cannot dispatch or redispatch events");
+		RingBuffer<EventHandlingEntry> ringBuffer = disruptor.getRingBuffer();
+		try {
+			long sequence = ringBuffer.tryNext(16);
+			EventHandlingEntry event = ringBuffer.get(sequence);
+			event.reset(events);
+			ringBuffer.publish(sequence);
 		} catch (InsufficientCapacityException e) {
 			throw new QueueFullException(e);
 		}
@@ -122,30 +126,32 @@ public class DisruptorEventBus implements EventBus {
 		return listenerType;
 	}
 
-    /**
-     * Shuts down the event bus. It no longer accepts new events, and finishes processing events that have
-     * already been published. This method will not shut down any executor that has been provided as part of the
-     * Configuration.
-     */
-    public void stop() {
-        if (!started) {
-            return;
-        }
-        started = false;
-        long lastChangeDetected = System.currentTimeMillis();
-        long lastKnownCursor = disruptor.getRingBuffer().getCursor();
-        while (System.currentTimeMillis() - lastChangeDetected < coolingDownPeriod && !Thread.interrupted()) {
-            if (disruptor.getRingBuffer().getCursor() != lastKnownCursor) {
-                lastChangeDetected = System.currentTimeMillis();
-                lastKnownCursor = disruptor.getRingBuffer().getCursor();
-            }
-        }
-        disruptorShutDown = true;
-        disruptor.shutdown();
-        if (executorService != null) {
-            executorService.shutdown();
-        }
-    }
+	/**
+	 * Shuts down the event bus. It no longer accepts new events, and finishes
+	 * processing events that have already been published. This method will not
+	 * shut down any executor that has been provided as part of the
+	 * Configuration.
+	 */
+	public void stop() {
+		if (!started) {
+			return;
+		}
+		started = false;
+		long lastChangeDetected = System.currentTimeMillis();
+		long lastKnownCursor = disruptor.getRingBuffer().getCursor();
+		while (System.currentTimeMillis() - lastChangeDetected < coolingDownPeriod && !Thread.interrupted()) {
+			if (disruptor.getRingBuffer().getCursor() != lastKnownCursor) {
+				lastChangeDetected = System.currentTimeMillis();
+				lastKnownCursor = disruptor.getRingBuffer().getCursor();
+			}
+		}
+		disruptorShutDown = true;
+		disruptor.shutdown();
+		if (executorService != null) {
+			executorService.shutdown();
+		}
+	}
+
 	private static class SimpleThreadFactory implements ThreadFactory {
 
 		private final ThreadGroup group;

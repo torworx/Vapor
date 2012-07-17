@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.supertcp.SCCommand;
 import evymind.vapor.core.supertcp.SuperChannelWorker;
 
@@ -79,7 +79,7 @@ public class SCClientWorker extends SuperChannelWorker {
 	}
 	
 	@Override
-	public int generateId() {
+	protected int doGenerateId() {
 		if (++lastId < 1) {
 			lastId = 1;
 		}
@@ -139,7 +139,7 @@ public class SCClientWorker extends SuperChannelWorker {
 			log.debug("<---- CMD_PING");
 		}
 		sequencePing = (int) System.currentTimeMillis();
-		VaporBuffer data = Buffers.dynamicBuffer(5);
+		VaporBuffer data = VaporBuffers.dynamicBuffer(5);
 		data.writeByte(SCCommand.CMD_PING.code());
 		data.writeInt(sequencePing);
 		getConnection().writeBuffer(data);

@@ -803,7 +803,7 @@ public class Environment {
 			DEBUG = Boolean.parseBoolean(value);
 			if (DEBUG) {
 				System.setProperty("evymind.vapor.util.log.stderr.DEBUG", "true");
-				System.setProperty("evymind.vapor.start.DEBUG", "true");
+				System.setProperty("evymind.vapor.bootstrap.DEBUG", "true");
 			}
 		}
 		if (name.equals("OPTIONS")) {

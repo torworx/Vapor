@@ -64,13 +64,13 @@ public interface HttpMessage {
     /**
      * Returns the content of this message.  If there is no content or
      * {@link #isChunked()} returns {@code true}, an
-     * {@link Buffers#EMPTY_BUFFER} is returned.
+     * {@link VaporBuffers#EMPTY_BUFFER} is returned.
      */
     VaporBuffer getContent();
 
     /**
      * Sets the content of this message.  If {@code null} is specified,
-     * the content of this message will be set to {@link Buffers#EMPTY_BUFFER}.
+     * the content of this message will be set to {@link VaporBuffers#EMPTY_BUFFER}.
      */
     void setContent(VaporBuffer content);
 
@@ -119,7 +119,7 @@ public interface HttpMessage {
      * consecutively, contain the actual content.
      * <p>
      * If this method is called with {@code true}, the content of this message
-     * becomes {@link Buffers#EMPTY_BUFFER}.
+     * becomes {@link VaporBuffers#EMPTY_BUFFER}.
      * <p>
      * Even if this method is called with {@code false}, {@link #isChunked()}
      * will keep returning {@code true} if the {@code "Transfer-Encoding"} of

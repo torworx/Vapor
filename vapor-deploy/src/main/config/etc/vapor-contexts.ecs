@@ -1,0 +1,6 @@
+&deploymentManager config {
+	$deploymentManager.addAppProvider(evymind.vapor.deploy.providers.ContextProvider()
+				.setMonitoredDirName("${vapor.home}/contexts")
+				.setScanInterval(1)
+	);
+}

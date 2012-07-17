@@ -14,7 +14,5 @@ public interface SuperConnection {
 	
 	void writeBuffer(VaporBuffer buffer);
 	
-	void writeString(String value);
-	
-	void writeBytes(byte[] value);
+	void writeBuffer(VaporBuffer buffer, int chunkSize);
 }

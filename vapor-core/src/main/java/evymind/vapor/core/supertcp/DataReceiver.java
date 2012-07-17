@@ -2,7 +2,7 @@ package evymind.vapor.core.supertcp;
 
 import evyframework.common.Assert;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 
 public class DataReceiver {
 	
@@ -11,7 +11,7 @@ public class DataReceiver {
 
 	public void start(int total, DataTransferListener listener) {
 		this.listener = listener;
-		data = Buffers.dynamicBuffer(total);
+		data = VaporBuffers.dynamicBuffer(total);
 		fireReceiveProgress(DataTransferState.START, 0);
 	}
 	

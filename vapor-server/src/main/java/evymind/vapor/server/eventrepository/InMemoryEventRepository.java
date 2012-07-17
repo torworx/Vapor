@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import evymind.vapor.core.Message;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.server.ActiveEventDispatcher;
 import evymind.vapor.server.supertcp.TransportInvalidException;
 
@@ -81,7 +81,7 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 		
 		VaporBuffer eventData;
 		if (!(event instanceof VaporBuffer)) {
-			eventData = Buffers.dynamicBuffer();
+			eventData = VaporBuffers.dynamicBuffer();
 
 			Message message = getMessageFactory().createMessage();
 			message.initializeEventMessage(null, "", "", event.getClass().getName());

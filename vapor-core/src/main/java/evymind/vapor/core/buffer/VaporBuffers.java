@@ -12,7 +12,7 @@ import evymind.vapor.core.buffer.netty.ChannelBufferWrapper;
 /**
  * Factory class to create Buffers
  */
-public class Buffers {
+public class VaporBuffers {
 	
     /**
      * Creates a new big-endian dynamic buffer whose estimated data length is
@@ -89,6 +89,6 @@ public class Buffers {
 		return new ChannelBufferWrapper(ChannelBuffers.buffer(size));
 	}
 
-	private Buffers() {
+	private VaporBuffers() {
 	}
 }

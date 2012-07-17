@@ -1,0 +1,77 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+}
+
+configure(allprojects) {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    group = 'evymind.vapor.examples.echo'
+
+    sourceCompatibility=1.6
+    targetCompatibility=1.6
+	
+	setBuildDir 'target'
+
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    [compileJava, compileTestJava]*.options*.compilerArgs = ['-Xlint:none']
+
+	sourceSets {
+		main {
+			java {
+				srcDir 'src/main/java'
+			}
+			resources {
+				srcDir 'src/main/resources'
+			}
+			output.resourcesDir = 'target/classes'
+    		output.classesDir   = 'target/classes'
+		}
+		test {
+			java {
+				srcDir 'src/test/java'
+			}
+			resources {
+				srcDir 'src/test/resources'
+			}
+			output.resourcesDir = 'target/test-classes'
+    		output.classesDir   = 'target/test-classes'
+		}
+	}
+
+    repositories {
+		mavenLocal()
+        mavenCentral()
+    }
+
+}
+
+configure(subprojects) { subproject ->
+	apply plugin: 'java'
+	
+    jar {
+        manifest.attributes['Implementation-Title'] = subproject.name
+        manifest.attributes['Implementation-Version'] = subproject.version
+    }
+}
+
+project('echo-api') {
+
+}
+
+project('echo-server') {
+	dependencies {
+		compile project(":echo-api")
+	}
+
+}
+
+project('echo-client') {
+	dependencies {
+		compile project(":echo-api")
+	}
+}

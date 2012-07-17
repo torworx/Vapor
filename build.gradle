@@ -14,13 +14,14 @@ buildscript {
 configure(allprojects) {
     apply plugin: 'java'
     apply plugin: 'eclipse'
+    apply plugin: 'idea'
 
     group = 'evymind.vapor'
 
     sourceCompatibility=1.6
     targetCompatibility=1.6
 	
-	ext.evyVersion='1.0.1-SNAPSHOT'
+	ext.evyVersion='1.0.1'
 	ext.slf4jVersion='1.6.6'
 	ext.springVersion='3.1.1.RELEASE'
 	ext.jacksonVersion='2.0.2'
@@ -88,6 +89,7 @@ configure(subprojects) { subproject ->
 	}
 
     jar {
+    	manifest.attributes['Implementation-Vendor'] = "Evymind - Vapor"
         manifest.attributes['Implementation-Title'] = subproject.name
         manifest.attributes['Implementation-Version'] = subproject.version
 
@@ -153,7 +155,7 @@ project("vapor-core") {
 		compile "org.javassist:javassist:3.16.1-GA"
 		compile "com.dyuproject.protostuff:protostuff-core:${protostuffVersion}"
 		compile "com.dyuproject.protostuff:protostuff-runtime:${protostuffVersion}"
-		compile 'io.netty:netty:3.5.0.Final'
+		compile 'io.netty:netty:3.5.2.Final'
 	}
 }
 
@@ -173,6 +175,7 @@ project('vapor-server') {
 		compile "evyframework:evy-asm:${evyVersion}"
 		compile "evyframework:evy-di:${evyVersion}"
 //		compile 'org.apache.httpcomponents:httpclient:4.2'
+		testCompile project(":vapor-test")
 		testCompile project(":vapor-client")
 	}
 }
@@ -217,6 +220,7 @@ project('vapor-deploy') {
 		compile project(":vapor-config")
 		compile project(":vapor-app")
 		compile project(":vapor-jmx")
+        testCompile project(":vapor-client")
 		testCompile project(":vapor-test")
 	}
 }
@@ -273,6 +277,7 @@ configure(rootProject) {
 					from subproject.jar
 					rename { String fileName -> "bootstrap.jar" }
 				}
+				from(subproject.projectDir.absolutePath+'/src/main/config')
 			}
 			into ("${baseDir}/lib") {
 				if (!subproject.name.equals("vapor-bootstrap")) {

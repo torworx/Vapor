@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import evymind.vapor.core.TCPTransport;
 import evymind.vapor.core.Transport;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.supertcp.SuperChannelWorker;
 import evymind.vapor.core.supertcp.SuperConnection;
 import evymind.vapor.server.ActiveEventDispatcher;
@@ -68,7 +68,7 @@ public class SCServerWorker extends SuperChannelWorker implements Transport, TCP
 	}
 
 	@Override
-	public int generateId() {
+	protected int doGenerateId() {
 		if (--lastId > -1) {
 			lastId = -1;
 		}
@@ -102,7 +102,7 @@ public class SCServerWorker extends SuperChannelWorker implements Transport, TCP
 	protected void initResponse(Response response) {
 		response.setTransport(this);
 		// TODO We need a pooled buffer?
-		response.setData(Buffers.dynamicBuffer());
+		response.setData(VaporBuffers.dynamicBuffer());
 	}
 
 	protected void startRequest(Request request) {

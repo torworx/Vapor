@@ -46,21 +46,6 @@ public class BasicProxyHandler {
 	protected final Object invoke(Method method, Object[] args, Object proxy) throws Throwable {
 		if (interfaceMethodNames.contains(method.getName())) {
 			return invoker.invoke(method.getDeclaringClass().getName(), method.getName(), method.getReturnType(), new Parameters(args));
-//			message.initializeRequestMessage(transportChannel, "", method.getDeclaringClass().getName(), method.getName());
-//			Class<?>[] parameterTypes = method.getParameterTypes();
-//			int length = Math.min(args.length, parameterTypes.length);
-//			for (int i = 0; i < length; i++) {
-//				// TODO support parameter name
-//				message.write("", args[i], parameterTypes[i]);
-//			}
-//			message.finalizeMessage();
-//			transportChannel.dispatch(message);
-//			Class<?> returnType = method.getReturnType();
-//			if (returnType != null && !Void.TYPE.equals(returnType)) {
-//				return message.read("result", returnType);
-//			} else {
-//				return null;
-//			}
 		}
 		return INVOKE_IMPLEMENTATION;
 	}

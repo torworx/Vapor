@@ -15,15 +15,21 @@ import evymind.vapor.core.event.handling.EventListenerProxy;
 public class EventHandlerInvoker implements EventHandler<EventHandlingEntry> {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventHandlerInvoker.class);
-
+	
 	private final Set<EventListener> listeners;
-
+	
 	public EventHandlerInvoker(Set<EventListener> listeners) {
 		this.listeners = listeners;
 	}
 
 	@Override
 	public void onEvent(EventHandlingEntry event, long sequence, boolean endOfBatch) throws Exception {
+		synchronized (event) {
+			if (event.isHandled()) {
+				return;
+			}
+			event.markHandled();
+		}
 		process(event.getEvents());
 	}
 

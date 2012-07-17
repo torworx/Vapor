@@ -3,7 +3,7 @@ package evymind.vapor.core.utils;
 import java.util.zip.*;
 
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 
 
 public class BinZlib {
@@ -35,7 +35,7 @@ public class BinZlib {
 		deflater.setInput(originData);
 		deflater.finish();
 		byte[] cb = getCurrentCompressionBuffer(compressionBufferSize);
-		VaporBuffer compressedBuffer = Buffers.dynamicBuffer();
+		VaporBuffer compressedBuffer = VaporBuffers.dynamicBuffer();
 		int count;
 		while (!deflater.finished()) {
 			count = deflater.deflate(cb);
@@ -54,7 +54,7 @@ public class BinZlib {
 		Inflater inflater = new Inflater();
 		inflater.setInput(compressedData);
 		byte[] cb = getCurrentCompressionBuffer(compressionBufferSize);
-		VaporBuffer originBuffer = Buffers.dynamicBuffer();
+		VaporBuffer originBuffer = VaporBuffers.dynamicBuffer();
 		int count;
 		while (!inflater.finished()) {
 			try {

@@ -13,6 +13,8 @@ import evymind.vapor.core.event.Event;
  */
 public class EventHandlingEntry {
 	
+	private boolean handled;
+	
 	private Object[] events;
 	
 	public Object[] getEvents() {
@@ -20,7 +22,16 @@ public class EventHandlingEntry {
 	}
 	
 	public void reset(Object... events) {
+		this.handled = false;
 		this.events = events;
+	}
+	
+	public boolean isHandled() {
+		return handled;
+	}
+
+	public void markHandled() {
+		this.handled = true;
 	}
 	
 	public String toString() {

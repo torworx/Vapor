@@ -5,7 +5,7 @@ import java.util.UUID;
 import evyframework.common.StringUtils;
 import evymind.vapor.core.Message;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.event.component.EventMulticasterWrapper;
 import evymind.vapor.core.message.AbstractMessage;
 
@@ -35,7 +35,7 @@ public class MessageEnvelope extends EventMulticasterWrapper {
 	
 	public VaporBuffer processIncoming(Message message, VaporBuffer buffer) {
 		multicastEvent(new BeforeEnvelopeProcessedEvent(this, buffer, message, MessageEnvelopeMode.INCOMING));
-		VaporBuffer answer = Buffers.dynamicBuffer();
+		VaporBuffer answer = VaporBuffers.dynamicBuffer();
 		doProcessIncoming(buffer, answer, message);
 		if (isReuseOriginalBuffer()) {
 			buffer.clear();
@@ -48,7 +48,7 @@ public class MessageEnvelope extends EventMulticasterWrapper {
 	
 	public VaporBuffer processOutcoming(Message message, VaporBuffer buffer) {
 		multicastEvent(new BeforeEnvelopeProcessedEvent(this, buffer, message, MessageEnvelopeMode.OUTCOMING));
-		VaporBuffer answer = Buffers.dynamicBuffer();
+		VaporBuffer answer = VaporBuffers.dynamicBuffer();
 		if (message instanceof AbstractMessage) {
 			((AbstractMessage<?>) message).writeEnvelopeHeader(this, answer);
 		}

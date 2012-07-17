@@ -1,5 +1,7 @@
 package evymind.vapor.integration;
 
+import junit.framework.Assert;
+
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.After;
@@ -18,8 +20,6 @@ public class SingleClientPerformanceTest {
 	
 	protected ServiceProxyFactory serviceProxyFactory = ServiceProxyUtils.getDefaultServiceProxyFactory();
 
-	private boolean printInfo = false;
-	
 	private SuperTCPChannel channel;
 	private MegaDemoService megaDemoServiceProxy;
 	private MessageFactory<?> messageFactory = new BinMessageFactory();
@@ -29,8 +29,6 @@ public class SingleClientPerformanceTest {
 	
 	@Before
 	public void setup() throws InterruptedException {
-		printInfo = false;
-		
 		channel = new SuperTCPChannel();
 		// For debug
 		channel.setAckWaitTimeout(600000);
@@ -45,13 +43,8 @@ public class SingleClientPerformanceTest {
 	}
 	
 	@Test
-	@PerfTest(invocations = 100000)
+	@PerfTest(invocations = 10000)
 	public void testSum() {
-		if (printInfo) {
-			System.out.println("--------------------------------------------");
-			System.out.println("                 testSum                    ");
-			System.out.println("--------------------------------------------");
-		}
-		megaDemoServiceProxy.sum(1, 2);
+		Assert.assertEquals(3, megaDemoServiceProxy.sum(1, 2));
 	}
 }

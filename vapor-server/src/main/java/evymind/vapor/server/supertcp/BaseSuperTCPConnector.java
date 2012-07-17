@@ -3,7 +3,11 @@ package evymind.vapor.server.supertcp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Objects;
+
+import evymind.vapor.core.event.handling.EventBus;
 import evymind.vapor.core.event.handling.annontation.AnnotationEventListenerAdapter;
+import evymind.vapor.core.event.handling.disruptor.DisruptorEventBus;
 import evymind.vapor.core.supertcp.PackageAck;
 import evymind.vapor.server.AbstractConnector;
 import evymind.vapor.server.Request;
@@ -14,6 +18,8 @@ import evymind.vapor.server.ResponsePool;
 public abstract class BaseSuperTCPConnector extends AbstractConnector {
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseSuperTCPConnector.class);
+	
+	private EventBus eventDispatchBus;
 	
 	private RequestPool requestPool = new RequestPool();
 	private ResponsePool responsePool = new ResponsePool();
@@ -56,9 +62,12 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 	@Override
 	protected void doStart() throws Exception {
 		getClientManager().start();
+		if (eventDispatchBus == null) {
+			setEventDispatchBus(new DisruptorEventBus());
+		}
 		super.doStart();
 		AnnotationEventListenerAdapter.subscribe(requestHandler, getEventBus());
-		AnnotationEventListenerAdapter.subscribe(eventDataSendHandler, getEventBus());
+		AnnotationEventListenerAdapter.subscribe(eventDataSendHandler, getEventDispatchBus());
 	}
 	
 	@Override
@@ -89,7 +98,7 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 			log.debug("Block sended event to client [{}]", event.getDestination());
 		} else {
 			log.debug("Submiting event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
-			getEventBus().publish(event);
+			getEventDispatchBus().publish(event);
 			log.debug("Submited event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
 		}
 	}
@@ -105,6 +114,22 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 		getServer().getHandler().disconnected(worker, worker.getClientId());
 	}
 	
+	public EventBus getEventDispatchBus() {
+		return eventDispatchBus != null ? eventDispatchBus : getEventBus();
+	}
+
+	public void setEventDispatchBus(EventBus eventDispatchBus) {
+		if (!Objects.equal(this.eventDispatchBus, eventDispatchBus)) {
+			if (this.eventDispatchBus != null) {
+				removeBean(this.eventDispatchBus);
+			}
+			this.eventDispatchBus = eventDispatchBus;
+			if (this.eventDispatchBus != null) {
+				addBean(this.eventDispatchBus);
+			}
+		}
+	}
+
 	public String getDefaultResponse() {
 		return "ERSC: Invalid connection string";
 	}

@@ -15,6 +15,7 @@ jmx.log
 build
 .classpath
 .project
+.idea
 argfile*
 
 # IDEA metadata and output dirs

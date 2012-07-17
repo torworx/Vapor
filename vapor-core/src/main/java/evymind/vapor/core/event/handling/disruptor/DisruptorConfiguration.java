@@ -33,16 +33,18 @@ public class DisruptorConfiguration {
     private ClaimStrategy claimStrategy;
     private WaitStrategy waitStrategy;
     private Executor executor;
+    private int poolThreads;
     private long coolingDownPeriod;
 
     /**
-     * Initializes a configuration instance with default settings: ring-buffer size: 4096, blocking wait strategy and
+     * Initializes a configuration instance with default settings: ring-buffer size: 8192, blocking wait strategy and
      * multi-threaded claim strategy.
      */
     public DisruptorConfiguration() {
-        this.claimStrategy = new MultiThreadedClaimStrategy(4096);
+        this.claimStrategy = new MultiThreadedClaimStrategy(8192);
         this.waitStrategy = new BlockingWaitStrategy();
-        coolingDownPeriod = 1000;
+        this.poolThreads = 4;
+        this.coolingDownPeriod = 1000;
     }
 
     /**
@@ -131,7 +133,15 @@ public class DisruptorConfiguration {
         return this;
     }
 
-    /**
+    public int getPoolThreads() {
+		return poolThreads;
+	}
+
+	public void setPoolThreads(int poolThreads) {
+		this.poolThreads = poolThreads;
+	}
+
+	/**
      * Returns the cooling down period for the shutdown of the DisruptorEventBus, in milliseconds. This is the time
      * in which new commands are no longer accepted, but the DisruptorEventBus may reschedule Commands that may have
      * been executed against a corrupted Aggregate. If no commands have been rescheduled during this period, the

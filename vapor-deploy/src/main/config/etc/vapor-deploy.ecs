@@ -1,0 +1,6 @@
+deploymentManager = evymind.vapor.deploy.DeploymentManager()
+		.setContexts(contexts);
+
+&server config {
+	$server.addBean(deploymentManager);
+}

@@ -20,7 +20,7 @@ import evymind.vapor.core.ServerLocators;
 import evymind.vapor.core.Transport;
 import evymind.vapor.core.TransportChannel;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.event.component.EventMulticasterWrapper;
 import evymind.vapor.core.message.Messages;
 
@@ -56,8 +56,8 @@ public abstract class AbstractTransportChannel extends EventMulticasterWrapper i
 		resetProbeChannel(probeChannel);
 		probeChannel.setServerLocator(serverLocator);
 		
-		VaporBuffer request = Buffers.dynamicBuffer(Messages.PROBE_REQUEST_ID);
-		VaporBuffer response = Buffers.dynamicBuffer();
+		VaporBuffer request = VaporBuffers.dynamicBuffer(Messages.PROBE_REQUEST_ID);
+		VaporBuffer response = VaporBuffers.dynamicBuffer();
 		
 		try {
 			multicastEvent(new BeginProbeServerEvent(this, serverLocator));
@@ -194,12 +194,12 @@ public abstract class AbstractTransportChannel extends EventMulticasterWrapper i
 	
 	@Override
 	public void dispatch(Message message) {
-		VaporBuffer request = Buffers.dynamicBuffer();
+		VaporBuffer request = VaporBuffers.dynamicBuffer();
 		beforeDispatch(message);
 		message.writeToBuffer(request);
 		while (true) {
 			try {
-				VaporBuffer response = Buffers.dynamicBuffer();
+				VaporBuffer response = VaporBuffers.dynamicBuffer();
 				dispatch(request, response);
 				message.initializeRead(this);
 				message.readFromBuffer(response);

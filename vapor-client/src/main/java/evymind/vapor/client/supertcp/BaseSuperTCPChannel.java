@@ -109,7 +109,7 @@ public abstract class BaseSuperTCPChannel extends AbstractActiveEventChannel imp
 			eventBus.publish(new EventDataReceivedEvent(data));
 		} else {
 			if (waitingRequests.containsKey(id)) {
-				log.debug("Got reponse for request({})", id);
+				log.debug("Got reponse for request [id={}]", id);
 				WaitingRequest req = waitingRequests.get(id);
 				req.setResultData(data);
 				req.getSignal().signal();

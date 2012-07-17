@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.message.envelope.encrypt.AESEncryptionEnvelope;
 
 public class AESEncryptiongEnvelopeTest {
@@ -14,7 +14,7 @@ public class AESEncryptiongEnvelopeTest {
 		AESEncryptionEnvelope envelope = new AESEncryptionEnvelope();
 		envelope.setPassword("password");
 		String msg = "Hello World！你好，世界！";
-		VaporBuffer buffer = Buffers.dynamicBuffer();
+		VaporBuffer buffer = VaporBuffers.dynamicBuffer();
 		buffer.writeString(msg);
 		envelope.processOutcoming(null, buffer);
 		envelope.processIncoming(null, buffer);

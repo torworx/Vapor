@@ -16,7 +16,7 @@ import org.junit.runners.model.Statement;
  * {@link #getEmptyDir()}) in the maven project familiar and friendly location:
  * <code>${basedir}/target/tests/${testclass}/${testmethod}</code>.
  * <p>
- * Note: existing facilities within {@link MavenTestingUtils} for keeping the directory name short for the sake of
+ * Note: existing facilities within {@link TestingUtils} for keeping the directory name short for the sake of
  * windows users is being used.
  */
 public class TestingDir implements TestRule {

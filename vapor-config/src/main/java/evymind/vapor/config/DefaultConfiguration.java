@@ -24,7 +24,7 @@ public class DefaultConfiguration implements Configuration {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultConfiguration.class);
 	
-	private static final ResourcePatternResolver RESOLVER = ResourcePatternUtils.getFileAsDefaultResourcePatternResolver();
+	private static final ResourcePatternResolver resolver = ResourcePatternUtils.getFileAsDefaultResourcePatternResolver();
 
 	private final DefaultContainer container;
 	private final PropertyPlaceholderConfigurer configurer;
@@ -122,12 +122,12 @@ public class DefaultConfiguration implements Configuration {
 
 					Properties properties = null;
 
-					// Look for properties from start.jar
+					// Look for properties from bootstrap.jar
 					try {
 						Class<?> config = DefaultConfiguration.class.getClassLoader().loadClass(
-								"evymind.vapor.bootstrap.Config");
+								"evymind.vapor.bootstrap.Environment");
 						properties = (Properties) config.getMethod("getProperties").invoke(null);
-						log.debug("evymind.vapor.bootstrap.Config properties = {}", properties);
+						log.debug("evymind.vapor.bootstrap.Environment properties = {}", properties);
 					} catch (NoClassDefFoundError e) {
 						log.warn(Logs.IGNORED);
 					} catch (ClassNotFoundException e) {
@@ -151,7 +151,7 @@ public class DefaultConfiguration implements Configuration {
 					DefaultConfiguration configuration = new DefaultConfiguration();
 					for (int i = 0; i < args.length; i++) {
 						if (args[i].toLowerCase().endsWith(".properties")) {
-							properties.load(RESOLVER.getResource(args[i]).getInputStream());
+							properties.load(resolver.getResource(args[i]).getInputStream());
 						} else {
 							configuration.setProperties(properties);
 							configuration.load(args[i]);

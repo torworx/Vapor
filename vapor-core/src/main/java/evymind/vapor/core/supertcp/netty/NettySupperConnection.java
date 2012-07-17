@@ -2,13 +2,14 @@ package evymind.vapor.core.supertcp.netty;
 
 import java.net.InetSocketAddress;
 
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import evyframework.common.Assert;
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.buffer.netty.ChannelBufferExposer;
 import evymind.vapor.core.supertcp.SuperConnection;
 
@@ -34,14 +35,14 @@ public class NettySupperConnection implements SuperConnection {
 	}
 	
 	@Override
-	public void disconnect() {
+	public synchronized void disconnect() {
 		if (isConnected()) {
 			channel.disconnect();
 		}
 	}
 
 	@Override
-	public boolean isConnected() {
+	public synchronized boolean isConnected() {
 		return channel != null && channel.isConnected();
 	}
 
@@ -57,32 +58,45 @@ public class NettySupperConnection implements SuperConnection {
 	}
 
 	@Override
-	public void writeBuffer(VaporBuffer buffer) {
+	public synchronized void writeBuffer(VaporBuffer buffer) {
+		writeBuffer(buffer, -1);
+	}
+
+	@Override
+	public synchronized void writeBuffer(VaporBuffer buffer, int chunkSize) {
 		Assert.notNull(channel, "'channel' has not been setted");
 		if (!isConnected()) {
 			log.warn("{} is not connected, operation stopped", channel);
 			return;
 		}
-		getChannel().write(((ChannelBufferExposer) buffer).channelBuffer()).awaitUninterruptibly();
-//		if (Logs.TCP_DATA_LOG.isDebugEnabled()) {
-//			byte[] data = new byte[buffer.writerIndex()];
-//			buffer.getBytes(0, data);
-//			Logs.TCP_DATA_LOG.debug("<== Sended : {}\n{}", buffer, HexDump.format(data));
+		
+		final ChannelBuffer channelBuffer = ((ChannelBufferExposer) buffer).channelBuffer();
+		getChannel().write(channelBuffer);
+//		final ChannelBuffer chunkBuffer = ChannelBuffers.directBuffer(chunkSize);
+//		if (channelBuffer.readable()) {
+//			chunkBuffer.writeBytes(channelBuffer, Math.min(channelBuffer.readableBytes(), chunkSize));
+//			getChannel().write(chunkBuffer).addListener(new ChannelFutureListener() {
+//				
+//				@Override
+//				public void operationComplete(ChannelFuture future) throws Exception {
+//					if (future.isSuccess()) {
+//						
+//					}
+//				}
+//			});
 //		}
 	}
 
-	@Override
-	public void writeString(String value) {
-		VaporBuffer buffer = Buffers.dynamicBuffer();
+	public synchronized void writeString(String value) {
+		VaporBuffer buffer = VaporBuffers.dynamicBuffer();
 		buffer.writeString(value);
 		writeBuffer(buffer);
 	}
 
-	@Override
-	public void writeBytes(byte[] value) {
-		VaporBuffer buffer = Buffers.dynamicBuffer();
+	public synchronized void writeBytes(byte[] value) {
+		VaporBuffer buffer = VaporBuffers.dynamicBuffer();
 		buffer.writeBytes(value);
 		writeBuffer(buffer);
 	}
-
+	
 }

@@ -1,0 +1,9 @@
+appprovider = evymind.vapor.deploy.providers.StandardAppProvider()
+	.setMonitoredDirName("${vapor.home}/apps")
+	.setScanInterval(1)
+	.setContextDir("${vapor.home}/contexts")
+	.setExtractSars("true");
+
+&deploymentManager config {
+	$deploymentManager.addAppProvider(appprovider);
+}

@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import evymind.vapor.core.VaporBuffer;
-import evymind.vapor.core.buffer.Buffers;
+import evymind.vapor.core.buffer.VaporBuffers;
 import evymind.vapor.core.serializer.bin.BufferSerializer;
 
 
@@ -18,7 +18,7 @@ public class BufferSerializerTest {
 	
 	@Before
 	public void initialize() {
-		buffer = Buffers.dynamicBuffer();
+		buffer = VaporBuffers.dynamicBuffer();
 		serializer = new BufferSerializer(buffer);
 	}
 	
