@@ -53,7 +53,6 @@ public class SCServerWorker extends SuperChannelWorker implements Transport, TCP
 	public void disconnected() {
 		super.disconnected();
 		connector.disconnected(this);
-//		getWorkerManager().removeWorker(this);
 	}
 	
 	@Override

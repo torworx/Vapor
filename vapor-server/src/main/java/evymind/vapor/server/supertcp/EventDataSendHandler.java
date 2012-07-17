@@ -8,13 +8,13 @@ import evymind.vapor.core.VaporBuffer;
 import evymind.vapor.core.event.handling.annontation.EventHandler;
 import evymind.vapor.core.supertcp.PackageAck;
 
-public class EventDataSendEventHandler {
+public class EventDataSendHandler {
 	
-	private static final Logger log = LoggerFactory.getLogger(EventDataSendEventHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(EventDataSendHandler.class);
 	
 	private final BaseSuperTCPConnector connector;
 	
-	public EventDataSendEventHandler(BaseSuperTCPConnector connector) {
+	public EventDataSendHandler(BaseSuperTCPConnector connector) {
 		this.connector = connector;
 	}
 

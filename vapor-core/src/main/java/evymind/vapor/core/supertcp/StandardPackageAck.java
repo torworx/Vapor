@@ -5,7 +5,7 @@ import evymind.vapor.core.Signal;
 public class StandardPackageAck implements PackageAck {
 	
 	private int ackNo;
-	private int ackError;
+	private int ackError = -1;
 	private AckState ackState;
 	private Signal signal;
 

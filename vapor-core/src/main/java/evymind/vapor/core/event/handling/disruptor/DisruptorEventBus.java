@@ -67,7 +67,7 @@ public class DisruptorEventBus implements EventBus {
 			}
 		});
 		eventHandlerInvoker = new EventHandlerInvoker(listeners);
-		EventHandlerInvoker[] handlers = new EventHandlerInvoker[configuration.getPoolThreads()];
+		EventHandlerInvoker[] handlers = new EventHandlerInvoker[configuration.getPoolSize()];
 		for (int i = 0; i < handlers.length; i++) {
 			handlers[i] = eventHandlerInvoker;
 		}

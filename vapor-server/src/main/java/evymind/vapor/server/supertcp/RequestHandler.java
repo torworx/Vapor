@@ -8,13 +8,13 @@ import evymind.vapor.core.supertcp.PackageAck;
 import evymind.vapor.server.Request;
 import evymind.vapor.server.Response;
 
-class RequestEventHandler {
+class RequestHandler {
 	
-	private static final Logger log = LoggerFactory.getLogger(RequestEventHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 	
 	private final BaseSuperTCPConnector connector;
 	
-	public RequestEventHandler(BaseSuperTCPConnector connector) {
+	public RequestHandler(BaseSuperTCPConnector connector) {
 		this.connector = connector;
 	}
 

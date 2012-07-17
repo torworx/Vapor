@@ -1,7 +1,6 @@
 package evymind.vapor.core.supertcp;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
 
 import evyframework.common.Assert;
 
@@ -65,7 +65,7 @@ public abstract class SuperChannelWorker {
 
 	protected int sequencePing;
 
-	private Map<Integer, PackageAck> waitingAcks = new HashMap<Integer, PackageAck>();
+	private final Map<Integer, PackageAck> waitingAcks = Maps.newConcurrentMap();
 
 	public SuperChannelWorker() {
 		this(null);
@@ -85,7 +85,7 @@ public abstract class SuperChannelWorker {
 				throw new TimeoutException("Timeout");
 			}
 		} catch (InterruptedException e) {
-			throw new VaporRuntimeException(e);
+			// no-op
 		}
 
 		if (ack.getAckState() != AckState.ACK) {
@@ -270,7 +270,7 @@ public abstract class SuperChannelWorker {
 
 	protected void handleAck(int id, boolean oke, int errorNo) {
 		if (log.isDebugEnabled()) {
-			log.debug("waiting acks count = " + waitingAcks.size());
+			log.debug("Waiting acks count = {}", waitingAcks.size());
 		}
 		if (waitingAcks.containsKey(id)) {
 			PackageAck ack = waitingAcks.get(id);
@@ -278,7 +278,7 @@ public abstract class SuperChannelWorker {
 			ack.setAckError(errorNo);
 			ack.setAckState(oke ? AckState.ACK : AckState.NO_ACK);
 			ack.getSignal().signal();
-			log.debug("signal waiting ack({})", id);
+			log.debug("Signal waiting ack({})", id);
 		}
 	}
 
@@ -417,6 +417,17 @@ public abstract class SuperChannelWorker {
 	public void disconnected() {
 		log.debug("*** Disconnected");
 		this.connected = false;
+		
+		// notify all waiting thread exit, and clear waitingAcks
+		if (!waitingAcks.isEmpty()) {
+			log.debug("Release all waiting acks [count={}]", waitingAcks.size());
+			for (PackageAck ack : waitingAcks.values()) {
+				if (ack.getSignal() != null) {
+					ack.getSignal().signal();
+				}
+			}
+			waitingAcks.clear();
+		}
 	}
 
 	public synchronized final int generateId() {

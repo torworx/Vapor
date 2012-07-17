@@ -26,8 +26,8 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 	
 	private ClientManager clientManager;
 	
-	private RequestEventHandler requestHandler = new RequestEventHandler(this);
-	private EventDataSendEventHandler eventDataSendHandler = new EventDataSendEventHandler(this);
+	private RequestHandler requestHandler = new RequestHandler(this);
+	private EventDataSendHandler eventDataSendHandler = new EventDataSendHandler(this);
 	
 	private int ackWaitTimeout = 10000;
 	private int maxPackageSize = 10 * 1024 * 1024;
