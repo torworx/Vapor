@@ -624,7 +624,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	/**
 	 * @return True if the webdir is copied (to allow hot replacement of jars on windows)
 	 */
-	public boolean isCopyWebDir() {
+	public boolean isCopyDir() {
 		return this.copyDir;
 	}
 

@@ -1,0 +1,3 @@
+services:
+- interface: evymind.vapor.examples.echo.api.EchoService
+  class: evymind.vapor.examples.echo.impl.EchoServiceImpl

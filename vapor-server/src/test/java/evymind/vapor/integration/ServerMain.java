@@ -14,38 +14,38 @@ import evymind.vapor.service.impl.MegaDemoServiceImpl;
 
 public class ServerMain {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws Exception {
-		MessageFactory<BinMessage> messageFactory = new BinMessageFactory();
-		
-		Server server = new Server();
-		NettySuperTCPConnector connector = new NettySuperTCPConnector();
-		connector.addDispatcher(messageFactory);
-		
-		server.addConnector(connector);
-		
-		InMemoryEventRepository eventRepository = new InMemoryEventRepository();
-		eventRepository.setMessageFactory(messageFactory);
-		server.setEventRepository(eventRepository);
-		
-		ServiceContextHandler handler = new ServiceContextHandler();
-		
-		handler.configure(new ServiceModule() {
-			
-			@Override
-			public void configure(ServiceContext context) {
-				MegaDemoServiceImpl service = new MegaDemoServiceImpl();
-				context.addService(MegaDemoService.class, service);
-				context.addListener(service);
-			}
-		});
-		
-		
-		server.setHandler(handler);
+    /**
+     * @param args
+     */
+    public static void main(String[] args) throws Exception {
+        MessageFactory<BinMessage> messageFactory = new BinMessageFactory();
 
-		server.start();
-	}
+        Server server = new Server();
+        NettySuperTCPConnector connector = new NettySuperTCPConnector();
+        connector.addDispatcher(messageFactory);
+
+        server.addConnector(connector);
+
+        InMemoryEventRepository eventRepository = new InMemoryEventRepository();
+        eventRepository.setMessageFactory(messageFactory);
+        server.setEventRepository(eventRepository);
+
+        ServiceContextHandler handler = new ServiceContextHandler();
+
+        handler.configure(new ServiceModule() {
+
+            @Override
+            public void configure(ServiceContext context) {
+                MegaDemoServiceImpl service = new MegaDemoServiceImpl();
+                context.addService(MegaDemoService.class, service);
+                context.addListener(service);
+            }
+        });
+
+
+        server.setHandler(handler);
+
+        server.start();
+    }
 
 }

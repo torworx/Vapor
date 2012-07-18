@@ -42,7 +42,7 @@ public class ServerInternalHandler extends HandlerWrapper {
 						throw new MessageException("Unsupported message type: + " + message.getMessageType());
 				}
 			} catch (Exception e) {
-				log.error(e.getMessage());
+				log.warn(e.getMessage());
 				message.initializeExceptionMessage(transport, "", message.getInterfaceName(), message.getMessageName());
 				message.writeException(response.getData(), e);
 				request.markHandled();

@@ -271,36 +271,7 @@ public class ConfiguredVapor {
 	}
 
 	public void load() throws Exception {
-//		Configuration last = null;
-//		Object[] obj = new Object[this.configurations.size()];
-//
-//		// Configure everything
-//		for (int i = 0; i < this.configurations.size(); i++) {
-//			URL configURL = this.configurations.get(i);
-//			XmlConfiguration configuration = new XmlConfiguration(configURL);
-//			if (last != null) {
-//				configuration.getIdMap().putAll(last.getIdMap());
-//			}
-//			configuration.getProperties().putAll(this.properties);
-//			obj[i] = configuration.configure();
-//			last = configuration;
-//		}
-//
-//		// Test for Server Instance.
-//		Server foundServer = null;
-//		int serverCount = 0;
-//		for (int i = 0; i < this.configurations.size(); i++) {
-//			if (obj[i] instanceof Server) {
-//				if (obj[i].equals(foundServer)) {
-//					// Identical server instance found
-//					break;
-//				}
-//				foundServer = (Server) obj[i];
-//				serverCount++;
-//			}
-//		}
 		Configuration configuration = new DefaultConfiguration();
-//		SpringConfiguration configuration = new SpringConfiguration(configurationResources.toArray(new URL[configurationResources.size()]));
 		configuration.setProperties(this.properties);
 		configuration.load(configurationResources.toArray(new Resource[configurationResources.size()]));
 		Collection<Server> servers = configuration.getInstancesOfType(Server.class).values();

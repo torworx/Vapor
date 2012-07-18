@@ -78,7 +78,8 @@ public class ServiceHandler extends ScopedHandler {
 				throw new ServiceException(e);
 			}
 		} else {
-			log.warn("Not found service [{}] in {}, skip this handler", request.getRequestInterface(), this);
+//			log.warn("Not found service [{} -> {}]", request.getRequestInterface(), request.getRequestMethod());
+            throw new ServiceException(String.format("Not found service [%s -> %s]", request.getRequestInterface(), request.getRequestMethod()));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package evymind.vapor.server.supertcp;
 
+import evymind.vapor.core.QueueFullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 		SCServerWorker worker = request.getTransport();
 		try {
 			getEventBus().publish(new RequestEvent(request, response));
-		} catch (RuntimeException e) {
+		} catch (QueueFullException e) {
 			log.debug("Request[id={}] publish error, send QUEUE_FULL ack to client", request.getRequestId());
 			worker.sendError(request.getRequestId(), PackageAck.NOACK_QUEUE_FULL);
 			throw e;
@@ -93,13 +94,9 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 			throw new TransportInvalidException("Transport invalid : " + event.getWorker());
 		}
 		if (isBlockingEvents()) {
-			log.debug("Block sending event to client [{}]", event.getDestination());
 			eventDataSendHandler.handleEventDataSendEvent(event);
-			log.debug("Block sended event to client [{}]", event.getDestination());
 		} else {
-			log.debug("Submiting event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
 			getEventDispatchBus().publish(event);
-			log.debug("Submited event data to client [{}] use event bus [{}]", event.getDestination(), getEventBus());
 		}
 	}
 	

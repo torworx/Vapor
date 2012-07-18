@@ -2,6 +2,7 @@ package evymind.vapor.integration;
 
 import java.util.List;
 
+import evymind.vapor.service.api.BlankService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -73,5 +74,10 @@ public class SimpleServiceTest {
 		String result = service.echo(longMessage.toString());
 		Assert.assertEquals(longMessage.toString(), result);
 	}
+
+    @Test
+    public void testErrorService() {
+        serviceProxyFactory.getService(BlankService.class, messageFactory, channel).blank();
+    }
 
 }

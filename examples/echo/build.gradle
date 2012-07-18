@@ -14,6 +14,8 @@ configure(allprojects) {
 
     sourceCompatibility=1.6
     targetCompatibility=1.6
+
+    ext.vaporVersion = "0.0.8-SNAPSHOT"
 	
 	setBuildDir 'target'
 
@@ -60,10 +62,11 @@ configure(subprojects) { subproject ->
 }
 
 project('echo-api') {
-
+	description = 'Echo API'
 }
 
 project('echo-server') {
+	description = 'Echo Server'
 	dependencies {
 		compile project(":echo-api")
 	}
@@ -71,7 +74,58 @@ project('echo-server') {
 }
 
 project('echo-client') {
+	description = 'Echo Client'
 	dependencies {
 		compile project(":echo-api")
+        compile "evymind.vapor:vapor-client:${vaporVersion}"
+        testCompile "junit:junit:4.10"
 	}
+}
+
+configure(rootProject) {
+    description = 'Echo'
+
+    task distSar(type: Zip) {
+        group = 'Distribution'
+        extension = 'sar'
+        description = "Build SAR."
+
+        into ("/") {
+            from('app.yml')
+        }
+
+        def projectNames = rootProject.subprojects*.name;
+        projectNames.remove("echo-client");
+
+        subprojects.each { subproject ->
+
+            into ("/lib") {
+                if (projectNames.contains(subproject.name)) {
+                    from subproject.jar
+                }
+            }
+        }
+
+
+        def artifacts = new HashSet()
+        subprojects.each { subproject ->
+            if (projectNames.contains(subproject.name)) {
+                subproject.configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+                    def dependency = artifact.moduleVersion.id
+                    if (!projectNames.contains(dependency.name)) {
+                        artifacts << artifact.file
+                    }
+                }
+            }
+        }
+
+        from(artifacts) {
+            into "/lib"
+        }
+    }
+
+    task wrapper(type: Wrapper) {
+        description = 'Generates gradlew[.bat] scripts'
+        gradleVersion = '1.0'
+    }
 }

@@ -236,8 +236,10 @@ public abstract class SuperChannelWorker {
 					dataReceiver.start(len, new DataTransferListener() {
 						@Override
 						public void receiveProgress(DataTransferState state, int transfered, int total) {
-							log.debug("Receiving package [id={}]: {} {}%", new Object[] { packageId, state.toString(),
-									transfered * 100 / total });
+                            if (total > 0) {
+							    log.debug("Receiving package [id={}]: {} {}%", new Object[] { packageId, state.toString(),
+									    transfered * 100 / total });
+                            }
 						}
 
 						@Override
@@ -255,7 +257,7 @@ public abstract class SuperChannelWorker {
 					});
 
 					dataReceiver.receive(buffer);
-				} catch (Exception e) {
+				} catch (QueueFullException e) {
 					if (log.isDebugEnabled()) {
 						log.debug("<---- CMD_NO_ACK QueueFull");
 					}
