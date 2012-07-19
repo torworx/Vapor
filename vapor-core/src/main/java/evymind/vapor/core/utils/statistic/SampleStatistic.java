@@ -2,7 +2,7 @@ package evymind.vapor.core.utils.statistic;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/* ------------------------------------------------------------ */
+
 /**
  * SampledStatistics
  * <p>
@@ -53,7 +53,7 @@ public class SampleStatistic {
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return the max value
 	 */
@@ -61,22 +61,22 @@ public class SampleStatistic {
 		return _max.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public long getTotal() {
 		return _total.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public long getCount() {
 		return _count.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public double getMean() {
 		return (double) _total.get() / _count.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public double getVariance() {
 		final long variance100 = _totalVariance100.get();
 		final long count = _count.get();
@@ -84,7 +84,7 @@ public class SampleStatistic {
 		return count > 1 ? ((double) variance100) / 100.0 / (count - 1) : 0.0;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public double getStdDev() {
 		return Math.sqrt(getVariance());
 	}

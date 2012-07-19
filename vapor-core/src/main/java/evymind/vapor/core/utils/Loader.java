@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ClassLoader Helper. This helper class allows classes to be loaded either from the Thread's ContextClassLoader, the
  * classloader of the derived class or the system ClassLoader.
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
  * 
  */
 public class Loader {
-	/* ------------------------------------------------------------ */
+
 	public static URL getResource(Class<?> loadClass, String name, boolean checkParents) throws ClassNotFoundException {
 		URL url = null;
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -45,13 +45,13 @@ public class Loader {
 		return url;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings("rawtypes")
 	public static Class loadClass(Class loadClass, String name) throws ClassNotFoundException {
 		return loadClass(loadClass, name, false);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Load a class.
 	 * 

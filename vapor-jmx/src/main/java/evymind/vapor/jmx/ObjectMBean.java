@@ -40,7 +40,7 @@ import evymind.vapor.core.utils.Loader;
 import evymind.vapor.core.utils.Types;
 import evymind.vapor.core.utils.log.Logs;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ObjectMBean. A dynamic MBean that can wrap an arbitary Object instance. the
  * attributes and methods exposed by this bean are controlled by the merge of
@@ -71,7 +71,7 @@ public class ObjectMBean implements DynamicMBean {
 	private static String OBJECT_NAME_CLASS = ObjectName.class.getName();
 	private static String OBJECT_NAME_ARRAY_CLASS = ObjectName[].class.getName();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Create MBean for Object. Attempts to create an MBean for the object by
 	 * searching the package and class name space. For example an object of the
@@ -250,7 +250,7 @@ public class ObjectMBean implements DynamicMBean {
 		return _info;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Object getAttribute(String name) throws AttributeNotFoundException, MBeanException, ReflectionException {
 		Method getter = (Method) _getters.get(name);
 		if (getter == null)
@@ -294,7 +294,7 @@ public class ObjectMBean implements DynamicMBean {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public AttributeList getAttributes(String[] names) {
 		AttributeList results = new AttributeList(names.length);
 		for (int i = 0; i < names.length; i++) {
@@ -307,7 +307,7 @@ public class ObjectMBean implements DynamicMBean {
 		return results;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setAttribute(Attribute attr) throws AttributeNotFoundException, InvalidAttributeValueException,
 			MBeanException, ReflectionException {
 		if (attr == null)
@@ -349,7 +349,7 @@ public class ObjectMBean implements DynamicMBean {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public AttributeList setAttributes(AttributeList attrs) {
 		LOG.debug("setAttributes");
 
@@ -367,7 +367,7 @@ public class ObjectMBean implements DynamicMBean {
 		return results;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Object invoke(String name, Object[] params, String[] signature) throws MBeanException, ReflectionException {
 		if (LOG.isDebugEnabled())
 			LOG.debug("invoke " + name);
@@ -419,7 +419,7 @@ public class ObjectMBean implements DynamicMBean {
 		return influences;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Define an attribute on the managed object. The meta data is defined by
 	 * looking for standard getter and setter methods. Descriptions are obtained
@@ -558,7 +558,7 @@ public class ObjectMBean implements DynamicMBean {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Define an operation on the managed object. Defines an operation with
 	 * parameters. Refection is used to determine find the method and it's

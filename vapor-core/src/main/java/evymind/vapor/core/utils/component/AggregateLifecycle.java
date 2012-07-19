@@ -31,7 +31,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Start the managed lifecycle beans in the order they were added.
 	 * 
@@ -52,7 +52,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		super.doStart();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Stop the joined lifecycle beans in the reverse order they were added.
 	 * 
@@ -73,7 +73,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Destroy the joined Destroyable beans in the reverse order they were
 	 * added.
@@ -92,7 +92,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		this.beans.clear();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Is the bean contained in the aggregate.
 	 * 
@@ -106,7 +106,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return false;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Is the bean joined to the aggregate.
 	 * 
@@ -120,7 +120,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return false;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add an associated bean. If the bean is a {@link Lifecycle}, then it will
 	 * be managed if it is not already started and umanaged if it is already
@@ -138,7 +138,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return addBean(o, !((o instanceof Lifecycle) && ((Lifecycle) o).isStarted()));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add an associated lifecycle.
 	 * 
@@ -172,7 +172,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return true;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Manage a bean by this aggregate, so that it is started/stopped/destroyed
 	 * with the aggregate lifecycle.
@@ -190,7 +190,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		throw new IllegalArgumentException();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Unmanage a bean by this aggregate, so that it is not
 	 * started/stopped/destroyed with the aggregate lifecycle.
@@ -217,7 +217,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get dependent beans
 	 * 
@@ -227,7 +227,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return getBeans(Object.class);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get dependent beans of a specific class
 	 * 
@@ -245,7 +245,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return beans;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get dependent beans of a specific class. If more than one bean of the
 	 * type exist, the first is returned.
@@ -264,7 +264,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Remove all associated bean.
 	 */
@@ -272,7 +272,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		this.beans.clear();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Remove an associated bean.
 	 */
@@ -288,7 +288,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return false;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void dumpStdErr() {
 		try {
 			dump(System.err, "");
@@ -297,12 +297,12 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String dump() {
 		return dump(this);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static String dump(Dumpable dumpable) {
 		StringBuilder b = new StringBuilder();
 		try {
@@ -313,17 +313,17 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		return b.toString();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void dump(Appendable out) throws IOException {
 		dump(out, "");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected void dumpThis(Appendable out) throws IOException {
 		out.append(String.valueOf(this)).append(" - ").append(getState()).append("\n");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static void dumpObject(Appendable out, Object o) throws IOException {
 		try {
 			if (o instanceof Lifecycle)
@@ -336,7 +336,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void dump(Appendable out, String indent) throws IOException {
 		dumpThis(out);
 		int size = this.beans.size();
@@ -360,7 +360,7 @@ public class AggregateLifecycle extends AbstractLifecycle implements Destroyable
 			out.append(indent).append(" |\n");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static void dump(Appendable out, String indent, Collection<?>... collections) throws IOException {
 		if (collections.length == 0)
 			return;

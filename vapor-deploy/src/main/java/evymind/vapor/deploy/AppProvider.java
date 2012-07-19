@@ -19,7 +19,7 @@ public interface AppProvider extends Lifecycle {
 	 */
 	void setDeploymentManager(DeploymentManager deploymentManager);
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Create a ContextHandler for an App
 	 * 

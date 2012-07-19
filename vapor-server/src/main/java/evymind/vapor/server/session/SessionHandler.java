@@ -53,7 +53,7 @@ public class SessionHandler extends ScopedHandler {
 		// oldSessionManager.setSessionHandler(null);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void setServer(Server server) {
 		Server oldServer = getServer();
@@ -64,7 +64,7 @@ public class SessionHandler extends ScopedHandler {
 			server.getContainer().update(this, null, sessionManager, "sessionManager", true);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see AbstractLifecycle#doStart()
 	 */
@@ -74,7 +74,7 @@ public class SessionHandler extends ScopedHandler {
 		super.doStart();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifecycle#doStop()
 	 */
@@ -161,7 +161,7 @@ public class SessionHandler extends ScopedHandler {
 		// end manual inline
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param listener
 	 */
@@ -170,7 +170,7 @@ public class SessionHandler extends ScopedHandler {
 			sessionManager.addEventListener(listener);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void clearEventListeners() {
 		if (sessionManager != null)
 			sessionManager.clearEventListeners();

@@ -9,10 +9,10 @@ import evymind.vapor.server.Response;
 import evymind.vapor.server.Server;
 import evymind.vapor.server.ServiceException;
 
-/* ------------------------------------------------------------ */
+
 /**
  * A <code>HandlerWrapper</code> acts as a {@link Handler} but delegates the
- * {@link Handler#handle handle} method and {@link Lifecycle life cycle} events
+ * {@link Handler#handle handle} method and {@link evymind.vapor.core.utils.component.Lifecycle} events
  * to a delegate. This is primarily used to implement the <i>Decorator</i>
  * pattern.
  * 
@@ -21,14 +21,14 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 	
 	protected Handler handler;
 
-	/* ------------------------------------------------------------ */
+
 	/**
      *
      */
 	public HandlerWrapper() {
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the handlers.
 	 */
@@ -36,7 +36,7 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 		return this.handler;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the handlers.
 	 */
@@ -46,7 +46,7 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 		return new Handler[] { this.handler };
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param handler
 	 *            Set the {@link Handler} which should be wrapped.
@@ -64,7 +64,7 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 			getServer().getContainer().update(this, old_handler, handler, "handler");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifecycle#doStart()
 	 */
@@ -75,7 +75,7 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 		super.doStart();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifecycle#doStop()
 	 */
@@ -86,14 +86,14 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 		super.doStop();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void handle(Transport transport, Request request, Response response) throws IOException, ServiceException  {
 		if (this.handler != null && isStarted()) {
 			this.handler.handle(transport, request, response);
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void setServer(Server server) {
 		Server old_server = getServer();
@@ -113,14 +113,14 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 			server.getContainer().update(this, null, this.handler, "handler");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Object expandChildren(Object list, Class byClass) {
 		return expandHandler(this.handler, list, byClass);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings("unchecked")
 	public <H extends Handler> H getNestedHandlerByClass(Class<H> byclass) {
 		HandlerWrapper h = this;
@@ -137,7 +137,7 @@ public class HandlerWrapper extends AbstractHandlerContainer {
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void destroy() {
 		if (!isStopped())

@@ -34,7 +34,7 @@ import evymind.vapor.core.utils.component.AbstractLifecycle;
 import evymind.vapor.core.utils.log.Logs;
 import evymind.vapor.core.utils.thread.ShutdownThread;
 
-/* ------------------------------------------------------------ */
+
 /**
  * AbstractLifecycle wrapper for JMXConnector Server
  */
@@ -44,7 +44,7 @@ public class ConnectorServer extends AbstractLifecycle {
 	JMXConnectorServer connectorServer;
 	Registry registry;
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Constructs connector server
 	 * 
@@ -60,7 +60,7 @@ public class ConnectorServer extends AbstractLifecycle {
 		this(serviceURL, null, name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Constructs connector server
 	 * 
@@ -94,10 +94,7 @@ public class ConnectorServer extends AbstractLifecycle {
 		mbeanServer.registerMBean(this.connectorServer, new ObjectName(name));
 	}
 
-	/* ------------------------------------------------------------ */
-	/**
-	 * @see evymind.vapor.util.component.AbstractLifecycle#doStart()
-	 */
+
 	@Override
 	public void doStart() throws Exception {
 		this.connectorServer.start();
@@ -106,10 +103,7 @@ public class ConnectorServer extends AbstractLifecycle {
 		log.info("JMX Remote URL: {}", this.connectorServer.getAddress().toString());
 	}
 
-	/* ------------------------------------------------------------ */
-	/**
-	 * @see evymind.vapor.util.component.AbstractLifecycle#doStop()
-	 */
+
 	@Override
 	public void doStop() throws Exception {
 		ShutdownThread.unregister(this);

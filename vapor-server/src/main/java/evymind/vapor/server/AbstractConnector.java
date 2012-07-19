@@ -39,7 +39,7 @@ public abstract class AbstractConnector extends AggregateLifecycle implements Co
 		return new MessageDispatchers(serverHolder);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void doStart() throws Exception {
 		if (server == null) {
@@ -59,7 +59,7 @@ public abstract class AbstractConnector extends AggregateLifecycle implements Co
 		log.info("Started {}", this);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void doStop() throws Exception {
 		try {
@@ -165,7 +165,7 @@ public abstract class AbstractConnector extends AggregateLifecycle implements Co
 		this.eventRepository = eventRepository;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public String toString() {
 		return String.format("%s@%s:%d", getClass().getSimpleName(), getHost() == null ? "0.0.0.0" : getHost(),

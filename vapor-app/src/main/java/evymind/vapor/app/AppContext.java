@@ -103,13 +103,13 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public AppContext() {
 		super(true);
 		context = new Context();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param contextPath
 	 *            The context path
@@ -123,7 +123,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		setSar(app);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param parent
 	 *            The parent HandlerContainer.
@@ -138,7 +138,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		setSar(app);
 	}
 
-	/* ------------------------------------------------------------ */
+
 
 	/**
 	 * This constructor is used in the geronimo integration.
@@ -164,7 +164,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.sar = sar;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param serviceContextName
 	 *            The serviceContextName to set.
@@ -177,7 +177,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 			((AppClassLoader) cl).setName(serviceContextName);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get an exception that caused the app to be unavailable
 	 * 
@@ -187,7 +187,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.unavailableException;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set Resource Alias. Resource aliases map resource uri's within a context. They may optionally be used by a
 	 * handler when looking for a resource.
@@ -201,19 +201,19 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.resourceAliases.put(alias, uri);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Map<String, String> getResourceAliases() {
 		if (this.resourceAliases == null)
 			return null;
 		return this.resourceAliases;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setResourceAliases(Map<String, String> map) {
 		this.resourceAliases = map;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String getResourceAlias(String path) {
 		if (this.resourceAliases == null)
 			return null;
@@ -231,14 +231,14 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return alias;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String removeResourceAlias(String alias) {
 		if (this.resourceAliases == null)
 			return null;
 		return this.resourceAliases.remove(alias);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -258,7 +258,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 			((AppClassLoader) classLoader).setName(getDisplayName());
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public Resource getResource(String uriInContext) throws MalformedURLException {
 		if (uriInContext == null || !uriInContext.startsWith("/"))
@@ -286,7 +286,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return resource;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Is the context Automatically configured.
 	 * 
@@ -296,7 +296,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.configurationDiscovered;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the configuration discovery mode. If configuration discovery is set to true, then the JSR315 servlet 3.0
 	 * discovered configuration features are enabled. These are:
@@ -312,7 +312,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.configurationDiscovered = discovered;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Pre configure the web application.
 	 * <p>
@@ -363,7 +363,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void configure() throws Exception {
 		// Configure app
 		for (int i = 0; i < this.configurations.length; i++) {
@@ -372,7 +372,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void postConfigure() throws Exception {
 		// Clean up after configuration
 		for (int i = 0; i < this.configurations.length; i++) {
@@ -381,7 +381,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifeCycle#doStart()
 	 */
@@ -405,7 +405,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifeCycle#doStop()
 	 */
@@ -430,7 +430,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void destroy() {
 		// Prepare for configuration
@@ -449,7 +449,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		mx.ifExceptionThrowRuntime();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Dumps the current web app name and URL to the log
 	 */
@@ -461,11 +461,11 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 			if (displayName == null)
 				displayName = "App@" + connectors.hashCode();
 
-			log.info(displayName + " at http://" + connectorName + getContextPath());
+			log.info(displayName + " at http|tcp://" + connectorName + getContextPath());
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the configurations.
 	 */
@@ -473,7 +473,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return configurationClasses;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the configurations.
 	 */
@@ -481,7 +481,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.configurations;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * The default descriptor is a web.xml format file that is applied to the context before the standard
 	 * WEB-INF/web.xml
@@ -492,7 +492,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.defaultsDescriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * An override descriptor is a web.xml format file that is applied to the context after the standard WEB-INF/web.xml
 	 * 
@@ -502,7 +502,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return Collections.unmodifiableList(this.overrideDescriptors);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the permissions.
 	 */
@@ -510,7 +510,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.permissions;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @see #setServerClasses(String[])
 	 * @return Returns the serverClasses.
@@ -529,7 +529,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.serverClasses.addPattern(classname);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @see #setSystemClasses(String[])
 	 * @return Returns the systemClasses.
@@ -541,7 +541,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.systemClasses.getPatterns();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void addSystemClass(String classname) {
 		if (this.systemClasses == null)
 			loadSystemClasses();
@@ -549,7 +549,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.systemClasses.addPattern(classname);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isServerClass(String name) {
 		if (this.serverClasses == null)
 			loadServerClasses();
@@ -557,7 +557,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.serverClasses.match(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isSystemClass(String name) {
 		if (this.systemClasses == null)
 			loadSystemClasses();
@@ -565,7 +565,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.systemClasses.match(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected void loadSystemClasses() {
 		if (this.systemClasses != null)
 			return;
@@ -583,7 +583,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 			this.systemClasses = new ClasspathPattern(DEFAULT_SYSTEM_CLASSES);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	private void loadServerClasses() {
 		if (this.serverClasses != null) {
 			return;
@@ -604,7 +604,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the distributable.
 	 */
@@ -612,7 +612,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.distributable;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the extractSAR.
 	 */
@@ -620,7 +620,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.extractSAR;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return True if the webdir is copied (to allow hot replacement of jars on windows)
 	 */
@@ -628,7 +628,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.copyDir;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return True if the classloader should delegate first to the parent classloader (standard java behaviour) or
 	 *         false if the classloader should first try to load from WEB-INF/lib or WEB-INF/classes (servlet spec
@@ -638,22 +638,22 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.parentLoaderPriority;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String[] getDefaultConfigurationClasses() {
 		return DEFAULT_CONFIGURATION_CLASSES;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String[] getDefaultServerClasses() {
 		return DEFAULT_SERVER_CLASSES;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String[] getDefaultSystemClasses() {
 		return DEFAULT_SYSTEM_CLASSES;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected void loadConfigurations() throws Exception {
 		// if the configuration instances have been set explicitly, use them
 		if (this.configurations != null)
@@ -670,13 +670,13 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public String toString() {
 		return super.toString() + (sar == null ? "" : ("," + sar));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param configurations
 	 *            The configuration class names. If setConfigurations is not called these classes are used to create a
@@ -690,7 +690,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.configurations = null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param configurations
 	 *            The configurations to set.
@@ -702,7 +702,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.configurationsSet = true;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * The default descriptor is a web.xml format file that is applied to the context before the standard
 	 * WEB-INF/web.xml
@@ -714,7 +714,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.defaultsDescriptor = defaultsDescriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * The override descriptor is a web.xml format file that is applied to the context after the standard
 	 * WEB-INF/web.xml
@@ -727,7 +727,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.overrideDescriptors.addAll(overrideDescriptors);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * The override descriptor is a web.xml format file that is applied to the context after the standard
 	 * WEB-INF/web.xml
@@ -739,7 +739,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.overrideDescriptors.add(overrideDescriptor);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return the web.xml descriptor to use. If set to null, WEB-INF/web.xml is used if it exists.
 	 */
@@ -747,7 +747,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.descriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param descriptor
 	 *            the web.xml descriptor to use. If set to null, WEB-INF/web.xml is used if it exists.
@@ -756,7 +756,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.descriptor = descriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param distributable
 	 *            The distributable to set.
@@ -765,7 +765,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.distributable = distributable;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param extractSAR
 	 *            True if war files are extracted
@@ -774,7 +774,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.extractSAR = extractSAR;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param copy
 	 *            True if the webdir is copied (to allow hot replacement of jars)
@@ -783,7 +783,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.copyDir = copy;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param java2compliant
 	 *            The java2compliant to set.
@@ -792,7 +792,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.parentLoaderPriority = java2compliant;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param permissions
 	 *            The permissions to set.
@@ -816,7 +816,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 	// _contextWhiteList = contextWhiteList;
 	// }
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the server classes patterns.
 	 * <p>
@@ -841,7 +841,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.serverClasses = new ClasspathPattern(serverClasses);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the system classes patterns.
 	 * <p>
@@ -866,7 +866,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.systemClasses = new ClasspathPattern(systemClasses);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set temporary directory for context. The javax.servlet.context.tempdir attribute is also set.
 	 * 
@@ -903,12 +903,12 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		setAttribute(TEMPDIR, tmpDir);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public File getTempDirectory() {
 		return tmpDir;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Comma or semicolon separated path of filenames or URLs pointing to directories or jar files. Directories
 	 *         should end with '/'.
@@ -917,7 +917,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		return this.extraClasspath;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param extraClasspath
 	 *            Comma or semicolon separated path of filenames or URLs pointing to directories or jar files.
@@ -927,12 +927,12 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.extraClasspath = extraClasspath;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isLogUrlOnStart() {
 		return this.logUrlOnStart;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Sets whether or not the web app name and URL is logged on startup
 	 * 
@@ -943,7 +943,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		this.logUrlOnStart = logOnStart;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void setServer(Server server) {
 		super.setServer(server);
@@ -958,27 +958,27 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isAllowDuplicateFragmentNames() {
 		return this.allowDuplicateFragmentNames;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setAllowDuplicateFragmentNames(boolean allowDuplicateFragmentNames) {
 		this.allowDuplicateFragmentNames = allowDuplicateFragmentNames;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setThrowUnavailableOnStartupException(boolean throwIfStartupException) {
 		this.throwUnavailableOnStartupException = throwIfStartupException;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isThrowUnavailableOnStartupException() {
 		return this.throwUnavailableOnStartupException;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void startContext() throws Exception {
 		configure();
@@ -989,9 +989,9 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		super.startContext();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public class Context extends ServiceContextHandler.Context {
-		/* ------------------------------------------------------------ */
+
 		// @Override
 		// public URL getResource(String path) throws MalformedURLException {
 		// Resource resource = AppContext.this.getResource(path);
@@ -1010,7 +1010,7 @@ public class AppContext extends ServiceContextHandler implements AppClassLoader.
 		// return resource.getURL();
 		// }
 		//
-		// /* ------------------------------------------------------------ */
+		//
 		// @Override
 		// public ServletContext getContext(String uripath) {
 		// ServletContext servletContext = super.getContext(uripath);

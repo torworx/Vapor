@@ -7,24 +7,24 @@ import evymind.vapor.core.utils.component.Lifecycle;
  * <p>
  * The contained handlers may be one (see @{link
  * {@link evymind.vapor.server.handler.HandlerWrapper}) or many (see
- * {@link evyframework.remoting.server.handler.HandlerList} or
- * {@link evyframework.remoting.server.handler.HandlerCollection}.
+ * {@link evymind.vapor.server.handler.HandlerList} or
+ * {@link evymind.vapor.server.handler.HandlerCollection}.
  * 
  */
 public interface HandlerContainer extends Lifecycle {
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return array of handlers directly contained by this handler.
 	 */
 	public Handler[] getHandlers();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return array of all handlers contained by this handler and it's children
 	 */
 	public Handler[] getChildHandlers();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param byclass
 	 * @return array of all handlers contained by this handler and it's children
@@ -32,7 +32,7 @@ public interface HandlerContainer extends Lifecycle {
 	 */
 	public Handler[] getChildHandlersByClass(Class<?> byclass);
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param byclass
 	 * @return first handler of all handlers contained by this handler and it's

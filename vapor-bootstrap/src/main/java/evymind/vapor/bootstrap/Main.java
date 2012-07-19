@@ -368,7 +368,7 @@ public class Main {
 		main.invoke(null, method_params);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static void close(Closeable c) {
 		if (c == null) {
 			return;
@@ -380,7 +380,7 @@ public class Main {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void bootstrap(List<String> configs) throws FileNotFoundException, IOException, InterruptedException {
 		// Setup Start / Stop Monitoring
 		int port = Integer.parseInt(Environment.getProperty("STOP.PORT", "-1"));

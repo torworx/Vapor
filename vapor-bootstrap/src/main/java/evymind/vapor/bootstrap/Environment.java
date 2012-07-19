@@ -113,7 +113,7 @@ import java.util.TreeSet;
  * </p>
  * 
  * <pre>
- *    java -jar bootstrap.jar OPTIONS=vapor,jsp,ssl
+ *    java -jar bootstrap.jar OPTIONS=vapor,ssl
  * </pre>
  * 
  * <p>
@@ -140,7 +140,7 @@ public class Environment {
 		if (ver == null) {
 			ver = "Unknown";
 		}
-		_version = ver;
+		version = ver;
 	}
 
 	/**
@@ -156,16 +156,16 @@ public class Environment {
 		}
 	};
 
-	private static final String _version;
+	private static final String version;
 	private static boolean DEBUG = false;
-	private static final Map<String, String> __properties = new HashMap<String, String>();
-	private final Map<String, Classpath> _classpaths = new HashMap<String, Classpath>();
+	private static final Map<String, String> PROPERTIES = new HashMap<String, String>();
+	private final Map<String, Classpath> classpaths = new HashMap<String, Classpath>();
 	private final List<String> configs = new ArrayList<String>();
-	private String _classname = null;
+	private String classname = null;
 
 	private int argCount = 0;
 
-	private final Set<String> _activeOptions = new TreeSet<String>(new Comparator<String>() {
+	private final Set<String> activeoptions = new TreeSet<String>(new Comparator<String>() {
 		// Make sure "*" is always at the end of the list
 		public int compare(String o1, String o2) {
 			if ("*".equals(o1)) {
@@ -180,12 +180,12 @@ public class Environment {
 
 	private boolean addClasspathComponent(List<String> sections, String component) {
 		for (String section : sections) {
-			Classpath cp = _classpaths.get(section);
+			Classpath cp = classpaths.get(section);
 			if (cp == null)
 				cp = new Classpath();
 
 			boolean added = cp.addComponent(component);
-			_classpaths.put(section, cp);
+			classpaths.put(section, cp);
 
 			if (!added) {
 				// First failure means all failed.
@@ -198,7 +198,7 @@ public class Environment {
 
 	private boolean addClasspathPath(List<String> sections, String path) {
 		for (String section : sections) {
-			Classpath cp = _classpaths.get(section);
+			Classpath cp = classpaths.get(section);
 			if (cp == null) {
 				cp = new Classpath();
 			}
@@ -206,7 +206,7 @@ public class Environment {
 				// First failure means all failed.
 				return false;
 			}
-			_classpaths.put(section, cp);
+			classpaths.put(section, cp);
 		}
 
 		return true;
@@ -313,7 +313,7 @@ public class Environment {
 	 * @return the default classpath
 	 */
 	public Classpath getClasspath() {
-		return _classpaths.get(DEFAULT_SECTION);
+		return classpaths.get(DEFAULT_SECTION);
 	}
 
 	/**
@@ -323,7 +323,7 @@ public class Environment {
 	 * @see #getCombinedClasspath(Collection)
 	 */
 	public Classpath getActiveClasspath() {
-		return getCombinedClasspath(_activeOptions);
+		return getCombinedClasspath(activeoptions);
 	}
 
 	/**
@@ -339,24 +339,24 @@ public class Environment {
 	public Classpath getCombinedClasspath(Collection<String> optionIds) {
 		Classpath cp = new Classpath();
 
-		cp.overlay(_classpaths.get(DEFAULT_SECTION));
+		cp.overlay(classpaths.get(DEFAULT_SECTION));
 		for (String optionId : optionIds) {
-			Classpath otherCp = _classpaths.get(optionId);
+			Classpath otherCp = classpaths.get(optionId);
 			if (otherCp == null) {
 				throw new IllegalArgumentException("No such OPTIONS: " + optionId);
 			}
 			cp.overlay(otherCp);
 		}
-		cp.overlay(_classpaths.get("*"));
+		cp.overlay(classpaths.get("*"));
 		return cp;
 	}
 
 	public String getMainClassname() {
-		return _classname;
+		return classname;
 	}
 
 	public static void clearProperties() {
-		__properties.clear();
+		PROPERTIES.clear();
 	}
 
 	public static Properties getProperties() {
@@ -368,19 +368,19 @@ public class Environment {
 			properties.put(name, System.getProperty(name));
 		}
 		// Add Environment Properties Next (overwriting any System Properties that exist)
-		for (String key : __properties.keySet()) {
-			properties.put(key, __properties.get(key));
+		for (String key : PROPERTIES.keySet()) {
+			properties.put(key, PROPERTIES.get(key));
 		}
 		return properties;
 	}
 
 	public static String getProperty(String name) {
 		if ("version".equalsIgnoreCase(name)) {
-			return _version;
+			return version;
 		}
 		// Search Environment Properties First
-		if (__properties.containsKey(name)) {
-			return __properties.get(name);
+		if (PROPERTIES.containsKey(name)) {
+			return PROPERTIES.get(name);
 		}
 		// Return what exists in System.Properties otherwise.
 		return System.getProperty(name);
@@ -388,30 +388,30 @@ public class Environment {
 
 	public static String getProperty(String name, String defaultValue) {
 		// Search Environment Properties First
-		if (__properties.containsKey(name))
-			return __properties.get(name);
+		if (PROPERTIES.containsKey(name))
+			return PROPERTIES.get(name);
 		// Return what exists in System.Properties otherwise.
 		return System.getProperty(name, defaultValue);
 	}
 
 	/**
 	 * Get the classpath for the named section
-	 * 
+	 *
 	 * @param sectionId
 	 * @return the classpath for the specified section id
 	 */
 	public Classpath getSectionClasspath(String sectionId) {
-		return _classpaths.get(sectionId);
+		return classpaths.get(sectionId);
 	}
 
 	/**
 	 * Get the list of section Ids.
-	 * 
+	 *
 	 * @return the set of unique section ids
 	 */
 	public Set<String> getSectionIds() {
 		Set<String> ids = new TreeSet<String>(keySorter);
-		ids.addAll(_classpaths.keySet());
+		ids.addAll(classpaths.keySet());
 		return ids;
 	}
 
@@ -434,7 +434,7 @@ public class Environment {
 		ClassLoader loader;
 		Classpath classpath;
 		for (String optionId : options) {
-			classpath = _classpaths.get(optionId);
+			classpath = classpaths.get(optionId);
 			if (classpath == null) {
 				// skip, no classpath
 				continue;
@@ -456,7 +456,7 @@ public class Environment {
 
 	/**
 	 * Parse the configuration
-	 * 
+	 *
 	 * @param buf
 	 * @throws IOException
 	 */
@@ -466,7 +466,7 @@ public class Environment {
 
 	/**
 	 * Parse the configuration
-	 * 
+	 *
 	 * @param stream
 	 *            the stream to read from
 	 * @throws IOException
@@ -491,7 +491,7 @@ public class Environment {
 
 			List<String> options = new ArrayList<String>();
 			options.add(DEFAULT_SECTION);
-			_classpaths.put(DEFAULT_SECTION, new Classpath());
+			classpaths.put(DEFAULT_SECTION, new Classpath());
 			Version java_version = new Version(System.getProperty("java.version"));
 			Version ver = new Version();
 
@@ -517,8 +517,8 @@ public class Environment {
 						if (optionId.charAt(0) == '=')
 							continue;
 
-						if (!_classpaths.containsKey(optionId))
-							_classpaths.put(optionId, new Classpath());
+						if (!classpaths.containsKey(optionId))
+							classpaths.put(optionId, new Classpath());
 
 						if (!option_ids.contains(optionId))
 							option_ids.add(optionId);
@@ -692,7 +692,7 @@ public class Environment {
 						String cn = expand(subject.substring(0, subject.length() - 6));
 						if (cn != null && cn.length() > 0) {
 							debug("  CLASS=" + cn);
-							_classname = cn;
+							classname = cn;
 						}
 						continue;
 					}
@@ -762,8 +762,8 @@ public class Environment {
 
 		for (File dir : dirs) {
 			String id = dir.getName();
-			if (!_classpaths.keySet().contains(id))
-				_classpaths.put(id, new Classpath());
+			if (!classpaths.keySet().contains(id))
+				classpaths.put(id, new Classpath());
 
 			dyn_sections.clear();
 			if (sections != null)
@@ -802,32 +802,32 @@ public class Environment {
 		if (name.equals("DEBUG")) {
 			DEBUG = Boolean.parseBoolean(value);
 			if (DEBUG) {
-				System.setProperty("evymind.vapor.util.log.stderr.DEBUG", "true");
+				System.setProperty("evymind.vapor.log.stderr.DEBUG", "true");
 				System.setProperty("evymind.vapor.bootstrap.DEBUG", "true");
 			}
 		}
 		if (name.equals("OPTIONS")) {
-			_activeOptions.clear();
+			activeoptions.clear();
 			String ids[] = value.split(",");
 			for (String id : ids) {
 				addActiveOption(id);
 			}
 		}
-		__properties.put(name, value);
+		PROPERTIES.put(name, value);
 	}
 
 	public void addActiveOption(String option) {
-		_activeOptions.add(option);
-		__properties.put("OPTIONS", join(_activeOptions, ","));
+		activeoptions.add(option);
+		PROPERTIES.put("OPTIONS", join(activeoptions, ","));
 	}
 
 	public Set<String> getActiveOptions() {
-		return _activeOptions;
+		return activeoptions;
 	}
 
 	public void removeActiveOption(String option) {
-		_activeOptions.remove(option);
-		__properties.put("OPTIONS", join(_activeOptions, ","));
+		activeoptions.remove(option);
+		PROPERTIES.put("OPTIONS", join(activeoptions, ","));
 	}
 
 	private String join(Collection<?> coll, String delim) {

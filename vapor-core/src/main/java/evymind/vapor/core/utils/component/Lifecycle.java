@@ -4,7 +4,7 @@ import java.util.EventListener;
 
 public interface Lifecycle {
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Starts the component.
 	 * 
@@ -16,7 +16,7 @@ public interface Lifecycle {
 	 */
 	public void start() throws Exception;
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Stops the component. The component may wait for current activities to
 	 * complete normally, but it can be interrupted.
@@ -29,13 +29,13 @@ public interface Lifecycle {
 	 */
 	public void stop() throws Exception;
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component is starting or has been started.
 	 */
 	public boolean isRunning();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component has been started.
 	 * @see #start()
@@ -43,21 +43,21 @@ public interface Lifecycle {
 	 */
 	public boolean isStarted();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component is starting.
 	 * @see #isStarted()
 	 */
 	public boolean isStarting();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component is stopping.
 	 * @see #isStopped()
 	 */
 	public boolean isStopping();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component has been stopped.
 	 * @see #stop()
@@ -65,19 +65,19 @@ public interface Lifecycle {
 	 */
 	public boolean isStopped();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if the component has failed to start or has failed to stop.
 	 */
 	public boolean isFailed();
 
-	/* ------------------------------------------------------------ */
+
 	public void addLifecycleListener(Lifecycle.Listener listener);
 
-	/* ------------------------------------------------------------ */
+
 	public void removeLifecycleListener(Lifecycle.Listener listener);
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Listener. A listener for Lifecycle events.
 	 */

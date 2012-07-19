@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import evyframework.common.collect.LazyList;
 
-/* ------------------------------------------------------------ */
+
 /**
  * Container. This class allows a containment events to be generated from update
  * methods.
@@ -40,7 +40,7 @@ public class Container {
 		_listeners.remove(listener);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Update single parent to child relationship.
 	 * 
@@ -63,7 +63,7 @@ public class Container {
 			add(parent, child, relationship);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Update single parent to child relationship.
 	 * 
@@ -96,7 +96,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Update multiple parent to child relationship.
 	 * 
@@ -119,7 +119,7 @@ public class Container {
 		update(parent, oldChildren, children, relationship, false);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Update multiple parent to child relationship.
 	 * 
@@ -182,7 +182,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void addBean(Object obj) {
 		if (_listeners != null) {
 			for (int i = 0; i < LazyList.size(_listeners); i++) {
@@ -192,7 +192,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void removeBean(Object obj) {
 		if (_listeners != null) {
 			for (int i = 0; i < LazyList.size(_listeners); i++)
@@ -200,7 +200,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add a parent child relationship
 	 * 
@@ -218,7 +218,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * remove a parent child relationship
 	 * 
@@ -236,7 +236,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * A Container event.
 	 * 
@@ -291,7 +291,7 @@ public class Container {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Listener. A listener for Container events.
 	 */

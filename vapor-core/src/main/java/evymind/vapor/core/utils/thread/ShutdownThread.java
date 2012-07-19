@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import evymind.vapor.core.utils.component.Lifecycle;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ShutdownThread is a shutdown hook thread implemented as singleton that
  * maintains a list of lifecycle instances that are registered with it and
@@ -24,7 +24,7 @@ public class ShutdownThread extends Thread {
 	private boolean hooked;
 	private final List<Lifecycle> lifecycles = new CopyOnWriteArrayList<Lifecycle>();
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Default constructor for the singleton
 	 * 
@@ -33,7 +33,7 @@ public class ShutdownThread extends Thread {
 	private ShutdownThread() {
 	}
 
-	/* ------------------------------------------------------------ */
+
 	private synchronized void hook() {
 		try {
 			if (!hooked)
@@ -44,7 +44,7 @@ public class ShutdownThread extends Thread {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	private synchronized void unhook() {
 		try {
 			hooked = false;
@@ -54,7 +54,7 @@ public class ShutdownThread extends Thread {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Returns the instance of the singleton
 	 * 
@@ -64,28 +64,28 @@ public class ShutdownThread extends Thread {
 		return instance;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static synchronized void register(Lifecycle... lifeCycles) {
 		instance.lifecycles.addAll(Arrays.asList(lifeCycles));
 		if (instance.lifecycles.size() > 0)
 			instance.hook();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static synchronized void register(int index, Lifecycle... lifeCycles) {
 		instance.lifecycles.addAll(index, Arrays.asList(lifeCycles));
 		if (instance.lifecycles.size() > 0)
 			instance.hook();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public static synchronized void unregister(Lifecycle lifeCycle) {
 		instance.lifecycles.remove(lifeCycle);
 		if (instance.lifecycles.size() == 0)
 			instance.unhook();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void run() {
 		for (Lifecycle lifeCycle : instance.lifecycles) {

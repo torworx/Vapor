@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ClasspathPattern performs sequential pattern matching of a class name against an internal array of classpath pattern
  * entries.
@@ -27,21 +27,21 @@ public class ClasspathPattern {
 	final private List<String> patterns = new ArrayList<String>();
 	final private List<Entry> entries = new ArrayList<Entry>();
 
-	/* ------------------------------------------------------------ */
+
 	public ClasspathPattern() {
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public ClasspathPattern(String[] patterns) {
 		setPatterns(patterns);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public ClasspathPattern(String pattern) {
 		setPattern(pattern);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Initialize the matcher by parsing each classpath pattern in an array
 	 * 
@@ -54,7 +54,7 @@ public class ClasspathPattern {
 		addPatterns(patterns);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Initialize the matcher by parsing each classpath pattern in an array
 	 * 
@@ -74,7 +74,7 @@ public class ClasspathPattern {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Create an entry object containing information about a single classpath pattern
 	 * 
@@ -97,7 +97,7 @@ public class ClasspathPattern {
 		return entry;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Initialize the matcher by parsing a classpath pattern string
 	 * 
@@ -110,7 +110,7 @@ public class ClasspathPattern {
 		addPattern(pattern);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Parse a classpath pattern string and appending the result to the existing configuration.
 	 * 
@@ -127,7 +127,7 @@ public class ClasspathPattern {
 		addPatterns((String[]) patterns.toArray(new String[patterns.size()]));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return array of classpath patterns
 	 */
@@ -141,7 +141,7 @@ public class ClasspathPattern {
 		return patterns;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Match the class name against the pattern
 	 * 

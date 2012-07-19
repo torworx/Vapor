@@ -20,7 +20,7 @@ import evyframework.common.io.Resource;
 import evyframework.common.io.support.ResourcePatternResolver;
 import evyframework.common.io.support.ResourcePatternUtils;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ClassLoader for Context. Specializes URLClassLoader with some utility and file mapping methods.
  * 
@@ -44,7 +44,7 @@ public class AppClassLoader extends URLClassLoader {
 	private final Set<String> extensions = new HashSet<String>();
 	private String name = String.valueOf(hashCode());
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * The Context in which the classloader operates.
 	 */
@@ -54,13 +54,13 @@ public class AppClassLoader extends URLClassLoader {
 
 		// Resource[] getResources(String locationPattern) throws IOException;
 
-		/* ------------------------------------------------------------ */
+
 		/**
 		 * @return Returns the permissions.
 		 */
 		PermissionCollection getPermissions();
 
-		/* ------------------------------------------------------------ */
+
 		/**
 		 * Is the class a System Class. A System class is a class that is visible to a application, but that cannot
 		 * be overridden by the contents of WEB-INF/lib or WEB-INF/classes
@@ -71,7 +71,7 @@ public class AppClassLoader extends URLClassLoader {
 		 */
 		boolean isSystemClass(String clazz);
 
-		/* ------------------------------------------------------------ */
+
 		/**
 		 * Is the class a Server Class. A Server class is a class that is part of the implementation of the server and
 		 * is NIT visible to a application. The web application may provide it's own implementation of the class, to
@@ -83,7 +83,7 @@ public class AppClassLoader extends URLClassLoader {
 		 */
 		boolean isServerClass(String clazz);
 
-		/* ------------------------------------------------------------ */
+
 		/**
 		 * @return True if the classloader should delegate first to the parent classloader (standard java behaviour) or
 		 *         false if the classloader should first try to load from WEB-INF/lib or WEB-INF/classes (servlet spec
@@ -91,12 +91,12 @@ public class AppClassLoader extends URLClassLoader {
 		 */
 		boolean isParentLoaderPriority();
 
-		/* ------------------------------------------------------------ */
+
 		String getExtraClasspath();
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Constructor.
 	 */
@@ -104,7 +104,7 @@ public class AppClassLoader extends URLClassLoader {
 		this(null, context);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Constructor.
 	 */
@@ -134,7 +134,7 @@ public class AppClassLoader extends URLClassLoader {
 			addClassPath(context.getExtraClasspath());
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return the name of the classloader
 	 */
@@ -142,7 +142,7 @@ public class AppClassLoader extends URLClassLoader {
 		return this.name;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param name
 	 *            the name of the classloader
@@ -151,7 +151,7 @@ public class AppClassLoader extends URLClassLoader {
 		this.name = name;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Context getContext() {
 		return context;
 	}
@@ -162,12 +162,7 @@ public class AppClassLoader extends URLClassLoader {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
-	/**
-	 * @param classPath
-	 *            Comma or semicolon separated path of filenames or URLs pointing to directories or jar files.
-	 *            Directories should end with '/'.
-	 */
+
 	public void addClassPath(String locationPattern) throws IOException {
 		addClassPath(context.newResource(locationPattern));
 	}
@@ -183,7 +178,7 @@ public class AppClassLoader extends URLClassLoader {
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add elements to the class path for the context from the jar and zip files found in the specified resource.
 	 * 
@@ -204,7 +199,7 @@ public class AppClassLoader extends URLClassLoader {
 		
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public PermissionCollection getPermissions(CodeSource cs) {
 		// TODO check CodeSource
 		PermissionCollection permissions = context.getPermissions();
@@ -212,7 +207,7 @@ public class AppClassLoader extends URLClassLoader {
 		return pc;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Enumeration<URL> getResources(String name) throws IOException {
 		boolean system_class = context.isSystemClass(name);
 		boolean server_class = context.isServerClass(name);
@@ -228,14 +223,14 @@ public class AppClassLoader extends URLClassLoader {
 		return Collections.enumeration(from_app);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	private List<URL> toList(Enumeration<URL> e) {
 		if (e == null)
 			return new ArrayList<URL>();
 		return Collections.list(e);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get a resource from the classloader
 	 * 
@@ -280,13 +275,13 @@ public class AppClassLoader extends URLClassLoader {
 		return url;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		return loadClass(name, false);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		Class<?> c = findLoadedClass(name);
@@ -334,7 +329,7 @@ public class AppClassLoader extends URLClassLoader {
 		return c;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String toString() {
 		return "AppClassLoader=" + this.name + "@" + Long.toHexString(hashCode());
 	}

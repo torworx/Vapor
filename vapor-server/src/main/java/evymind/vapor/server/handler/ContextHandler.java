@@ -83,7 +83,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the current ServletContext implementation.
 	 * 
@@ -97,7 +97,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		return this.context;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evyframework.remoting.component.AbstractLifecycle#doStart()
 	 */
@@ -143,7 +143,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		multicastEvent(new ContextInitializedEvent(context));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.AbstractLifecycle#doStop()
 	 */
@@ -289,7 +289,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 			}
 		}
 	}
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the attributes.
 	 */
@@ -302,7 +302,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		return (T) attributes.getAttribute(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see javax.servlet.ServletContext#getAttributeNames()
 	 */
@@ -314,7 +314,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		attributes.removeAttribute(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Set a context attribute. Attributes set via this API cannot be overriden by the ServletContext.setAttribute API.
 	 * Their lifecycle spans the stop/start of a context. No attribute listener events are triggered by this API.
@@ -323,7 +323,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		attributes.setAttribute(name, value);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param attributes
 	 *            The attributes to set.
@@ -333,7 +333,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		this.attributes.addAll(attributes);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void clearAttributes() {
 		attributes.clearAttributes();
 	}
@@ -392,19 +392,14 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 	}
 
 	// TODO rename newResource to getResource
-	/* ------------------------------------------------------------ */
-	/**
-	 * Convert URL to Resource wrapper for {@link Resource#newResource(URL)} enables extensions to provide alternate
-	 * resource implementations.
-	 */
+
 	public Resource newResource(URL url) throws IOException {
 		return new UrlResource(url);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
-	 * Convert a URL or path to a Resource. The default implementation is a wrapper for
-	 * {@link Resource#newResource(String)}.
+	 * Convert a URL or path to a Resource.
 	 * 
 	 * @param urlOrPath
 	 *            The URL or path to convert
@@ -416,7 +411,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		return resolver.getResource(urlOrPath);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -437,7 +432,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		return b.toString();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized Class<?> loadClass(String className) throws ClassNotFoundException {
 		if (className == null)
 			return null;
@@ -448,7 +443,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		return classLoader.loadClass(className);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return true if this context is accepting new requests
 	 */
@@ -458,7 +453,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set shutdown status. This field allows for graceful shutdown of a context. A started context may be put into non
 	 * accepting state so that existing requests can complete, but no new requests are accepted.
@@ -475,7 +470,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return false if this context is unavailable (sends 503)
 	 */
@@ -485,7 +480,7 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set Available status.
 	 */
@@ -530,11 +525,11 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 
 		final private static String UNIMPLEMENTED = "Unimplemented - use evyframework.remoting.service.ServiceContextHandler";
 
-		/* ------------------------------------------------------------ */
+
 		protected Context() {
 		}
 
-		/* ------------------------------------------------------------ */
+
 		public ContextHandler getContextHandler() {
 			// TODO reduce visibility of this method
 			return ContextHandler.this;

@@ -167,8 +167,6 @@ public class AppArchiveConfiguration extends AbstractConfiguration {
         // TODO remove classpaths from classloader
     }
 
-    /* ------------------------------------------------------------ */
-
     /**
      * @see evymind.vapor.app.AbstractConfiguration#cloneConfigure(evymind.vapor.app.AppContext,
      *      evymind.vapor.app.AppContext)

@@ -35,7 +35,7 @@ public class HashSessionManager extends AbstractSessionManager {
 	private volatile boolean sessionsLoaded = false;
 	private boolean deleteUnrestorableSessions = false;
 	
-	/* ------------------------------------------------------------ */
+
 	public HashSessionManager() {
 		super();
 	}
@@ -85,7 +85,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		sessions.clear();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return the period in seconds at which a check is made for sessions to be
 	 *         invalidated.
@@ -94,7 +94,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return (int) (this.scavengePeriodMs / 1000);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public int getSessions() {
 		int sessions = super.getSessions();
@@ -103,7 +103,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return sessions;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return seconds Idle period after which a session is saved
 	 */
@@ -114,7 +114,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return (int) (this.idleSavePeriodMs / 1000);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Configures the period in seconds after which a session is deemed idle and
 	 * saved to save on session memory.
@@ -129,7 +129,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		this.idleSavePeriodMs = seconds * 1000L;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void setMaxInactiveInterval(int seconds) {
 		super.setMaxInactiveInterval(seconds);
@@ -137,7 +137,7 @@ public class HashSessionManager extends AbstractSessionManager {
 			setScavengePeriod((this.dftMaxIdleSecs + 9) / 10);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param seconds
 	 *            the period is seconds at which sessions are periodically saved
@@ -172,7 +172,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return the period in seconds at which sessions are periodically saved to
 	 *         disk
@@ -184,7 +184,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return (int) (this.savePeriodMs / 1000);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param seconds
 	 *            the period in seconds at which a check is made for sessions to
@@ -252,14 +252,14 @@ public class HashSessionManager extends AbstractSessionManager {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void addSession(AbstractSession session) {
 		if (isRunning())
 			this.sessions.put(session.getId(), (HashedSession) session);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public AbstractSession getSession(String id) {
 		if (lazyLoad && !sessionsLoaded) {
@@ -287,7 +287,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return session;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void invalidateSessions() throws Exception {
 		// Invalidate all sessions to cause unbind events
@@ -317,48 +317,48 @@ public class HashSessionManager extends AbstractSessionManager {
 		return new HashedSession(this, id);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected AbstractSession createSession(long created, long accessed, String id) {
 		return new HashedSession(this, created, accessed, id);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected boolean removeSession(String id) {
 		return this.sessions.remove(id) != null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setStoreDirectory(File dir) {
 		this.storeDir = dir;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public File getStoreDirectory() {
 		return this.storeDir;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setLazyLoad(boolean lazyLoad) {
 		this.lazyLoad = lazyLoad;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isLazyLoad() {
 		return this.lazyLoad;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isDeleteUnrestorableSessions() {
 		return this.deleteUnrestorableSessions;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setDeleteUnrestorableSessions(boolean deleteUnrestorableSessions) {
 		this.deleteUnrestorableSessions = deleteUnrestorableSessions;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void restoreSessions() throws Exception {
 		this.sessionsLoaded = true;
 
@@ -378,7 +378,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected synchronized HashedSession restoreSession(String id) {
 		File file = new File(this.storeDir, id);
 		try {
@@ -405,7 +405,7 @@ public class HashSessionManager extends AbstractSessionManager {
 		return null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void saveSessions(boolean reactivate) throws Exception {
 		if (this.storeDir == null || !this.storeDir.exists()) {
 			return;
@@ -421,7 +421,7 @@ public class HashSessionManager extends AbstractSessionManager {
 			session.save(true);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public HashedSession restoreSession(InputStream is, HashedSession session) throws Exception {
 		/*
 		 * Take care of this class's fields first by calling defaultReadObject
@@ -449,20 +449,20 @@ public class HashSessionManager extends AbstractSessionManager {
 		return session;
 	}
 
-	/* ------------------------------------------------------------ */
-	/* ------------------------------------------------------------ */
+
+
 	protected class ClassLoadingObjectInputStream extends ObjectInputStream {
-		/* ------------------------------------------------------------ */
+
 		public ClassLoadingObjectInputStream(java.io.InputStream in) throws IOException {
 			super(in);
 		}
 
-		/* ------------------------------------------------------------ */
+
 		public ClassLoadingObjectInputStream() throws IOException {
 			super();
 		}
 
-		/* ------------------------------------------------------------ */
+
 		@Override
 		public Class<?> resolveClass(java.io.ObjectStreamClass cl) throws IOException, ClassNotFoundException {
 			try {

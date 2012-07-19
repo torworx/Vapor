@@ -11,7 +11,7 @@ import evymind.vapor.deploy.App;
 import evymind.vapor.deploy.utils.FileID;
 import evymind.vapor.server.handler.ContextHandler;
 
-/* ------------------------------------------------------------ */
+
 /**
  * Context directory Standard App Provider.
  * <p>
@@ -72,14 +72,14 @@ public class StandardAppProvider extends ScanningAppProvider {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public StandardAppProvider() {
 		super(new Filter());
 		this.filter = (Filter) _filenameFilter;
 		setScanInterval(0);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the extractSars.
 	 * 
@@ -89,7 +89,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		return this.extractSars;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the extractSars.
 	 * 
@@ -100,7 +100,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		this.extractSars = extractSars;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the parentLoaderPriority.
 	 * 
@@ -110,7 +110,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		return this.parentLoaderPriority;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the parentLoaderPriority.
 	 * 
@@ -121,7 +121,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		this.parentLoaderPriority = parentLoaderPriority;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the defaultsDescriptor.
 	 * 
@@ -131,7 +131,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		return this.defaultsDescriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the defaultsDescriptor.
 	 * 
@@ -142,12 +142,12 @@ public class StandardAppProvider extends ScanningAppProvider {
 		this.defaultsDescriptor = defaultsDescriptor;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String getContextDir() {
 		return this.filter.contexts == null ? null : this.filter.contexts.toString();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the directory in which to look for context config files.
 	 * <p>
@@ -168,7 +168,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param configurations
 	 *            The configuration class names.
@@ -177,7 +177,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		this.configurationClasses = configurations == null ? null : (String[]) configurations.clone();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
      * 
      */
@@ -206,7 +206,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 		return this.tempDirectory;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public ContextHandler createContextHandler(final App app) throws Exception {
 		Resource resource = resolver.getResource(app.getOriginId());
 		File file = resource.getFile();

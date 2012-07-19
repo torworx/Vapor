@@ -10,14 +10,14 @@ public interface SessionManager extends Lifecycle {
 	
 	Session createSession(String id);
 	
-    /* ------------------------------------------------------------ */
+
     /**
      * @return the max period of inactivity, after which the session is invalidated, in seconds.
      * @see #setMaxInactiveInterval(int)
      */
     public int getMaxInactiveInterval();
 
-    /* ------------------------------------------------------------ */
+
     /**
      * Sets the max period of inactivity, after which the session is invalidated, in seconds.
      *
@@ -26,7 +26,7 @@ public interface SessionManager extends Lifecycle {
      */
     public void setMaxInactiveInterval(int seconds);
 
-    /* ------------------------------------------------------------ */
+
     /**
      * Adds an event listener for session-related events.
      *
@@ -38,7 +38,7 @@ public interface SessionManager extends Lifecycle {
      */
     public void addEventListener(EventListener listener);
 
-    /* ------------------------------------------------------------ */
+
     /**
      * Removes an event listener for for session-related events.
      *
@@ -47,7 +47,7 @@ public interface SessionManager extends Lifecycle {
      */
     public void removeEventListener(EventListener listener);
 
-    /* ------------------------------------------------------------ */
+
     /**
      * Removes all event listeners for session-related events.
      *
@@ -55,7 +55,7 @@ public interface SessionManager extends Lifecycle {
      */
     public void clearEventListeners();
     
-    /* ------------------------------------------------------------ */
+
     /**
      * @param session the session to test for validity
      * @return whether the given session is valid, that is, it has not been invalidated.
@@ -63,12 +63,11 @@ public interface SessionManager extends Lifecycle {
     public boolean isValid(Session session);
     
 
-    /* ------------------------------------------------------------ */
+
     /**
-     * Called by the {@link SessionHandler} when a session is last accessed by a request.
+     * Called by the {@link evymind.vapor.server.session.SessionHandler} when a session is last accessed by a request.
      *
      * @param session the session object
-     * @see #access(Session, boolean)
      */
     public void complete(Session session);
 

@@ -83,7 +83,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(String name) {
 		synchronized (this) {
@@ -92,7 +92,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public int getAttributes() {
 		synchronized (this) {
 			checkValid();
@@ -100,7 +100,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings({ "unchecked" })
 	public Enumeration<String> getAttributeNames() {
 		synchronized (this) {
@@ -111,7 +111,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Set<String> getNames() {
 		synchronized (this) {
 			return new HashSet<String>(this.attributes.keySet());
@@ -128,7 +128,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		return this.created;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public String getId() throws IllegalStateException {
 		return this.id;
 	}
@@ -145,7 +145,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		return (int) (this.maxIdleMs / 1000);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected boolean access(long time) {
 		synchronized (this) {
 			if (this.invalid)
@@ -163,7 +163,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected void complete() {
 		synchronized (this) {
 			this.requests--;
@@ -245,22 +245,22 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		return this.newSession;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void removeAttribute(String name) {
 		setAttribute(name, null);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected Object doPutOrRemove(String name, Object value) {
 		return value == null ? this.attributes.remove(name) : this.attributes.put(name, value);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected Object doGet(String name) {
 		return this.attributes.get(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setAttribute(String name, Object value) {
 		Object old = null;
 		synchronized (this) {
@@ -302,7 +302,7 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 			((SessionBindingListener) value).valueBound(new SessionBindingEvent(this, name));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isValid() {
 		return !this.invalid;
 	}
@@ -314,14 +314,14 @@ public class AbstractSession implements AbstractSessionManager.SessionIf {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public int getRequests() {
 		synchronized (this) {
 			return this.requests;
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setRequests(int requests) {
 		synchronized (this) {
 			this.requests = requests;

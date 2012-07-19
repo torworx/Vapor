@@ -75,7 +75,7 @@ public class Types {
 		class2Name.put(java.lang.String.class, "java.lang.String");
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Class from a canonical name for a type.
 	 * 
@@ -87,7 +87,7 @@ public class Types {
 		return name2Class.get(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Canonical name for a type.
 	 * 

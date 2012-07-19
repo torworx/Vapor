@@ -12,22 +12,22 @@ public class AttributesMap implements Attributes {
 
 	protected final Map<String, Object> map;
 
-	/* ------------------------------------------------------------ */
+
 	public AttributesMap() {
 		this.map = new HashMap<String, Object>();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public AttributesMap(Map<String, Object> map) {
 		this.map = map;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public AttributesMap(AttributesMap map) {
 		this.map = new HashMap<String, Object>(map.map);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#removeAttribute(java.lang.String)
 	 */
@@ -35,7 +35,7 @@ public class AttributesMap implements Attributes {
 		this.map.remove(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#setAttribute(java.lang.String, java.lang.Object)
 	 */
@@ -51,7 +51,7 @@ public class AttributesMap implements Attributes {
 		return (T) this.map.get(name);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
@@ -59,7 +59,7 @@ public class AttributesMap implements Attributes {
 		return Collections.enumeration(this.map.keySet());
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
@@ -67,12 +67,12 @@ public class AttributesMap implements Attributes {
 		return this.map.keySet();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Set<Map.Entry<String, Object>> getAttributeEntrySet() {
 		return this.map.entrySet();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#getAttributeNames()
 	 */
@@ -85,7 +85,7 @@ public class AttributesMap implements Attributes {
 		return Collections.enumeration(names);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.util.Attributes#clear()
 	 */
@@ -93,23 +93,23 @@ public class AttributesMap implements Attributes {
 		this.map.clear();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public int size() {
 		return this.map.size();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public String toString() {
 		return this.map.toString();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Set<String> keySet() {
 		return this.map.keySet();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void addAll(Attributes attributes) {
 		Enumeration<String> e = attributes.getAttributeNames();
 		while (e.hasMoreElements()) {

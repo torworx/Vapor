@@ -11,17 +11,14 @@ import evymind.vapor.server.Request;
 import evymind.vapor.server.Response;
 import evymind.vapor.server.ServiceException;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ContextHandlerCollection.
  * 
- * This {@link evymind.vapor.server.handler.HandlerCollection} is creates a {@link evymind.vapor.http.PathMap}
- * to it's contained handlers based on the context path and virtual hosts of any contained
- * {@link evymind.vapor.server.handler.ContextHandler}s. The contexts do not need to be directly contained, only
+ * The contexts do not need to be directly contained, only
  * children of the contained handlers. Multiple contexts may have the same context path and they are called in order
  * until one handles the request.
- * 
- * @org.apache.xbean.XBean element="contexts"
+ *
  */
 public class ContextHandlerCollection extends HandlerCollection {
 
@@ -30,12 +27,12 @@ public class ContextHandlerCollection extends HandlerCollection {
 	// private volatile PathMap _contextMap;
 	private Class<? extends ContextHandler> contextClass = ContextHandler.class;
 
-	/* ------------------------------------------------------------ */
+
 	public ContextHandlerCollection() {
 		super(true);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Remap the context paths.
 	 */
@@ -106,7 +103,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.server.handler.HandlerCollection#setHandlers(evymind.vapor.server.Handler[])
 	 */
@@ -118,7 +115,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 			mapContexts();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void doStart() throws Exception {
 		mapContexts();
@@ -206,7 +203,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 //		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add a context handler.
 	 * 
@@ -227,7 +224,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return The class to use to add new Contexts
 	 */
@@ -235,7 +232,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 		return contextClass;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param contextClass
 	 *            The class to use to add new Contexts
@@ -246,7 +243,7 @@ public class ContextHandlerCollection extends HandlerCollection {
 		this.contextClass = contextClass;
 	}
 
-	/* ------------------------------------------------------------ */
+
 //	private String normalizeHostname(String host) {
 //		if (host == null)
 //			return null;

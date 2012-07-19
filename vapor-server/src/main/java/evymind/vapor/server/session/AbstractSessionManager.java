@@ -90,7 +90,7 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		this.dftMaxIdleSecs = seconds;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return maximum number of sessions
 	 */
@@ -98,7 +98,7 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		return (int) this.sessionsStats.getMax();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return total number of sessions
 	 */
@@ -106,12 +106,12 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		return (int) this.sessionsStats.getTotal();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public int getSessions() {
 		return (int) this.sessionsStats.getCurrent();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean isValid(Session session) {
 		AbstractSession s = ((SessionIf) session).getSession();
 		return s.isValid();
@@ -143,13 +143,13 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		sessionAttributeListeners.clear();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void complete(Session session) {
 		AbstractSession s = ((SessionIf) session).getSession();
 		s.complete();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Reset statistics values
 	 */
@@ -158,7 +158,7 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		this.sessionTimeStats.reset();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Remove session from manager
 	 * 
@@ -166,15 +166,14 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 	 *            The session to remove
 	 * @param invalidate
 	 *            True if {@link SessionListener#sessionDestroyed(SessionEvent)}
-	 *            and {@link SessionIdManager#invalidateAll(String)} should be
-	 *            called.
+	 *            should be called.
 	 */
 	public void removeSession(Session session, boolean invalidate) {
 		AbstractSession s = ((SessionIf) session).getSession();
 		removeSession(s, invalidate);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Remove session from manager
 	 * 
@@ -182,8 +181,7 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 	 *            The session to remove
 	 * @param invalidate
 	 *            True if {@link SessionListener#sessionDestroyed(SessionEvent)}
-	 *            and {@link SessionIdManager#invalidateAll(String)} should be
-	 *            called.
+	 *            should be called.
 	 */
 	public void removeSession(AbstractSession session, boolean invalidate) {
 		// Remove session from context and global maps
@@ -206,10 +204,10 @@ public abstract class AbstractSessionManager extends AbstractLifecycle implement
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected abstract boolean removeSession(String id);
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return maximum amount of time session remained valid
 	 */

@@ -7,15 +7,15 @@ import evymind.vapor.server.Request;
 import evymind.vapor.server.Response;
 import evymind.vapor.server.ServiceException;
 
-/* ------------------------------------------------------------ */
+
 /**
  * ScopedHandler.
  * 
  * A ScopedHandler is a HandlerWrapper where the wrapped handlers each define a scope. When
- * {@link #handle(String, Request, HttpServletRequest, HttpServletResponse)} is called on the first ScopedHandler in a
- * chain of HandlerWrappers, the {@link #doScope(String, Request, HttpServletRequest, HttpServletResponse)} method is
+ * {@link #handle(Transport, Request, Response)} is called on the first ScopedHandler in a
+ * chain of HandlerWrappers, the {@link #doScope(Transport, Request, Response)} method is
  * called on all contained ScopedHandlers, before the
- * {@link #doHandle(String, Request, HttpServletRequest, HttpServletResponse)} method is called on all contained
+ * {@link #doHandle(Transport, Request, Response)} method is called on all contained
  * handlers.
  * 
  * <p>
@@ -81,7 +81,7 @@ public abstract class ScopedHandler extends HandlerWrapper {
 	protected ScopedHandler outerScope;
 	protected ScopedHandler nextScope;
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @see HandlerWrapper#doStart()
 	 */
@@ -104,7 +104,7 @@ public abstract class ScopedHandler extends HandlerWrapper {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/* 
      */
 	@Override
@@ -115,13 +115,13 @@ public abstract class ScopedHandler extends HandlerWrapper {
 			doHandle(transport, request, response);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Scope the handler
 	 */
 	public abstract void doScope(Transport transport, Request request, Response response) throws IOException, ServiceException;
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Scope the handler
 	 */
@@ -137,13 +137,13 @@ public abstract class ScopedHandler extends HandlerWrapper {
 			doHandle(transport, request, response);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Do the handler work within the scope.
 	 */
 	public abstract void doHandle(Transport transport, Request request, Response response) throws IOException, ServiceException ;
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Do the handler work within the scope.
 	 */
@@ -157,7 +157,7 @@ public abstract class ScopedHandler extends HandlerWrapper {
 			this.handler.handle(transport, request, response);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected boolean never() {
 		return false;
 	}

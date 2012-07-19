@@ -2,7 +2,7 @@ package evymind.vapor.core.utils.statistic;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/* ------------------------------------------------------------ */
+
 /**
  * Statistics on a counter value.
  * <p>
@@ -16,12 +16,12 @@ public class CounterStatistic {
 	protected final AtomicLong _curr = new AtomicLong();
 	protected final AtomicLong _total = new AtomicLong();
 
-	/* ------------------------------------------------------------ */
+
 	public void reset() {
 		reset(0);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void reset(final long value) {
 		_max.set(value);
 		_curr.set(value);
@@ -29,7 +29,7 @@ public class CounterStatistic {
 						// total
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param delta
 	 *            the amount to add to the count
@@ -46,7 +46,7 @@ public class CounterStatistic {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param delta
 	 *            the amount to subtract the count by.
@@ -55,21 +55,21 @@ public class CounterStatistic {
 		add(-delta);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
      */
 	public void increment() {
 		add(1);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
      */
 	public void decrement() {
 		add(-1);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return max value
 	 */
@@ -77,7 +77,7 @@ public class CounterStatistic {
 		return _max.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return current value
 	 */
@@ -85,7 +85,7 @@ public class CounterStatistic {
 		return _curr.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return total value
 	 */
@@ -93,7 +93,7 @@ public class CounterStatistic {
 		return _total.get();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected void upxdateMax(long value) {
 	}
 }

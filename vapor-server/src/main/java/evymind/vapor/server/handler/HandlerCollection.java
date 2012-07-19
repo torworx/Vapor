@@ -12,7 +12,7 @@ import evymind.vapor.server.Response;
 import evymind.vapor.server.Server;
 import evymind.vapor.server.ServiceException;
 
-/* ------------------------------------------------------------ */
+
 /**
  * A collection of handlers.
  * <p>
@@ -28,17 +28,17 @@ public class HandlerCollection extends AbstractHandlerContainer {
 	private volatile Handler[] _handlers;
 	private boolean _parallelStart = false;
 
-	/* ------------------------------------------------------------ */
+
 	public HandlerCollection() {
 		_mutableWhenRunning = false;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public HandlerCollection(boolean mutableWhenRunning) {
 		_mutableWhenRunning = mutableWhenRunning;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return Returns the handlers.
 	 */
@@ -46,7 +46,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		return _handlers;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * 
 	 * @param handlers
@@ -84,7 +84,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		mex.ifExceptionThrowRuntime();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the parrallelStart.
 	 * 
@@ -94,7 +94,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		return _parallelStart;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the parallelStart.
 	 * 
@@ -105,7 +105,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		this._parallelStart = parallelStart;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @see Handler#handle(Transport, Request, Response)
 	 */
@@ -136,7 +136,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.server.handler.AbstractHandler#doStart()
 	 */
@@ -179,7 +179,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		mex.ifExceptionThrow();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see evymind.vapor.server.handler.AbstractHandler#doStop()
 	 */
@@ -202,7 +202,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		mex.ifExceptionThrow();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void setServer(Server server) {
 		if (isStarted())
@@ -221,7 +221,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * Add a handler. This implementation adds the passed handler to the end of the existing collection of handlers.
 	 * 
@@ -231,7 +231,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		setHandlers((Handler[]) LazyList.addToArray(getHandlers(), handler, Handler.class));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void removeHandler(Handler handler) {
 		Handler[] handlers = getHandlers();
 
@@ -239,7 +239,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 			setHandlers((Handler[]) LazyList.removeFromArray(handlers, handler));
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected Object expandChildren(Object list, Class byClass) {
@@ -249,7 +249,7 @@ public class HandlerCollection extends AbstractHandlerContainer {
 		return list;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	public void destroy() {
 		if (!isStopped())

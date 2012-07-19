@@ -35,12 +35,12 @@ public class ContextProvider extends ScanningAppProvider {
 		});
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public ConfigurationManager getConfigurationManager() {
 		return this.configurationManager;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the configurationManager.
 	 * 
@@ -51,7 +51,7 @@ public class ContextProvider extends ScanningAppProvider {
 		this.configurationManager = configurationManager;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public ContextHandler createContextHandler(App app) throws Exception {
 		// Resource resource = resolver.getResource(app.getOriginId());
 		// File file = resource.getFile();

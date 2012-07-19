@@ -83,7 +83,7 @@ public class ServiceHandler extends ScopedHandler {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Initialize filters and load-on-startup services. Called automatically from start if autoInitializeService is
 	 * true.

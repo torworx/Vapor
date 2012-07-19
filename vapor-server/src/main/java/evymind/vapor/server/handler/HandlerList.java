@@ -8,13 +8,13 @@ import evymind.vapor.server.Request;
 import evymind.vapor.server.Response;
 import evymind.vapor.server.ServiceException;
 
-/* ------------------------------------------------------------ */
+
 /**
  * HandlerList. This extension of {@link HandlerCollection} will call each contained handler in turn until either an
  * exception is thrown, the response is committed or a positive response status is set.
  */
 public class HandlerList extends HandlerCollection {
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @see Handler#handle(Transport, Request, Response)
 	 */

@@ -17,7 +17,7 @@ public abstract class AbstractHandler extends AggregateLifecycle implements Hand
 	
 	private Server server;
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.Lifecycle#start()
 	 */
@@ -27,7 +27,7 @@ public abstract class AbstractHandler extends AggregateLifecycle implements Hand
 		super.doStart();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/*
 	 * @see org.eclipse.thread.Lifecycle#stop()
 	 */
@@ -47,7 +47,7 @@ public abstract class AbstractHandler extends AggregateLifecycle implements Hand
 		log.debug("Client [{}] disconnected", clientId);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void setServer(Server server) {
 		Server old_server = this.server;
 		if (old_server != null && old_server != server)
@@ -57,12 +57,12 @@ public abstract class AbstractHandler extends AggregateLifecycle implements Hand
 			this.server.getContainer().addBean(this);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Server getServer() {
 		return this.server;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void destroy() {
 		if (!isStopped())
 			throw new IllegalStateException("!STOPPED");
@@ -71,7 +71,7 @@ public abstract class AbstractHandler extends AggregateLifecycle implements Hand
 			this.server.getContainer().removeBean(this);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void dumpThis(Appendable out) throws IOException {
 		out.append(toString()).append(" - ").append(getState()).append('\n');
 	}

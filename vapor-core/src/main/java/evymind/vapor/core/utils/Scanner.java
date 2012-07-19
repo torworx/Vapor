@@ -175,7 +175,7 @@ public class Scanner extends AbstractLifecycle {
 		return Collections.unmodifiableList(_scanDirs);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @param recursive
 	 *            True if scanning is recursive
@@ -185,7 +185,7 @@ public class Scanner extends AbstractLifecycle {
 		_scanDepth = recursive ? -1 : 0;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return True if scanning is fully recursive (scandepth==-1)
 	 * @see #getScanDepth()
@@ -194,7 +194,7 @@ public class Scanner extends AbstractLifecycle {
 		return _scanDepth == -1;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Get the scanDepth.
 	 * 
@@ -204,7 +204,7 @@ public class Scanner extends AbstractLifecycle {
 		return _scanDepth;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the scanDepth.
 	 * 
@@ -234,7 +234,7 @@ public class Scanner extends AbstractLifecycle {
 		return _filter;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Whether or not an initial scan will report all files as being added.
 	 * 
@@ -245,12 +245,12 @@ public class Scanner extends AbstractLifecycle {
 		_reportExisting = reportExisting;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean getReportExistingFilesOnStartup() {
 		return _reportExisting;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set if found directories should be reported.
 	 * 
@@ -260,12 +260,12 @@ public class Scanner extends AbstractLifecycle {
 		_reportDirs = dirs;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public boolean getReportDirs() {
 		return _reportDirs;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Add an added/removed/changed listener
 	 * 

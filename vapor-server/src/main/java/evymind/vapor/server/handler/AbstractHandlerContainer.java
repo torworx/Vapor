@@ -7,30 +7,30 @@ import evyframework.common.collect.LazyList;
 import evymind.vapor.server.Handler;
 import evymind.vapor.server.HandlerContainer;
 
-/* ------------------------------------------------------------ */
+
 /**
  * Abstract Handler Container. This is the base class for handlers that may
  * contain other handlers.
  * 
  */
 public abstract class AbstractHandlerContainer extends AbstractHandler implements HandlerContainer {
-	/* ------------------------------------------------------------ */
+
 	public AbstractHandlerContainer() {
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Handler[] getChildHandlers() {
 		Object list = expandChildren(null, null);
 		return (Handler[]) LazyList.toArray(list, Handler.class);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public Handler[] getChildHandlersByClass(Class<?> byclass) {
 		Object list = expandChildren(null, byclass);
 		return (Handler[]) LazyList.toArray(list, byclass);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings("unchecked")
 	public <T extends Handler> T getChildHandlerByClass(Class<T> byclass) {
 		// TODO this can be more efficient?
@@ -40,12 +40,12 @@ public abstract class AbstractHandlerContainer extends AbstractHandler implement
 		return (T) LazyList.get(list, 0);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected Object expandChildren(Object list, Class<?> byClass) {
 		return list;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	protected Object expandHandler(Handler handler, Object list, Class<Handler> byClass) {
 		if (handler == null)
 			return list;
@@ -65,7 +65,7 @@ public abstract class AbstractHandlerContainer extends AbstractHandler implement
 		return list;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@SuppressWarnings("unchecked")
 	public static <T extends HandlerContainer> T findContainerOf(HandlerContainer root, Class<T> type, Handler handler) {
 		if (root == null || handler == null)
@@ -86,7 +86,7 @@ public abstract class AbstractHandlerContainer extends AbstractHandler implement
 		return null;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public void dump(Appendable out, String indent) throws IOException {
 		dumpThis(out);
 		dump(out, indent, getBeans(), CollectionUtils.arrayToList(getHandlers()));

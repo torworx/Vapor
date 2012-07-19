@@ -2,7 +2,7 @@ package evymind.vapor.core.utils;
 
 import java.util.Enumeration;
 
-/* ------------------------------------------------------------ */
+
 /**
  * Attributes. Interface commonly used for storing attributes.
  * 

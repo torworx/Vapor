@@ -116,7 +116,7 @@ public class DeploymentManager extends AggregateLifecycle {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Set the AppProviders. The providers passed are added via {@link #addBean(Object)} so that their lifecycles may be
 	 * managed as a {@link AggregateLifecycle}.

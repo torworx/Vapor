@@ -64,7 +64,7 @@ public class HashedSession extends AbstractSession {
 			this.hashSessionManager.setScavengePeriod((secs + 9) / 10);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	@Override
 	protected void doInvalidate() throws IllegalStateException {
 		super.doInvalidate();
@@ -77,7 +77,7 @@ public class HashedSession extends AbstractSession {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	synchronized void save(boolean reactivate) {
 		// Only idle the session if not already idled and no previous save/idle
 		// has failed
@@ -119,7 +119,7 @@ public class HashedSession extends AbstractSession {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized void save(OutputStream os) throws IOException {
 		DataOutputStream out = new DataOutputStream(os);
 		out.writeUTF(getId());
@@ -147,7 +147,7 @@ public class HashedSession extends AbstractSession {
 		oos.close();
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized void deIdle() {
 		if (isIdled()) {
 			// Access now to prevent race with idling period
@@ -180,7 +180,7 @@ public class HashedSession extends AbstractSession {
 		}
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * Idle the session to reduce session memory footprint.
 	 * 
@@ -191,17 +191,17 @@ public class HashedSession extends AbstractSession {
 		save(false);
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized boolean isIdled() {
 		return this.idled;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized boolean isSaveFailed() {
 		return this.saveFailed;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	public synchronized void saveFailed() {
 		this.saveFailed = true;
 	}

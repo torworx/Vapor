@@ -40,7 +40,7 @@ public class App {
 		this.context = context;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return The deployment manager
 	 */
@@ -48,7 +48,7 @@ public class App {
 		return this.manager;
 	}
 
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @return The AppProvider
 	 */

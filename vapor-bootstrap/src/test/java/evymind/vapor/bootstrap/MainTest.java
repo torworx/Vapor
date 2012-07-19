@@ -30,11 +30,11 @@ import org.junit.Test;
 
 import evymind.vapor.toolchain.test.TestingUtils;
 
-/* ------------------------------------------------------------ */
+
 /**
  */
 public class MainTest {
-	/* ------------------------------------------------------------ */
+
 	/**
 	 * @throws java.lang.Exception
 	 */

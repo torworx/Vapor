@@ -57,6 +57,9 @@ public final class TestingUtils {
 	public static File getTargetDir() {
 		if (targetDir == null) {
 			targetDir = new File(getBasedir(), "target");
+            if (!targetDir.exists()) {
+                targetDir.mkdir();
+            }
 			PathAssert.assertDirExists("Target Dir", targetDir);
 		}
 		return targetDir;
