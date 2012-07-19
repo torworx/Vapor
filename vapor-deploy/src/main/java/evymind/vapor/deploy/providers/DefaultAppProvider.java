@@ -18,7 +18,7 @@ import evymind.vapor.server.handler.ContextHandler;
  * Apps with names root or starting with root- are deployed at /. If the name is in the format root-hostname, then
  * the app is deployed at / in the virtual host hostname.
  */
-public class StandardAppProvider extends ScanningAppProvider {
+public class DefaultAppProvider extends ScanningAppProvider {
 	
 	private boolean extractSars = false;
 	private boolean parentLoaderPriority = false;
@@ -73,7 +73,7 @@ public class StandardAppProvider extends ScanningAppProvider {
 	}
 
 
-	public StandardAppProvider() {
+	public DefaultAppProvider() {
 		super(new Filter());
 		this.filter = (Filter) _filenameFilter;
 		setScanInterval(0);

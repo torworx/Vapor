@@ -12,7 +12,7 @@ import org.junit.Test;
 import evymind.vapor.deploy.test.ConfiguredVapor;
 import evymind.vapor.toolchain.test.TestingDir;
 
-public class StandardAppProviderTest {
+public class DefaultAppProviderTest {
 	
 	@Rule
 	public TestingDir testdir = new TestingDir();

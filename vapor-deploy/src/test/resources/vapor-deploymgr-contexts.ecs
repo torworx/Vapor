@@ -8,7 +8,7 @@
 				.setConfigurationManager(evymind.vapor.deploy.FileConfigurationManager()
 					.setFile("${vapor.home}/xml-configured-vapor.properties")
 				),
-			evymind.vapor.deploy.providers.StandardAppProvider()
+			evymind.vapor.deploy.providers.DefaultAppProvider()
 				.setMonitoredDirName("${vapor.home}/apps")
 				.setScanInterval(1)
 				.setContextDir("${vapor.home}/contexts")

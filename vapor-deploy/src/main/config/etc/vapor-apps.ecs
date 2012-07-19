@@ -1,4 +1,4 @@
-appprovider = evymind.vapor.deploy.providers.StandardAppProvider()
+appprovider = evymind.vapor.deploy.providers.DefaultAppProvider()
 	.setMonitoredDirName("${vapor.home}/apps")
 	.setScanInterval(1)
 	.setContextDir("${vapor.home}/contexts")

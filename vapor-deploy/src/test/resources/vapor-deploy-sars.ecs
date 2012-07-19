@@ -2,7 +2,7 @@
 	$server.addBean(evymind.vapor.deploy.DeploymentManager()
 		.setContexts(contexts)
 		.setAppProviders([
-			evymind.vapor.deploy.providers.StandardAppProvider()
+			evymind.vapor.deploy.providers.DefaultAppProvider()
 				.setMonitoredDirName("${vapor.home}/apps")
 				.setScanInterval(1)
 				.setTempDir("${vapor.home}/workish")
