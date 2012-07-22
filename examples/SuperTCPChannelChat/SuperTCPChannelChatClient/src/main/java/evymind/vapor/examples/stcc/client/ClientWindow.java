@@ -1,4 +1,4 @@
-package evymind.vapor.examples.stcc;
+package evymind.vapor.examples.stcc.client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -17,7 +17,14 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import evyframework.common.StringUtils;
 import evymind.vapor.core.event.handling.annontation.EventHandler;
-import evymind.vapor.examples.stcc.utils.HexUtils;
+import evymind.vapor.examples.stcc.ChatServerService;
+import evymind.vapor.examples.stcc.LoginService;
+import evymind.vapor.examples.stcc.MessageEvent;
+import evymind.vapor.examples.stcc.ServerShutdownEvent;
+import evymind.vapor.examples.stcc.UserLoginEvent;
+import evymind.vapor.examples.stcc.UserLogoutEvent;
+import evymind.vapor.examples.stcc.client.utils.HexUtils;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.List;

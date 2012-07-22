@@ -1,4 +1,4 @@
-package evymind.vapor.examples.stcc.utils;
+package evymind.vapor.examples.stcc.client.utils;
 
 public class HexUtils {
     

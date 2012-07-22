@@ -1,4 +1,4 @@
-package evymind.vapor.examples.stcc;
+package evymind.vapor.examples.stcc.client;
 
 import java.util.Map;
 

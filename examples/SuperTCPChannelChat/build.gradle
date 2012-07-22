@@ -70,7 +70,7 @@ project('SuperTCPChannelChatServer') {
 	description = 'SuperTCPChannelChat - Server'
 	
 	jar {
-		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.server.Main'
+		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.server.ServerWindow'
 	}
 	
 	dependencies {
@@ -86,38 +86,14 @@ project('SuperTCPChannelChatClient') {
 	description = 'SuperTCPChannelChat - Client'
 	
 	jar {
-		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.ChatWindow'
+		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.client.ClientWindow'
 	}
 	
 	repositories {
     	flatDir { dir 'lib' }
 	}
 	
-//	String swtNative;
-//	if (os.contains("windows")) {
-//		swtNative = "org.eclipse.swt.win32.x86_3.7.2.v3740f"
-//	} else if (os.contains("mac os")) {
-//		swtNative = "org.eclipse.swt.cocoa.macosx.x86_64_3.7.2.v3740f"
-//	} else {
-//		swtNative = "org.eclipse.swt.gtk.linux.x86_3.7.2.v3740f"
-//	}
 	dependencies {
-	    // swt dependencies
-//	    compile name: "org.eclipse.swt_3.7.2.v3740f"
-//		compile name: "${swtNative}"
-	 
-	    // jface dependencies
-//	    compile name: "org.eclipse.jface_3.7.0.v20110928-1505"
-//	    compile name: "org.eclipse.jface.text_3.7.2.v20111213-1208"
-//	    compile name: "org.eclipse.ui.workbench_3.7.1.v20120104-1859"
-//	    compile name: "org.eclipse.equinox.common_3.6.0.v20110523"
-//	    compile name: "org.eclipse.core.commands_3.6.0.I20110111-0800"
-//		compile name: "swing2swt"
-		
-//		compile "swt:runtime:3.0.1"
-//		compile "swt:jface:3.0.1"
-//		compile 'swt:swt-macosx:3.0m7'
-		
 		compile project(":SuperTCPChannelChatAPI");
 		compile "evymind.vapor:vapor-client:${vaporVersion}"
 	}
