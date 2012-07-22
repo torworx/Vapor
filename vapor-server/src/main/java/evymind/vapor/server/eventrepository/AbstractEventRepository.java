@@ -1,7 +1,6 @@
 package evymind.vapor.server.eventrepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.Lists;
@@ -22,7 +21,7 @@ public abstract class AbstractEventRepository extends AbstractMessageFactoryAwar
 	}
 
 	@Override
-	public void publish(Object event, UUID source, List<?> destinations) {
+	public void publish(Object event, UUID source, Collection<?> destinations) {
 		doPublish(source, event, destinations);
 	}
 	

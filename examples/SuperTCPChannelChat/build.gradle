@@ -1,0 +1,134 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven{ url "http://repo.gradle.org/gradle/simple/repo1" }
+		mavenCentral()
+	}
+}
+
+configure(allprojects) {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    group = 'evymind.vapor.examples.stcc'
+
+    sourceCompatibility=1.6
+    targetCompatibility=1.6
+	
+	ext.vaporVersion='0.0.9-SNAPSHOT'
+	
+	setBuildDir 'target'
+
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    [compileJava, compileTestJava]*.options*.compilerArgs = ['-Xlint:none']
+
+	sourceSets {
+		main {
+			java {
+				srcDir 'src/main/java'
+			}
+			resources {
+				srcDir 'src/main/resources'
+			}
+			output.resourcesDir = 'target/classes'
+    		output.classesDir   = 'target/classes'
+		}
+		test {
+			java {
+				srcDir 'src/test/java'
+			}
+			resources {
+				srcDir 'src/test/resources'
+			}
+			output.resourcesDir = 'target/test-classes'
+    		output.classesDir   = 'target/test-classes'
+		}
+	}
+
+    repositories {
+		mavenLocal()
+		maven{ url "http://repo.gradle.org/gradle/simple/repo1" }
+        mavenCentral()
+    }
+	
+	ext.os = System.getProperty("os.name").toLowerCase()
+
+}
+
+configure(subprojects) { subproject ->
+	apply plugin: 'java'
+	apply plugin: 'maven' // for install task as well as deploy dependencies
+	
+}
+
+project('SuperTCPChannelChatAPI') {
+	description = 'SuperTCPChannelChat - API'
+}
+
+project('SuperTCPChannelChatServer') {
+	description = 'SuperTCPChannelChat - Server'
+	
+	jar {
+		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.server.Main'
+	}
+	
+	dependencies {
+		compile project(":SuperTCPChannelChatAPI");
+		compile "evymind.vapor:vapor-server:${vaporVersion}"
+	}
+}
+
+project('SuperTCPChannelChatClient') {
+	apply plugin: 'java'
+	apply plugin: 'maven' // for install task as well as deploy dependencies
+	
+	description = 'SuperTCPChannelChat - Client'
+	
+	jar {
+		manifest.attributes['Main-Class'] = 'evymind.vapor.examples.stcc.ChatWindow'
+	}
+	
+	repositories {
+    	flatDir { dir 'lib' }
+	}
+	
+//	String swtNative;
+//	if (os.contains("windows")) {
+//		swtNative = "org.eclipse.swt.win32.x86_3.7.2.v3740f"
+//	} else if (os.contains("mac os")) {
+//		swtNative = "org.eclipse.swt.cocoa.macosx.x86_64_3.7.2.v3740f"
+//	} else {
+//		swtNative = "org.eclipse.swt.gtk.linux.x86_3.7.2.v3740f"
+//	}
+	dependencies {
+	    // swt dependencies
+//	    compile name: "org.eclipse.swt_3.7.2.v3740f"
+//		compile name: "${swtNative}"
+	 
+	    // jface dependencies
+//	    compile name: "org.eclipse.jface_3.7.0.v20110928-1505"
+//	    compile name: "org.eclipse.jface.text_3.7.2.v20111213-1208"
+//	    compile name: "org.eclipse.ui.workbench_3.7.1.v20120104-1859"
+//	    compile name: "org.eclipse.equinox.common_3.6.0.v20110523"
+//	    compile name: "org.eclipse.core.commands_3.6.0.I20110111-0800"
+//		compile name: "swing2swt"
+		
+//		compile "swt:runtime:3.0.1"
+//		compile "swt:jface:3.0.1"
+//		compile 'swt:swt-macosx:3.0m7'
+		
+		compile project(":SuperTCPChannelChatAPI");
+		compile "evymind.vapor:vapor-client:${vaporVersion}"
+	}
+	
+}
+
+
+configure(rootProject) {
+
+    task wrapper(type: Wrapper) {
+        description = 'Generates gradlew[.bat] scripts'
+        gradleVersion = '1.0'
+    }
+}

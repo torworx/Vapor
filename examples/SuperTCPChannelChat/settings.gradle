@@ -1,0 +1,5 @@
+rootProject.name = 'SuperTCPChannelChat'
+
+include 'SuperTCPChannelChatAPI'
+include 'SuperTCPChannelChatServer'
+include 'SuperTCPChannelChatClient'

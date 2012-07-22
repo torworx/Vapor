@@ -33,7 +33,7 @@ public class Request implements ServiceRequest {
 	private boolean handled;
 	
 	protected void recycle() {
-		
+		reset();
 	}
 	
 	public void reset() {
