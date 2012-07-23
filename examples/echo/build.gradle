@@ -1,3 +1,5 @@
+apply from: '../../versioning.gradle'
+
 buildscript {
 	repositories {
 		mavenLocal()
@@ -15,7 +17,7 @@ configure(allprojects) {
     sourceCompatibility=1.6
     targetCompatibility=1.6
 
-    ext.vaporVersion = "0.0.8-SNAPSHOT"
+    ext.vaporVersion = version
 	
 	setBuildDir 'target'
 
