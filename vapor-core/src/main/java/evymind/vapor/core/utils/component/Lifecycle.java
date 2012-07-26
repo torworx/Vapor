@@ -83,14 +83,14 @@ public interface Lifecycle {
 	 */
 	public interface Listener extends EventListener {
 		
-		public void lifeCycleStarting(Lifecycle event);
+		public void lifecycleStarting(Lifecycle event);
 
-		public void lifeCycleStarted(Lifecycle event);
+		public void lifecycleStarted(Lifecycle event);
 
-		public void lifeCycleFailure(Lifecycle event, Throwable cause);
+		public void lifecycleFailure(Lifecycle event, Throwable cause);
 
-		public void lifeCycleStopping(Lifecycle event);
+		public void lifecycleStopping(Lifecycle event);
 
-		public void lifeCycleStopped(Lifecycle event);
+		public void lifecycleStopped(Lifecycle event);
 	}
 }

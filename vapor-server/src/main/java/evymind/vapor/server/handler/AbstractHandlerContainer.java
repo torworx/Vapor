@@ -25,9 +25,9 @@ public abstract class AbstractHandlerContainer extends AbstractHandler implement
 	}
 
 
-	public Handler[] getChildHandlersByClass(Class<?> byclass) {
+    public <T> T[] getChildHandlersByClass(Class<T> byclass) {
 		Object list = expandChildren(null, byclass);
-		return (Handler[]) LazyList.toArray(list, byclass);
+		return (T[]) LazyList.toArray(list, byclass);
 	}
 
 
@@ -71,9 +71,9 @@ public abstract class AbstractHandlerContainer extends AbstractHandler implement
 		if (root == null || handler == null)
 			return null;
 
-		Handler[] branches = root.getChildHandlersByClass(type);
+		T[] branches = root.getChildHandlersByClass(type);
 		if (branches != null) {
-			for (Handler h : branches) {
+			for (HandlerContainer h : branches) {
 				T container = (T) h;
 				Handler[] candidates = container.getChildHandlersByClass(handler.getClass());
 				if (candidates != null) {

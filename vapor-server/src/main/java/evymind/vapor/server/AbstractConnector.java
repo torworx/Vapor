@@ -18,157 +18,170 @@ import evymind.vapor.server.eventrepository.EventRepository;
 
 public abstract class AbstractConnector extends AggregateLifecycle implements Connector, ServerHolder {
 
-	private static final Logger log = LoggerFactory.getLogger(AbstractConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractConnector.class);
 
-	private final MessageDispatchers dispatchers;
+    private final MessageDispatchers dispatchers;
 
-	private String name;
-	private Server server;
-	private String host;
-	private int port;
+    private String name;
+    private Server server;
+    private String host;
+    private int port;
+    private boolean zeroConf;
 
-	private EventBus eventBus;
-	private EventRepository eventRepository;
+    private EventBus eventBus;
+    private EventRepository eventRepository;
 
-	public AbstractConnector() {
-		super();
-		this.dispatchers = createDispatchers(this);
-	}
+    public AbstractConnector() {
+        super();
+        this.dispatchers = createDispatchers(this);
+    }
 
-	protected MessageDispatchers createDispatchers(ServerHolder serverHolder) {
-		return new MessageDispatchers(serverHolder);
-	}
+    protected MessageDispatchers createDispatchers(ServerHolder serverHolder) {
+        return new MessageDispatchers(serverHolder);
+    }
 
+    @Override
+    public ConnectorType getConnectorType() {
+        return ConnectorType.UNKNOWN;
+    }
 
-	@Override
-	protected void doStart() throws Exception {
-		if (server == null) {
-			throw new IllegalStateException("No server");
-		}
+    @Override
+    protected void doStart() throws Exception {
+        if (server == null) {
+            throw new IllegalStateException("No server");
+        }
 
-		// open listener port
-		open();
+        // open listener port
+        open();
 
-		if (eventBus == null) {
-			eventBus = server.getEventBus();
-			addBean(eventBus, false);
-		}
+        if (eventBus == null) {
+            eventBus = server.getEventBus();
+            addBean(eventBus, false);
+        }
 
-		super.doStart();
+        super.doStart();
 
-		log.info("Started {}", this);
-	}
-
-
-	@Override
-	protected void doStop() throws Exception {
-		try {
-			close();
-		} catch (IOException e) {
-			log.warn(e.getMessage(), e);
-		}
-
-		super.doStop();
-	}
-
-	public void dispatchMessage(Transport transport, Request request, Response response) {
-		try {
-			MessageDispatcher dispatcher = dispatchers.findDispatcher(transport, request);
-			if (dispatcher == null) {
-				throw new VaporRuntimeException("Cannot find message dispatcher.");
-			}
-			doDispatchMessage(dispatcher, transport, request, response);
-		} catch (Exception e) {
-			log.warn(Logs.IGNORED, e);
-			// TODO check writeUTF or writeString
-			response.getData().writeUTF(e.getMessage());
-		}
-	}
-
-	protected void doDispatchMessage(MessageDispatcher dispatcher, Transport transport, Request request,
-			Response response) {
-		// TODO decrypt request if use encryption
-		dispatcher.processMessage(transport, request, response);
-		// TODO encrypt response if use encryption
-	}
-
-	public Server getServer() {
-		return server;
-	}
-
-	public void setServer(Server server) {
-		this.server = server;
-	}
-
-	@Override
-	public String getName() {
-		if (name == null) {
-			name = (getHost() == null ? "0.0.0.0" : getHost()) + ":" + getPort();
-		}
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	public EventBus getEventBus() {
-		return eventBus;
-	}
-
-	public void setEventBus(EventBus eventBus) {
-		if (!Objects.equal(this.eventBus, eventBus)) {
-			if (this.eventBus != null) {
-				removeBean(this.eventBus);
-			}
-			this.eventBus = eventBus;
-			if (this.eventBus != null) {
-				addBean(this.eventBus);
-			}
-		}
-	}
-
-	public void addDispatcher(MessageFactory<?> messageFactory) {
-		dispatchers.addDispatcher(messageFactory);
-	}
-
-	public Collection<MessageDispatcher> getDispatchers() {
-		return dispatchers.getDispatchers();
-	}
-
-	public void setDispatchers(Collection<MessageDispatcher> dispatchers) {
-		this.dispatchers.setDispatchers(dispatchers);
-	}
-
-	public EventRepository getEventRepository() {
-		return eventRepository != null ? eventRepository : (getServer() != null ? getServer().getEventRepository()
-				: null);
-	}
-
-	public void setEventRepository(EventRepository eventRepository) {
-		this.eventRepository = eventRepository;
-	}
+        log.info("Started {}", this);
+    }
 
 
-	@Override
-	public String toString() {
-		return String.format("%s@%s:%d", getClass().getSimpleName(), getHost() == null ? "0.0.0.0" : getHost(),
-				getPort());
-	}
+    @Override
+    protected void doStop() throws Exception {
+        try {
+            close();
+        } catch (IOException e) {
+            log.warn(e.getMessage(), e);
+        }
+
+        super.doStop();
+    }
+
+    public void dispatchMessage(Transport transport, Request request, Response response) {
+        try {
+            MessageDispatcher dispatcher = dispatchers.findDispatcher(transport, request);
+            if (dispatcher == null) {
+                throw new VaporRuntimeException("Cannot find message dispatcher.");
+            }
+            doDispatchMessage(dispatcher, transport, request, response);
+        } catch (Exception e) {
+            log.warn(Logs.IGNORED, e);
+            // TODO check writeUTF or writeString
+            response.getData().writeUTF(e.getMessage());
+        }
+    }
+
+    protected void doDispatchMessage(MessageDispatcher dispatcher, Transport transport, Request request,
+                                     Response response) {
+        // TODO decrypt request if use encryption
+        dispatcher.processMessage(transport, request, response);
+        // TODO encrypt response if use encryption
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+    @Override
+    public String getName() {
+        if (name == null) {
+            name = (getHost() == null ? "0.0.0.0" : getHost()) + ":" + getPort();
+        }
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public boolean isZeroConf() {
+        return zeroConf;
+    }
+
+    public void setZeroConf(boolean zeroConf) {
+        this.zeroConf = zeroConf;
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(EventBus eventBus) {
+        if (!Objects.equal(this.eventBus, eventBus)) {
+            if (this.eventBus != null) {
+                removeBean(this.eventBus);
+            }
+            this.eventBus = eventBus;
+            if (this.eventBus != null) {
+                addBean(this.eventBus);
+            }
+        }
+    }
+
+    public void addDispatcher(MessageFactory<?> messageFactory) {
+        dispatchers.addDispatcher(messageFactory);
+    }
+
+    public <T extends MessageDispatcher> Collection<T> getDispatchers() {
+        return (Collection<T>) dispatchers.getDispatchers();
+    }
+
+    public void setDispatchers(Collection<MessageDispatcher> dispatchers) {
+        this.dispatchers.setDispatchers(dispatchers);
+    }
+
+    public EventRepository getEventRepository() {
+        return eventRepository != null ? eventRepository : (getServer() != null ? getServer().getEventRepository()
+                : null);
+    }
+
+    public void setEventRepository(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s@%s:%d", getClass().getSimpleName(), getHost() == null ? "0.0.0.0" : getHost(),
+                getPort());
+    }
 }

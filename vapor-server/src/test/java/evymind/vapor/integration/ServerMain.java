@@ -18,18 +18,23 @@ public class ServerMain {
      * @param args
      */
     public static void main(String[] args) throws Exception {
+        // Message Type
         MessageFactory<BinMessage> messageFactory = new BinMessageFactory();
 
+        // Server
         Server server = new Server();
+
+        // Connector
         NettySuperTCPConnector connector = new NettySuperTCPConnector();
         connector.addDispatcher(messageFactory);
-
         server.addConnector(connector);
 
+        // EventRepository
         InMemoryEventRepository eventRepository = new InMemoryEventRepository();
         eventRepository.setMessageFactory(messageFactory);
         server.setEventRepository(eventRepository);
 
+        // Handler
         ServiceContextHandler handler = new ServiceContextHandler();
 
         handler.configure(new ServiceModule() {
@@ -41,8 +46,6 @@ public class ServerMain {
                 context.addListener(service);
             }
         });
-
-
         server.setHandler(handler);
 
         server.start();

@@ -30,7 +30,7 @@ public interface HandlerContainer extends Lifecycle {
 	 * @return array of all handlers contained by this handler and it's children
 	 *         of the passed type.
 	 */
-	public Handler[] getChildHandlersByClass(Class<?> byclass);
+	public <T> T[] getChildHandlersByClass(Class<T> byclass);
 
 
 	/**

@@ -9,5 +9,6 @@ include 'vapor-config'
 include 'vapor-app'
 include 'vapor-deploy'
 include 'vapor-jmx'
+include 'vapor-zeroconf'
 
 include 'vapor-test'

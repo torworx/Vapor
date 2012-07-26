@@ -108,6 +108,10 @@ public class ServiceHandler extends ScopedHandler {
 		getServiceInvokerFactory().addService(serviceInterface, serviceImplementation, scope);
 	}
 
+    public ServiceDefinition[] getServices() {
+        return getServiceInvokerFactory().getServices();
+    }
+
 	public void setServices(ServiceDefinition[] serviceDefinitions) {
 		getServiceInvokerFactory().setServices(serviceDefinitions);
 	}

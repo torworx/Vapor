@@ -72,17 +72,11 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 		attributes = new AttributesMap();
 	}
 
-	public ContextHandler(HandlerContainer parent) {
-		this();
-		setParent(parent);
-	}
-
 	protected void setParent(HandlerContainer parent) {
 		if (parent instanceof HandlerWrapper) {
 			((HandlerWrapper) parent).setHandler(this);
 		}
 	}
-
 
 	/**
 	 * Get the current ServletContext implementation.
@@ -524,7 +518,6 @@ public class ContextHandler extends ScopedHandler implements Attributes, EventMu
 	public class Context implements ServiceContext {
 
 		final private static String UNIMPLEMENTED = "Unimplemented - use evyframework.remoting.service.ServiceContextHandler";
-
 
 		protected Context() {
 		}

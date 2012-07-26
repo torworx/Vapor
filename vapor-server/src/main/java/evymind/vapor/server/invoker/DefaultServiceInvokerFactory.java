@@ -101,8 +101,13 @@ public class DefaultServiceInvokerFactory extends AbstractLifecycle implements S
 		checkNotStarted();
 		definitions.add(new ServiceDefinition(serviceInterface, serviceImplementation, scope));
 	}
-	
-	public void setServices(ServiceDefinition[] serviceDefinitions) {
+
+    @Override
+    public ServiceDefinition[] getServices() {
+        return definitions.toArray(new ServiceDefinition[definitions.size()]);
+    }
+
+    public void setServices(ServiceDefinition[] serviceDefinitions) {
 		checkNotStarted();
 		definitions.clear();
 		if (serviceDefinitions != null) {

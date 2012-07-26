@@ -1,6 +1,7 @@
 package evymind.vapor.server.supertcp;
 
 import evymind.vapor.core.QueueFullException;
+import evymind.vapor.server.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,11 +11,6 @@ import evymind.vapor.core.event.handling.EventBus;
 import evymind.vapor.core.event.handling.annontation.AnnotationEventListenerAdapter;
 import evymind.vapor.core.event.handling.disruptor.DisruptorEventBus;
 import evymind.vapor.core.supertcp.PackageAck;
-import evymind.vapor.server.AbstractConnector;
-import evymind.vapor.server.Request;
-import evymind.vapor.server.RequestPool;
-import evymind.vapor.server.Response;
-import evymind.vapor.server.ResponsePool;
 
 public abstract class BaseSuperTCPConnector extends AbstractConnector {
 	
@@ -43,7 +39,12 @@ public abstract class BaseSuperTCPConnector extends AbstractConnector {
 		setPort(8095);
 	}
 
-	public RequestPool getRequestPool() {
+    @Override
+    public ConnectorType getConnectorType() {
+        return ConnectorType.SUPER_TCP;
+    }
+
+    public RequestPool getRequestPool() {
 		return requestPool;
 	}
 

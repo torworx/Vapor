@@ -137,52 +137,52 @@ public class AbstractLifecycle implements Lifecycle {
 		state = __STARTED;
 		log.debug("{} {}", STARTED_STRING, this);
 		for (Listener listener : _listeners)
-			listener.lifeCycleStarted(this);
+			listener.lifecycleStarted(this);
 	}
 
 	private void setStarting() {
 		log.debug("starting {}", this);
 		state = __STARTING;
 		for (Listener listener : _listeners)
-			listener.lifeCycleStarting(this);
+			listener.lifecycleStarting(this);
 	}
 
 	private void setStopping() {
 		log.debug("stopping {}", this);
 		state = __STOPPING;
 		for (Listener listener : _listeners)
-			listener.lifeCycleStopping(this);
+			listener.lifecycleStopping(this);
 	}
 
 	private void setStopped() {
 		state = __STOPPED;
 		log.debug("{} {}", STOPPED_STRING, this);
 		for (Listener listener : _listeners)
-			listener.lifeCycleStopped(this);
+			listener.lifecycleStopped(this);
 	}
 
 	private void setFailed(Throwable th) {
 		state = __FAILED;
 		log.warn(FAILED_STRING + " " + this + ": " + th, th);
 		for (Listener listener : _listeners)
-			listener.lifeCycleFailure(this, th);
+			listener.lifecycleFailure(this, th);
 	}
 
 	public static abstract class AbstractLifecycleListener implements Lifecycle.Listener {
 		
-		public void lifeCycleFailure(Lifecycle event, Throwable cause) {
+		public void lifecycleFailure(Lifecycle event, Throwable cause) {
 		}
 
-		public void lifeCycleStarted(Lifecycle event) {
+		public void lifecycleStarted(Lifecycle event) {
 		}
 
-		public void lifeCycleStarting(Lifecycle event) {
+		public void lifecycleStarting(Lifecycle event) {
 		}
 
-		public void lifeCycleStopped(Lifecycle event) {
+		public void lifecycleStopped(Lifecycle event) {
 		}
 
-		public void lifeCycleStopping(Lifecycle event) {
+		public void lifecycleStopping(Lifecycle event) {
 		}
 	}
 

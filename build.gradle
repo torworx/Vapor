@@ -256,10 +256,17 @@ project("vapor-jmx") {
 
 	dependencies {
 		compile project(":vapor-core")
-		testCompile "junit:junit:4.10"
 	}
 }
 
+project("vapor-zeroconf") {
+    description = 'Vapor ZeroConf'
+
+    dependencies {
+        compile project(":vapor-server")
+        compile "javax.jmdns:jmdns:3.4.1"
+    }
+}
 
 project("vapor-test") {
 	description = 'Vapor Test'

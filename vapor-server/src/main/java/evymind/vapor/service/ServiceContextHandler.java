@@ -40,7 +40,7 @@ public class ServiceContextHandler extends ContextHandler {
 	}
 	
 	public ServiceContextHandler(HandlerContainer parent, String contextPath, SessionHandler sessionHandler, ServiceHandler serviceHandler) {
-		super((ContextHandler.Context) null);
+		super(null);
 		this.context = new Context();
 		this.sessionHandler = sessionHandler;
 		this.serviceHandler = serviceHandler;
