@@ -8,7 +8,12 @@ public abstract class AbstractMessageFactory<T extends AbstractMessage<?>> imple
 	
 	private MessageEnvelopes envelopes;
 
-	public MessageEnvelopes getEnvelopes() {
+    @Override
+    public String getName() {
+        return "Unknown";
+    }
+
+    public MessageEnvelopes getEnvelopes() {
 		if (envelopes == null) {
 			envelopes = new MessageEnvelopes();
 		}

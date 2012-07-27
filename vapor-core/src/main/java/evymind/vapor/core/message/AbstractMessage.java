@@ -159,10 +159,10 @@ public abstract class AbstractMessage<S extends Serializer> implements Message {
 	public void readFromBuffer(VaporBuffer buffer) {
 		envelopesProcessIncoming(buffer);
 		Assert.isTrue(buffer.readableBytes() > 4, "Message : The data is too short to be a message");
-		doReadFromeBuffer(buffer);
+		doReadFromBuffer(buffer);
 	}
 
-	protected abstract void doReadFromeBuffer(VaporBuffer buffer);
+	protected abstract void doReadFromBuffer(VaporBuffer buffer);
 
 	@Override
 	public void writeToBuffer(VaporBuffer buffer) {

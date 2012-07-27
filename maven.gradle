@@ -31,28 +31,23 @@ def customizePom(pom, gradleProject) {
         generatedPom.project {
             name = gradleProject.description
             description = gradleProject.description
-            url = 'http://www.leadingsoft.com.cn'
+            url = 'http://www.evymind.com'
             organization {
-                name = 'LeadingSoft'
-                url = 'http://www.leadingsoft.com.cn'
+                name = 'EvyMind'
+                url = 'http://www.evymind.com'
             }
-//             licenses {
-//                 license {
-//                     name 'The Apache Software License, Version 2.0'
-//                     url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                     distribution 'repo'
-//                 }
-//             }
-//            scm {
-//                url = 'https://github.com/SpringSource/spring-framework'
-//                connection = 'scm:git:git://github.com/SpringSource/spring-framework'
-//                developerConnection = 'scm:git:git://github.com/SpringSource/spring-framework'
-//            }
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
             developers {
                 developer {
                     id = 'taoyuan'
                     name = 'Tao Yuan'
-                    email = 'taoyuan@leadingsoft.cn'
+                    email = 'taoyuan@evymind.com'
                 }
             }
         }

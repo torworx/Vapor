@@ -4,6 +4,8 @@ import evymind.vapor.core.message.envelope.MessageEnvelope;
 import evymind.vapor.core.message.envelope.MessageEnvelopes;
 
 public interface MessageFactory<T extends Message> {
+
+    String getName();
 	
 	MessageEnvelopes getEnvelopes();
 	

@@ -25,6 +25,11 @@ libraries.logback_classic = dependencies.module('ch.qos.logback:logback-classic:
     dependency libraries.slf4j_api
 }
 
+// mdns
+libraries.jmdns = dependencies.module('javax.jmdns:jmdns:3.4.1') {
+    dependency libraries.jul_to_slf4j
+}
+
 buildscript {
 	repositories {
 		mavenLocal()
@@ -103,7 +108,7 @@ configure(subprojects) { subproject ->
 	apply plugin: 'maven' // for install task as well as deploy dependencies
 	apply plugin: 'uploadAuth'
 	
-    apply from: "${rootProject.projectDir}/maven.gradle"
+    apply from: "maven.gradle"
 	
 	configurations {
 		deployerJars {
@@ -264,7 +269,7 @@ project("vapor-zeroconf") {
 
     dependencies {
         compile project(":vapor-server")
-        compile "javax.jmdns:jmdns:3.4.1"
+        compile libraries.jmdns
     }
 }
 
