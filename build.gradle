@@ -8,6 +8,8 @@ ext {
     ]
 }
 
+libraries.janino = 'org.codehaus.janino:janino:2.6.1'
+
 // Logging
 libraries.slf4j_api = 'org.slf4j:slf4j-api:1.6.6@jar'
 libraries.jcl_to_slf4j = dependencies.module('org.slf4j:jcl-over-slf4j:1.6.6') {
@@ -23,6 +25,7 @@ libraries.logback_core = 'ch.qos.logback:logback-core:1.0.6@jar'
 libraries.logback_classic = dependencies.module('ch.qos.logback:logback-classic:1.0.6') {
     dependency libraries.logback_core
     dependency libraries.slf4j_api
+    dependency libraries.janino // for conditional processing
 }
 
 // mdns
@@ -31,16 +34,16 @@ libraries.jmdns = dependencies.module('javax.jmdns:jmdns:3.4.1') {
 }
 
 buildscript {
-	repositories {
-		mavenLocal()
-		maven {
-			url "http://oss.sonatype.org/content/repositories/releases/"
-		}
-		mavenCentral()
-	}
-	dependencies {
-		classpath 'org.hibernate.build.gradle:gradle-upload-auth-plugin:1.1.1'
-	}
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://oss.sonatype.org/content/repositories/releases/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.hibernate.build.gradle:gradle-upload-auth-plugin:1.1.1'
+    }
 }
 
 configure(allprojects) {
@@ -50,77 +53,78 @@ configure(allprojects) {
 
     group = 'evymind.vapor'
 
-    sourceCompatibility=1.6
-    targetCompatibility=1.6
-	
-	ext.evyVersion='1.0.1'
-	ext.slf4jVersion='1.6.6'
-	ext.springVersion='3.1.1.RELEASE'
-	ext.jacksonVersion='2.0.2'
-	
-	setBuildDir 'target'
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
 
-	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    ext.evyVersion = '1.0.1'
+    ext.slf4jVersion = '1.6.6'
+    ext.springVersion = '3.1.1.RELEASE'
+    ext.jacksonVersion = '2.0.2'
+
+    setBuildDir 'target'
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
     [compileJava, compileTestJava]*.options*.compilerArgs = ['-Xlint:none']
 
-	sourceSets {
-		main {
-			java {
-				srcDir 'src/main/java'
-			}
-			resources {
-				srcDir 'src/main/resources'
-			}
-			output.resourcesDir = 'target/classes'
-    		output.classesDir   = 'target/classes'
-		}
-		test {
-			java {
-				srcDir 'src/test/java'
-			}
-			resources {
-				srcDir 'src/test/resources'
-			}
-			output.resourcesDir = 'target/test-classes'
-    		output.classesDir   = 'target/test-classes'
-		}
-	}
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/resources'
+            }
+            output.resourcesDir = 'target/classes'
+            output.classesDir = 'target/classes'
+        }
+        test {
+            java {
+                srcDir 'src/test/java'
+            }
+            resources {
+                srcDir 'src/test/resources'
+            }
+            output.resourcesDir = 'target/test-classes'
+            output.classesDir = 'target/test-classes'
+        }
+    }
 
     repositories {
-		mavenLocal()
-		maven {
-			url "http://oss.sonatype.org/content/repositories/releases/"
-		}
+        mavenLocal()
+        maven {
+            url "http://oss.sonatype.org/content/repositories/releases/"
+        }
         mavenCentral()
     }
 
     dependencies {
-		compile libraries.logback_classic
+        compile libraries.logback_classic
         testCompile "junit:junit:4.10"
-		testCompile "org.databene:contiperf:2.1.0"
-		testCompile "org.mockito:mockito-all:1.9.0"
-		testCompile 'org.hamcrest:hamcrest-library:1.3.RC2'
+        testCompile "org.databene:contiperf:2.1.0"
+        testCompile "org.mockito:mockito-all:1.9.0"
+        testCompile 'org.hamcrest:hamcrest-library:1.3.RC2'
     }
 }
 
 configure(subprojects) { subproject ->
-	apply plugin: 'java'
-	apply plugin: 'maven' // for install task as well as deploy dependencies
-	apply plugin: 'uploadAuth'
-	
+    apply plugin: 'java'
+    apply plugin: 'maven' // for install task as well as deploy dependencies
+    apply plugin: 'uploadAuth'
+
+    apply from: "${rootProject.projectDir}/versioning.gradle"
     apply from: "${rootProject.projectDir}/maven.gradle"
-	
-	configurations {
-		deployerJars {
-			description = 'Jars needed for doing deployment to Nexus repo'
-		}
-	}
-	dependencies {
-		deployerJars "org.apache.maven.wagon:wagon-http:2.2"
-	}
+
+    configurations {
+        deployerJars {
+            description = 'Jars needed for doing deployment to Nexus repo'
+        }
+    }
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-http:2.2"
+    }
 
     jar {
-    	manifest.attributes['Implementation-Vendor'] = "Evymind - Vapor"
+        manifest.attributes['Implementation-Vendor'] = "Evymind - Vapor"
         manifest.attributes['Implementation-Title'] = subproject.name
         manifest.attributes['Implementation-Version'] = subproject.version
 
@@ -137,17 +141,17 @@ configure(subprojects) { subproject ->
         options.author = true
         options.header = project.name
     }
-	
-	uploadArchives {
-		repositories.mavenDeployer {
-			name = 'evyDeployer'
-			configuration = configurations.deployerJars
-			repository(id: "releases-repository", url: "http://maven.leadingsoft.com.cn/content/repositories/releases") 
-			snapshotRepository(id: "snapshots-repository", url: "http://maven.leadingsoft.com.cn/content/repositories/snapshots")
-		}
-	}
 
-    task sourcesJar(type: Jar, dependsOn:classes) {
+    uploadArchives {
+        repositories.mavenDeployer {
+            name = 'evyDeployer'
+            configuration = configurations.deployerJars
+            repository(id: "releases-repository", url: "http://maven.leadingsoft.com.cn/content/repositories/releases")
+            snapshotRepository(id: "snapshots-repository", url: "http://maven.leadingsoft.com.cn/content/repositories/snapshots")
+        }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allJava
     }
@@ -155,113 +159,112 @@ configure(subprojects) { subproject ->
     artifacts {
         archives sourcesJar
     }
-	
-	uploadArchives.dependsOn install
+
+    uploadArchives.dependsOn install
 }
 
 project('vapor-bootstrap') {
-	description = 'Vapor Bootstrap'
-	
-	jar {
-		manifest.attributes['Main-Class'] =
-			'evymind.vapor.bootstrap.Main'
-	}
-	
-	dependencies {
-		testCompile project(":vapor-test")
-	}
+    description = 'Vapor Bootstrap'
+
+    jar {
+        manifest.attributes['Main-Class'] = 'evymind.vapor.bootstrap.Main'
+    }
+
+    dependencies {
+        testCompile project(":vapor-test")
+    }
 }
 
 project("vapor-core") {
     description = 'Vapor Core'
-	
-	ext.protostuffVersion='1.0.7'
-	
-	dependencies {
-		compile "evyframework:evy-common:${evyVersion}"
-		compile "evyframework:evy-pool:${evyVersion}"
-		compile "evyframework:evy-reflectasm:${evyVersion}"
-		compile "com.google.guava:guava:12.0"
-		compile "com.googlecode.disruptor:disruptor:2.10.1"
-		compile "org.javassist:javassist:3.16.1-GA"
-		compile "com.dyuproject.protostuff:protostuff-core:${protostuffVersion}"
-		compile "com.dyuproject.protostuff:protostuff-runtime:${protostuffVersion}"
-		compile 'io.netty:netty:3.5.2.Final'
-	}
+
+    ext.protostuffVersion = '1.0.7'
+
+    dependencies {
+        compile "evyframework:evy-common:${evyVersion}"
+        compile "evyframework:evy-pool:${evyVersion}"
+        compile "evyframework:evy-reflectasm:${evyVersion}"
+        compile "com.google.guava:guava:12.0"
+        compile "com.googlecode.disruptor:disruptor:2.10.1"
+        compile "org.javassist:javassist:3.16.1-GA"
+        compile "com.dyuproject.protostuff:protostuff-core:${protostuffVersion}"
+        compile "com.dyuproject.protostuff:protostuff-runtime:${protostuffVersion}"
+        compile 'io.netty:netty:3.5.2.Final'
+    }
 }
 
 project('vapor-client') {
-	description = 'Vapor Client'
-	
-	dependencies {
-		compile project(":vapor-core")
-	}
+    description = 'Vapor Client'
+
+    dependencies {
+        compile project(":vapor-core")
+    }
 }
 
 project('vapor-server') {
     description = 'Vapor Server'
-	
-	dependencies {
-		compile project(":vapor-core")
-		compile "evyframework:evy-asm:${evyVersion}"
-		compile "evyframework:evy-di:${evyVersion}"
+
+    dependencies {
+        compile project(":vapor-core")
+        compile "evyframework:evy-asm:${evyVersion}"
+        compile "evyframework:evy-di:${evyVersion}"
 //		compile 'org.apache.httpcomponents:httpclient:4.2'
-		testCompile project(":vapor-test")
-		testCompile project(":vapor-client")
-	}
+        testCompile project(":vapor-test")
+        testCompile project(":vapor-client")
+    }
 }
 
 project('vapor-envelope') {
     description = 'Vapor Envelope'
-	
-	dependencies {
-		compile project(":vapor-core")
-		compile "evyframework:evy-crypto:${evyVersion}"
-	}
+
+    dependencies {
+        compile project(":vapor-core")
+        compile "evyframework:evy-crypto:${evyVersion}"
+    }
 }
 
 project('vapor-config') {
-	description = 'Vapor Config'
-	
-	dependencies {
-		compile project(":vapor-server")
-		compile "evyframework:evy-container:${evyVersion}"
+    description = 'Vapor Config'
+
+    dependencies {
+        compile project(":vapor-server")
+        compile "evyframework:evy-container:${evyVersion}"
 //		compile("org.springframework:spring-context:${springVersion}", optional)
 //		compile("org.slf4j:jcl-over-slf4j:${slf4jVersion}", optional)
-	}
+    }
 }
 
 
 project('vapor-app') {
-	description = 'Vapor App'
-	
-	dependencies {
-		compile project(":vapor-server")
-		compile "evyframework:evy-common:${evyVersion}"
-		compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-		compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
-	}
+    description = 'Vapor App'
+
+    dependencies {
+        compile project(":vapor-server")
+        compile "evyframework:evy-common:${evyVersion}"
+        compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+        compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
+    }
 }
 
 project('vapor-deploy') {
-	description = 'Vapor Deploy'
-	
-	dependencies {
-		compile project(":vapor-server")
-		compile project(":vapor-config")
-		compile project(":vapor-app")
-		compile project(":vapor-jmx")
+    description = 'Vapor Deploy'
+
+    dependencies {
+        compile project(":vapor-server")
+        compile project(":vapor-config")
+        compile project(":vapor-app")
+        compile project(":vapor-jmx")
         testCompile project(":vapor-client")
-		testCompile project(":vapor-test")
-	}
+        testCompile project(":vapor-test")
+    }
 }
 
 project("vapor-jmx") {
-	description = 'Vapor JMX'
+    description = 'Vapor JMX'
 
-	dependencies {
-		compile project(":vapor-core")
-	}
+    dependencies {
+        compile project(":vapor-core")
+    }
 }
 
 project("vapor-zeroconf") {
@@ -274,75 +277,64 @@ project("vapor-zeroconf") {
 }
 
 project("vapor-test") {
-	description = 'Vapor Test'
+    description = 'Vapor Test'
 
-	dependencies {
-		compile "junit:junit:4.10"
-	}
+    dependencies {
+        compile "junit:junit:4.10"
+    }
 }
 
 configure(rootProject) {
     description = 'Vapor'
-	
+
     // don't publish the default jar for the root project
     configurations.archives.artifacts.clear()
-	
-	dependencies { // for dist
-		runtime project(":vapor-core")
-		runtime project(":vapor-client")
-		runtime project(":vapor-server")
-		runtime project(":vapor-envelope")
-		runtime project(":vapor-config")
-		runtime project(":vapor-app")
-		runtime project(":vapor-deploy")
-		runtime project(":vapor-jmx")
-	}
-	
-	task distZip(type: Zip) {
-		group = 'Distribution'
-		classifier = 'dist'
-		description = "Builds -${classifier} archive."
 
-		def baseDir = "${project.name}-${project.version}";
+    task distZip(type: Zip) {
+        group = 'Distribution'
+        classifier = 'dist'
+        description = "Builds -${classifier} archive."
 
-		into("${baseDir}") {
-			from('src/dist')
-		}
-		
-		subprojects.each { subproject ->
-			into ("${baseDir}") {
-				if (subproject.name.equals("vapor-bootstrap")) {
-					from subproject.jar
-					rename { String fileName -> "bootstrap.jar" }
-				}
-				from(subproject.projectDir.absolutePath+'/src/main/config')
-			}
-			into ("${baseDir}/lib") {
-				if (!subproject.name.equals("vapor-bootstrap")) {
-					from subproject.jar
-				}
-			}
-		}
-		
-		def projectNames = rootProject.subprojects*.name
-		def artifacts = new HashSet()
-		subprojects.each { subproject ->
-			subproject.configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
-				def dependency = artifact.moduleVersion.id
-				if (!projectNames.contains(dependency.name)) {
-					artifacts << artifact.file
-				}
-			}
-		}
+        def baseDir = "${project.name}-${project.version}";
 
-		from(artifacts) {
-			into "${baseDir}/lib/shared"
-		}
-	}
-	
-	artifacts {
-		archives distZip
-	}
+        into("${baseDir}") {
+            from('src/dist')
+        }
+
+        subprojects.each { subproject ->
+            into("${baseDir}") {
+                if (subproject.name.equals("vapor-bootstrap")) {
+                    from subproject.jar
+                    rename { String fileName -> "bootstrap.jar" }
+                }
+                from(subproject.projectDir.absolutePath + '/src/main/config')
+            }
+            into("${baseDir}/lib") {
+                if (!subproject.name.equals("vapor-bootstrap")) {
+                    from subproject.jar
+                }
+            }
+        }
+
+        def projectNames = rootProject.subprojects*.name
+        def artifacts = new HashSet()
+        subprojects.each { subproject ->
+            subproject.configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+                def dependency = artifact.moduleVersion.id
+                if (!projectNames.contains(dependency.name)) {
+                    artifacts << artifact.file
+                }
+            }
+        }
+
+        from(artifacts) {
+            into "${baseDir}/lib/shared"
+        }
+    }
+
+    artifacts {
+        archives distZip
+    }
 
     task wrapper(type: Wrapper) {
         description = 'Generates gradlew[.bat] scripts'

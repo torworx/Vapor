@@ -5,16 +5,24 @@ handlers = evymind.vapor.server.handler.HandlerCollection();
 		$handlers.setHandlers([contexts]);
 	}
 
+messageFactory = evymind.vapor.core.message.bin.BinMessageFactory();
+
+eventRepository = evymind.vapor.server.eventrepository.InMemoryEventRepository()
+    .setMessageFactory(messageFactory);
+
 server = evymind.vapor.server.Server();
 	
 	config {
 		// connector config
 		$server.addConnector(
 			evymind.vapor.server.supertcp.netty.NettySuperTCPConnector()
-				.addDispatcher(evymind.vapor.core.message.bin.BinMessageFactory())
+				.addDispatcher(messageFactory)
 				.setAckWaitTimeout(5000)
 		);
 			
 		// handler config
 		$server.setHandler(handlers);
+
+		// event repository
+		$server.setEventRepository(eventRepository);
 	}

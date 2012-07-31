@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 apply from: '../../versioning.gradle'
 
 buildscript {
@@ -17,7 +19,7 @@ configure(allprojects) {
     sourceCompatibility=1.6
     targetCompatibility=1.6
 
-    ext.vaporVersion = version
+    ext.vaporVersion = rootProject.version
 	
 	setBuildDir 'target'
 

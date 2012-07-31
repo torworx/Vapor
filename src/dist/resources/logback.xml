@@ -2,7 +2,9 @@
 <configuration>
     <!-- define logs root dir -->
     <if condition='!isDefined("vapor.logs")'>
-        <property name="vapor.logs" value="./logs" />
+        <then>
+            <property name="vapor.logs" value="./logs" />
+        </then>
     </if>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
