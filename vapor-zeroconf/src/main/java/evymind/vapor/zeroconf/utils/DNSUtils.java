@@ -23,4 +23,18 @@ public final class DNSUtils {
     public static void checkDNSFunctions() throws IOException {
         JmDNS.create().close();
     }
+
+    public static String qualify(String serviceType, String domain) {
+        if (serviceType == null) {
+            return null;
+        }
+        String domainToUse = "";
+        if (domain != null && !domain.endsWith(".")) {
+            domainToUse = domain + ".";
+        } else {
+            domainToUse = domain;
+        }
+        return serviceType.endsWith(domainToUse) ? serviceType : serviceType + domainToUse;
+
+    }
 }

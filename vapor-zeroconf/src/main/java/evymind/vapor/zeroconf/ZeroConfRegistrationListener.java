@@ -5,7 +5,7 @@ package evymind.vapor.zeroconf;
  */
 public interface ZeroConfRegistrationListener {
 
-    void registrationFailed(ZeroConfRegistration registration, ZeroConfEngine engine, Exception exception);
+    void registrationFailed(ZeroConfRegistration registration, ZeroConfStrategy strategy, Exception exception);
 
-    void registrationSucceeded(ZeroConfRegistration registration, ZeroConfEngine engine);
+    void registrationSucceeded(ZeroConfRegistration registration, ZeroConfStrategy strategy);
 }

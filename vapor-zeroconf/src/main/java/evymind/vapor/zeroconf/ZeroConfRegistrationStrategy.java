@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public interface ZeroConfRegistrationStrategy {
 
-    ZeroConfEngine getCurrentEngineType();
+    ZeroConfStrategy getCurrentEngineType();
 
     void registerService(String domain, String serviceType, String serviceName, int port, Map<String, ?> txtRecord);
 

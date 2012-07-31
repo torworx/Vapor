@@ -17,7 +17,7 @@ public class ZeroConfRegistration extends AbstractZeroConf {
 
     private final ZeroConfServerListener serverListener;
 
-    private final List<ZeroConfRegistrationEngine> registrationEngines = new ArrayList<ZeroConfRegistrationEngine>();
+//    private final List<ZeroConfRegistrationEngine> registrationEngines = new ArrayList<ZeroConfRegistrationEngine>();
 
     private final List<ZeroConfRegistrationListener> listeners = new ArrayList<ZeroConfRegistrationListener>();
 
@@ -38,7 +38,7 @@ public class ZeroConfRegistration extends AbstractZeroConf {
     }
 
     protected void doBeforeClose(Server server) {
-        registrationEngines.clear();
+//        registrationEngines.clear();
         closeRegistrationStrategy();
     }
 
@@ -49,10 +49,10 @@ public class ZeroConfRegistration extends AbstractZeroConf {
     }
 
     protected ZeroConfRegistrationStrategy buildRegistrationStrategy() {
-        ZeroConfEngine engine = getEngine();
-        if (engine == ZeroConfEngine.AUTO) {
+        ZeroConfStrategy strategy = getStrategy();
+        if (strategy == ZeroConfStrategy.AUTO) {
             if (DNSUtils.checkDNSFunctionsSilent()) {  // Bonjour is present
-                engine = ZeroConfEngine.BONJOUR;
+                strategy = ZeroConfStrategy.BONJOUR;
             }                                    // TODO: Support hub strategy
             else {
                 try {
@@ -64,7 +64,7 @@ public class ZeroConfRegistration extends AbstractZeroConf {
             }
         }
 
-        switch (engine) {
+        switch (strategy) {
             case BONJOUR:
                 return new BonjourRegistrationStrategy();
             default:
@@ -76,7 +76,7 @@ public class ZeroConfRegistration extends AbstractZeroConf {
     protected void registrationStrategyFailed(Exception exception) {
         // TODO: check and create hub strategy and register service
         try {
-            fireRegistrationFailed(getEngine(), exception);
+            fireRegistrationFailed(getStrategy(), exception);
         } finally {
         }
     }
@@ -114,10 +114,10 @@ public class ZeroConfRegistration extends AbstractZeroConf {
 
     protected void registerServices(Server server, Connector connector, Map<String, ?> props, ServiceDefinition serviceDefinition) {
         for (String serviceType : serviceDefinition.getAliasNames()) {
-             ZeroConfRegistrationEngine registrationEngine = new ZeroConfRegistrationEngine(this);
-            registrationEngines.add(registrationEngine);
+//             ZeroConfRegistrationEngine registrationEngine = new ZeroConfRegistrationEngine(this);
+//            registrationEngines.add(registrationEngine);
 
-            registrationEngine.registerService(getDomain(), serviceType, serviceDefinition.getServiceInterface().getSimpleName(),
+            getRegistrationStrategy().registerService(getDomain(), serviceType, serviceDefinition.getServiceInterface().getSimpleName(),
                     connector.getPort(), props);
         }
     }
@@ -175,15 +175,15 @@ public class ZeroConfRegistration extends AbstractZeroConf {
         listeners.remove(listener);
     }
 
-    protected void fireRegistrationFailed(ZeroConfEngine engine, Exception exception) {
+    protected void fireRegistrationFailed(ZeroConfStrategy strategy, Exception exception) {
         for (ZeroConfRegistrationListener listener : listeners) {
-            listener.registrationFailed(this, engine, exception);
+            listener.registrationFailed(this, strategy, exception);
         }
     }
 
-    protected void fireRegistrationSucceeded(ZeroConfEngine engine, Exception exception) {
+    protected void fireRegistrationSucceeded(ZeroConfStrategy strategy, Exception exception) {
         for (ZeroConfRegistrationListener listener : listeners) {
-            listener.registrationSucceeded(this, engine);
+            listener.registrationSucceeded(this, strategy);
         }
     }
 

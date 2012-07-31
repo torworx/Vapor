@@ -1,5 +1,7 @@
 package evymind.vapor.zeroconf;
 
+import evymind.vapor.zeroconf.utils.DNSUtils;
+
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 import java.io.IOException;
@@ -17,23 +19,23 @@ public class BonjourRegistrationStrategy extends AbstractZeroConfRegistrationStr
         try {
             mdns = JmDNS.create();
         } catch (IOException e) {
-            throw new ZeroConfRegistrationException(e);
+            throw new ZeroConfException(e);
         }
     }
 
     @Override
-    public ZeroConfEngine getCurrentEngineType() {
-        return ZeroConfEngine.BONJOUR;
+    public ZeroConfStrategy getCurrentEngineType() {
+        return ZeroConfStrategy.BONJOUR;
     }
 
     @Override
     public void registerService(String domain, String serviceType, String serviceName, int port, Map<String, ?> txtRecord) {
         checkClosed();
-        ServiceInfo info = ServiceInfo.create(serviceType + domain, serviceName, "", port, 0, 0, false, txtRecord);
+        ServiceInfo info = ServiceInfo.create(DNSUtils.qualify(serviceType, domain), serviceName, "", port, 0, 0, false, txtRecord);
         try {
             mdns.registerService(info);
         } catch (IOException e) {
-            throw new ZeroConfRegistrationException(e);
+            throw new ZeroConfException(e);
         }
     }
 
@@ -41,9 +43,10 @@ public class BonjourRegistrationStrategy extends AbstractZeroConfRegistrationStr
     public void close() {
         closed = true;
         try {
+            mdns.unregisterAllServices();
             mdns.close();
         } catch (IOException e) {
-            throw new ZeroConfRegistrationException(e);
+            throw new ZeroConfException(e);
         }
     }
 

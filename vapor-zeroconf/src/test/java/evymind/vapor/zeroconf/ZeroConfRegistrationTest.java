@@ -23,46 +23,6 @@ import org.junit.Test;
  */
 public class ZeroConfRegistrationTest extends BaseZeroConfTest {
 
-    Server server;
-
-    @Before
-    public void setUp() throws Exception {
-        // Message Type
-        MessageFactory<BinMessage> messageFactory = new BinMessageFactory();
-
-        // Server
-        server = new Server();
-
-        // Connector
-        NettySuperTCPConnector connector = new NettySuperTCPConnector();
-        // Enable ZeroConf
-        connector.setZeroConf(true);
-        connector.addDispatcher(messageFactory);
-        server.addConnector(connector);
-
-        // EventRepository
-        InMemoryEventRepository eventRepository = new InMemoryEventRepository();
-        eventRepository.setMessageFactory(messageFactory);
-        server.setEventRepository(eventRepository);
-
-        // Handler
-        ServiceContextHandler handler = new ServiceContextHandler();
-
-        handler.configure(new ServiceModule() {
-
-            @Override
-            public void configure(ServiceContext context) {
-                context.addService(SampleService.class, SampleServiceImpl.class);
-            }
-        });
-        server.setHandler(handler);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
-    }
-
     @Test
     public void testSetServer() throws Exception {
         ZeroConfRegistration registration = new ZeroConfRegistration();

@@ -7,10 +7,10 @@ public abstract class AbstractZeroConf {
 
     private String domain;
 
-    private ZeroConfEngine engine;
+    private ZeroConfStrategy strategy;
 
     protected AbstractZeroConf() {
-        this.engine = ZeroConfEngine.AUTO;
+        this.strategy = ZeroConfStrategy.AUTO;
         setDomain("local");
     }
 
@@ -20,16 +20,13 @@ public abstract class AbstractZeroConf {
 
     public void setDomain(String domain) {
         this.domain = domain;
-        if (this.domain != null && !this.domain.endsWith(".")) {
-            this.domain += ".";
-        }
     }
 
-    public ZeroConfEngine getEngine() {
-        return engine;
+    public ZeroConfStrategy getStrategy() {
+        return strategy;
     }
 
-    public void setEngine(ZeroConfEngine engine) {
-        this.engine = engine;
+    public void setStrategy(ZeroConfStrategy strategy) {
+        this.strategy = strategy;
     }
 }

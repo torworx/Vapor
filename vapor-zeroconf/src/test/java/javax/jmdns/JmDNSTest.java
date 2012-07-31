@@ -3,6 +3,9 @@ package javax.jmdns;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Copyright 2012 EvyMind.
  */
@@ -12,36 +15,44 @@ public class JmDNSTest {
 
     @Test
     public void testTutorial() throws Exception {
-        final JmDNS mdns = JmDNS.create();
+        final JmDNS mdnsRegistration = JmDNS.create();
         ServiceInfo serviceInfo = ServiceInfo.create(type, "ServiceTest", 0,
                 "test from mac");
-        mdns.registerService(serviceInfo);
+        mdnsRegistration.registerService(serviceInfo);
 
+        final JmDNS mdnsBrowser = JmDNS.create();
+        final List<ServiceInfo> infos = new ArrayList<ServiceInfo>();
         ServiceListener listener = new ServiceListener() {
             public void serviceResolved(ServiceEvent ev) {
-                System.out.println("Service resolved: " + ev.getInfo().getQualifiedName()
-                        + " host:" + ev.getInfo().getHostAddresses()[0]
-                        + " port:" + ev.getInfo().getPort());
+                System.out.println("Service resolved: " + ev.getInfo());
+                infos.add(ev.getInfo());
             }
 
             public void serviceRemoved(ServiceEvent ev) {
-                System.out.println("Service removed: " + ev.getName());
+                System.out.println("Service removed: " + ev.getInfo());
+                infos.remove(ev.getInfo());
             }
 
             public void serviceAdded(ServiceEvent event) {
                 // Required to force serviceResolved to be called again
                 // (after the first search)
-                mdns.requestServiceInfo(event.getType(), event.getName(), 1);
+                mdnsBrowser.requestServiceInfo(event.getType(), event.getName(), 1);
             }
         };
-        mdns.addServiceListener(type, listener);
-        ServiceInfo[] infos = mdns.list(type);
+        mdnsBrowser.addServiceListener(type, listener);
 
-        Assert.assertTrue(infos.length > 0);
-        Assert.assertEquals(infos[0], serviceInfo);
+        Thread.sleep(6000);
 
-        mdns.removeServiceListener(type, listener);
-        mdns.unregisterAllServices();
-        mdns.close();
+        Assert.assertFalse(infos.isEmpty());
+        Assert.assertEquals(infos.get(0), serviceInfo);
+
+        mdnsRegistration.close();
+
+        Thread.sleep(6000);
+
+        Assert.assertTrue(infos.isEmpty());
+
+        mdnsRegistration.close();
+        mdnsBrowser.close();
     }
 }
