@@ -12,12 +12,12 @@ public abstract class AbstractEventRepository extends AbstractMessageFactoryAwar
 
 	@Override
 	public void register(UUID clientId, ActiveEventDispatcher eventDispatcher) {
-		doSubscribe(clientId, eventDispatcher);
+		doRegister(clientId, eventDispatcher);
 	}
 
 	@Override
 	public void unregister(UUID clientId) {
-		doUnsubscribe(clientId);
+		doUnregister(clientId);
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public abstract class AbstractEventRepository extends AbstractMessageFactoryAwar
 		doPublish(source, event, destinations.length == 0 ? null : Lists.newArrayList(destinations));
 	}
 
-	protected abstract void doSubscribe(UUID clientId, ActiveEventDispatcher eventDispatcher);
+	protected abstract void doRegister(UUID clientId, ActiveEventDispatcher eventDispatcher);
 
-	protected abstract void doUnsubscribe(UUID clientId);
+	protected abstract void doUnregister(UUID clientId);
 
 	protected abstract void doPublish(UUID source, Object event, Collection<?> destinations);
 

@@ -40,7 +40,7 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 	}
 
 	@Override
-	protected void doSubscribe(UUID clientId, ActiveEventDispatcher eventDispatcher) {
+	protected void doRegister(UUID clientId, ActiveEventDispatcher eventDispatcher) {
 		lock.lock();
 		try {
 			if (eventDispatcher != null) {
@@ -57,7 +57,7 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 	}
 
 	@Override
-	protected void doUnsubscribe(UUID clientId) {
+	protected void doUnregister(UUID clientId) {
 		lock.lock();
 		try {
 			if (clients. containsKey(clientId)) {
@@ -132,7 +132,7 @@ public class InMemoryEventRepository extends AbstractEventRepository {
 						clientReference.addEvent(eventData);
 					}
 				} catch (TransportInvalidException e) {
-					doUnsubscribe(clientId);
+					doUnregister(clientId);
 				}
 			}
 		} finally {
