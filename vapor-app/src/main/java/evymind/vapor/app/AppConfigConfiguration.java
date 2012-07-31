@@ -23,9 +23,9 @@ public class AppConfigConfiguration extends AbstractConfiguration {
 	protected Resource findAppDescriptorResource(AppContext context) throws IOException {
 		String descriptor = context.getDescriptor();
 		if (descriptor != null) {
-			Resource web = context.newResource(descriptor);
-			if (web.exists() && !web.getFile().isDirectory())
-				return web;
+			Resource res = context.newResource(descriptor);
+			if (res.exists() && !res.getFile().isDirectory())
+				return res;
 		}
 
 		Resource appres = context.getBaseResource();
@@ -35,7 +35,7 @@ public class AppConfigConfiguration extends AbstractConfiguration {
 			if (appconfig.exists())
 				return appconfig;
 			if (log.isDebugEnabled())
-				log.debug("No app.yml in " + context.getSar() + ". Serving default/dynamic services only");
+				log.debug("No app.yml ("+appconfig.toString()+") in " + context.getSar() + ". Serving default/dynamic services only");
 		}
 		return null;
 	}

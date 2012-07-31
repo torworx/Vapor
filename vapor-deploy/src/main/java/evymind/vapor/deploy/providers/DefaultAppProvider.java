@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import evyframework.common.StringUtils;
 import evyframework.common.io.Resource;
 import evymind.vapor.app.AppContext;
 import evymind.vapor.deploy.App;
@@ -244,7 +245,7 @@ public class DefaultAppProvider extends ScanningAppProvider {
 		}
 
 		sah.setContextPath(context);
-		sah.setSar(file.getAbsolutePath());
+		sah.setSar(file.isDirectory() ? StringUtils.includeTrailingSlash(file.getAbsolutePath()) : file.getAbsolutePath());
 		if (this.defaultsDescriptor != null) {
 			sah.setDefaultsDescriptor(this.defaultsDescriptor);
 		}
